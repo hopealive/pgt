@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cron_type">
+        <item>@string/before_eat</item>
+        <item>@string/after_eat</item>
+        <item>@string/while_eating</item>
+        <item>@string/others</item>
+    </string-array>
+
+    <string-array name="cron_interval">
+        <item>@string/once_a_day</item>
+        <item>@string/twice_a_day</item>
+        <item>@string/three_times_a_day</item>
+        <item>@string/four_times_a_day</item>
+        <item>@string/five_times_a_day</item>
+        <item>@string/six_times_a_day</item>
+        <item>@string/every_30_minutes</item>
+        <item>@string/every_1_hour</item>
+        <item>@string/every_2_hours</item>
+        <item>@string/every_3_hours</item>
+        <item>@string/every_4_hours</item>
+        <item>@string/every_5_hours</item>
+        <item>@string/every_6_hours</item>
+        <item>@string/others</item>
+    </string-array>
+</resources>

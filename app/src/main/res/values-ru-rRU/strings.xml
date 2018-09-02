@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Лекарства. PillsGT</string>
+    <string name="app_shrot_name">PillsGT</string>
+    <string name="action_settings">Настройки</string>
+    <string name="title_activity_add_pills">Добавить</string>
+    <string name="action_about">О проекте</string>
+    <string name="action_help">Помощь</string>
+    <string name="today_drugs">Препаратов для приема сегодня</string>
+    <string name="empty_index_list">Препараты для приема отсутствуют</string>
+    <string name="title_activity_settings">Настройки</string>
+
+    <!--Messages    -->
+    <string name="message_success_row_deleted">Запись удалена</string>
+
+    <!--Crons -->
+    <string name="label_when">Когда принимать</string>
+    <string name="label_how">Как часто принимать</string>
+
+    <string name="before_eat">До еды</string>
+    <string name="after_eat">После еды</string>
+    <string name="while_eating">Во время еды</string>
+    <string name="ignore">Не учитывать</string>
+    <string name="others">Другое</string>
+
+    <string name="once_a_day">1 раз в день</string>
+    <string name="twice_a_day">2 раза в день</string>
+    <string name="three_times_a_day">3 раза в день</string>
+    <string name="four_times_a_day">4 раза в день</string>
+    <string name="five_times_a_day">5 раз в день</string>
+    <string name="six_times_a_day">6 раз в день</string>
+    <string name="every_30_minutes">Каждые 30 минут</string>
+    <string name="every_1_hour">Каждый час</string>
+    <string name="every_2_hours">Каждые 2 часа</string>
+    <string name="every_3_hours">Каждые 3 часа</string>
+    <string name="every_4_hours">Каждые 4 часа</string>
+    <string name="every_5_hours">Каждые 5 часа</string>
+    <string name="every_6_hours">Каждые 6 часа</string>
+
+</resources>
