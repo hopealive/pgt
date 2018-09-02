@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -18,17 +19,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pillsgt.pgt.databases.LocalDatabase;
+import com.pillsgt.pgt.databases.RemoteDatabase;
 import com.pillsgt.pgt.models.PillRule;
+import com.pillsgt.pgt.models.remote.Keyword;
 import com.pillsgt.pgt.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class PillsActivity extends AppCompatActivity {
 
     public static LocalDatabase localDatabase;
+    public static RemoteDatabase remoteDatabase;
+
     protected Integer cID = null;
 
     Calendar startDate =Calendar.getInstance();
@@ -49,24 +56,32 @@ public class PillsActivity extends AppCompatActivity {
             }
         });
 
-        initMyDatabase();
+        initDatabases();
         initControls();
     }
 
-    protected void initMyDatabase(){
+    protected void initDatabases(){
         localDatabase = Room.databaseBuilder(getApplicationContext(),LocalDatabase.class, Utils.localDbName)
+                .allowMainThreadQueries()
+                .build();
+
+        remoteDatabase = Room.databaseBuilder(getApplicationContext(),RemoteDatabase.class, Utils.downloadDbName)
                 .allowMainThreadQueries()
                 .build();
     }
 
     //Autocomplete field
     protected void initPillName() {
-        //todo:must be from AJAX
-        String[] pills = {
-                "Paracetamol", "Ferveks with ampicilin", "Ampicilin",
-                "Парацетамол", "Фервекс с ампицилином", "Ампицилин"}; //todo: get from DB
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_singlechoice, pills);
+        //todo:must be from AJAX
+        List<String> pillsList = new ArrayList<String>();
+
+        List<Keyword> keywords = remoteDatabase.remoteDAO().getKeywords();
+        for (final Keyword keyword : keywords ) {
+            pillsList.add(keyword.getKeyword());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_singlechoice, pillsList);
         AutoCompleteTextView acTextView = findViewById(R.id.pills);
         acTextView.setThreshold(3);
         acTextView.setAdapter(adapter);
