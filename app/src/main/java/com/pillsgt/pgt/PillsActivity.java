@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.models.PillRule;
 import com.pillsgt.pgt.utils.Utils;
 
@@ -27,7 +28,7 @@ import java.util.Date;
 
 public class PillsActivity extends AppCompatActivity {
 
-    public static MyAppDatabase myAppDatabase;
+    public static LocalDatabase localDatabase;
     protected Integer cID = null;
 
     Calendar startDate =Calendar.getInstance();
@@ -53,7 +54,7 @@ public class PillsActivity extends AppCompatActivity {
     }
 
     protected void initMyDatabase(){
-        myAppDatabase = Room.databaseBuilder(getApplicationContext(),MyAppDatabase.class, Utils.localDbName)
+        localDatabase = Room.databaseBuilder(getApplicationContext(),LocalDatabase.class, Utils.localDbName)
                 .allowMainThreadQueries()
                 .build();
     }
@@ -162,7 +163,7 @@ public class PillsActivity extends AppCompatActivity {
         cID = Integer.valueOf(pillRuleId);
 
         //get data for fill form
-        PillRule pillRule = myAppDatabase.myDAO().loadRuleById(cID);
+        PillRule pillRule = localDatabase.localDAO().loadRuleById(cID);
 
         //fill data by id pull rule
         AutoCompleteTextView pillName = findViewById(R.id.pills);
@@ -221,7 +222,7 @@ public class PillsActivity extends AppCompatActivity {
         PillRule pillRule = new PillRule();
         Boolean updateRow = false;
         if ( cID != null){
-            PillRule sPillRule = myAppDatabase.myDAO().loadRuleById(cID);
+            PillRule sPillRule = localDatabase.localDAO().loadRuleById(cID);
             if (sPillRule != null ){
                 pillRule = sPillRule;
                 updateRow = true;
@@ -258,10 +259,10 @@ public class PillsActivity extends AppCompatActivity {
 
 
         if ( updateRow == true){
-            myAppDatabase.myDAO().updateRule(pillRule);
+            localDatabase.localDAO().updateRule(pillRule);
         } else {
             pillRule.setCreated_at( curDateFormatted );
-            myAppDatabase.myDAO().addRule(pillRule);
+            localDatabase.localDAO().addRule(pillRule);
         }
 
         //success saved, redirect to index page with list

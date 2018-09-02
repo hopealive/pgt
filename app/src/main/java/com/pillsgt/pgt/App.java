@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.models.UserSetting;
 import com.pillsgt.pgt.utils.DownloadTask;
 import com.pillsgt.pgt.utils.Utils;
@@ -32,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 public class App extends Application {
 
-    public static MyAppDatabase myAppDatabase;
+    public static LocalDatabase localDatabase;
     protected List<UserSetting> userSettings;
     private static final String TAG = "initAPP";
 
@@ -64,13 +65,13 @@ public class App extends Application {
     }
 
     protected void initMyDatabase() {
-        myAppDatabase = Room.databaseBuilder(getApplicationContext(), MyAppDatabase.class, Utils.localDbName)
+        localDatabase = Room.databaseBuilder(getApplicationContext(), LocalDatabase.class, Utils.localDbName)
                 .allowMainThreadQueries()
                 .build();
     }
 
     protected void initUserSettings() {
-        userSettings = myAppDatabase.myDAO().getUserSettings();
+        userSettings = localDatabase.localDAO().getUserSettings();
     }
 
 
@@ -153,7 +154,7 @@ Log.i("AlertTest", "Started AlarmManager with period: "+period*1000+" millisec")
                 }
 
                 fUserSetting.setValue(defaultSettingValue);
-                myAppDatabase.myDAO().addUserSetting(fUserSetting);
+                localDatabase.localDAO().addUserSetting(fUserSetting);
             } else {
                 Log.e(TAG, "Field "+field+" already exists in new DB");
             }
@@ -169,7 +170,7 @@ Log.i("AlertTest", "Started AlarmManager with period: "+period*1000+" millisec")
                     if (!testLocalUserSettingByName(eatingField)){
                         fUserSetting.setName(eatingField);
                         fUserSetting.setValue( Utils.defaultEatingTimes.get(i) );
-                        myAppDatabase.myDAO().addUserSetting(fUserSetting);
+                        localDatabase.localDAO().addUserSetting(fUserSetting);
                     } else {
                         Log.e(TAG, "Eating Field "+eatingField+" already exists in new DB");
                     }
@@ -197,7 +198,7 @@ Log.i("AlertTest", "Started AlarmManager with period: "+period*1000+" millisec")
                         if (downloadDb(dDbLink)) {
                             //update db version
                             userSetting.setValue(cDbVersion);
-                            myAppDatabase.myDAO().updateUserSetting(userSetting);
+                            localDatabase.localDAO().updateUserSetting(userSetting);
 
                         }
                     }
@@ -210,7 +211,7 @@ Log.i("AlertTest", "Started AlarmManager with period: "+period*1000+" millisec")
             if ( downloadDb(dDbLink) ){
                 dbVersionUserSetting.setName("db_version");
                 dbVersionUserSetting.setValue(cDbVersion);
-                myAppDatabase.myDAO().addUserSetting(dbVersionUserSetting);
+                localDatabase.localDAO().addUserSetting(dbVersionUserSetting);
             } else {
                 Log.e(TAG, "No link for download");
             }

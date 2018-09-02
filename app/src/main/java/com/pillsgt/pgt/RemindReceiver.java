@@ -8,7 +8,7 @@ public class RemindReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        context.startService(new Intent(context, RemindService.class));
+//        context.startService(new Intent(context, RemindService.class));
 
 //todo:
 //        Intent intentNew = new Intent(context, MainActivity.class);

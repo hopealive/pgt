@@ -1,4 +1,4 @@
-package com.pillsgt.pgt;
+package com.pillsgt.pgt.databases.DAO;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
@@ -14,7 +14,7 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 
 @Dao
-public interface MyDAO {
+public interface LocalDAO {
 
     //pill_rules
 

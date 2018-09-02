@@ -9,13 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.models.PillRule;
 import com.pillsgt.pgt.utils.Utils;
 
@@ -24,7 +24,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static MyAppDatabase myAppDatabase;
+    public static LocalDatabase localDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +52,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void initMyDatabase() {
-        myAppDatabase = Room.databaseBuilder(getApplicationContext(),MyAppDatabase.class, Utils.localDbName)
+        localDatabase = Room.databaseBuilder(getApplicationContext(), LocalDatabase.class, Utils.localDbName)
                 .allowMainThreadQueries()
                 .build();
     }
 
     protected void renderPillsList() {
         //get data
-        List<PillRule> pillRules = myAppDatabase.myDAO().getRules();
+        List<PillRule> pillRules = localDatabase.localDAO().getRules();
 
         View ruleBlock =  findViewById(R.id.index_pill_rules_list);
         ruleBlock.setPadding(10, 0,10,10);
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             btn_remove.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    myAppDatabase.myDAO().deleteRuleById( btn_remove.getId() );
+                    localDatabase.localDAO().deleteRuleById( btn_remove.getId() );
                     Toast.makeText(getApplicationContext(), R.string.message_success_row_deleted, Toast.LENGTH_SHORT).show();
                     refresh();
                 }

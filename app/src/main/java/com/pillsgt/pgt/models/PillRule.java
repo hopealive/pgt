@@ -3,8 +3,6 @@ package com.pillsgt.pgt.models;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.sql.Date;
-
 @Entity(tableName = "pill_rules")
 public class PillRule {
 
