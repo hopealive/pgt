@@ -32,7 +32,6 @@ public class Utils {
 
     public static final String dateTimePatternDb = "yyyy-MM-dd HH:mm:ss z";
     public static final String dateTimePatternView = "MMM dd, yyyy";
-//    "MMM dd, yyyy"//todo: check
 
     public static final List<String> defaultUserSettingFields = Arrays.asList(
             "display_name",
@@ -65,6 +64,28 @@ public class Utils {
 
 
 //    public static final List<String> cronIntervals = Arrays.asList(
+//    );
+
+    public class CronIntervalGroup {
+        public void main(String args[]){
+            Map<String,String> myHashMap = new HashMap<String, String>();
+            myHashMap.put("0", "before_eat");
+            myHashMap.put("1", "after_eat");
+            myHashMap.put("2", "while_eating");
+            myHashMap.put("100", "others");
+
+        }
+    }
+
+    public class CronTypeGroup {
+
+        public void main(String args[]){
+            Map<String,String> myHashMap = new HashMap<String, String>();
+            myHashMap.put("0", "before_eat");
+            myHashMap.put("1", "after_eat");
+            myHashMap.put("2", "while_eating");
+            myHashMap.put("100", "others");
+
 //            "once_a_day",
 //            "twice_a_day",
 //            "three_times_a_day",
@@ -79,17 +100,9 @@ public class Utils {
 //            "every_5_hours",
 //            "every_6_hours",
 //            "others"
-//    );
 
-    public class CronTypeGroup {
 
-        public void main(String args[]){
-            Map<String,String> myHashMap = new HashMap<String, String>();
-            myHashMap.put("0", "before_eat");
-            myHashMap.put("1", "after_eat");
-            myHashMap.put("2", "while_eating");
-            myHashMap.put("100", "others");
-
+//Examples to use
 //            for (Map<String, String> map : myMap) {
 //                System.out.println(map.get("URL"));
 //            }

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.pillsgt.pgt.UnzipUtil;
 import com.pillsgt.pgt.utils.Utils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -50,9 +51,8 @@ public class DownloadTask {
                 if (outputFile != null) {
                     UnzipUtil unzipUtil = new UnzipUtil(
                             outputFile.getAbsolutePath(),
-                            Environment.getExternalStorageDirectory() + "/"
-                                    + Utils.downloadDirectory + "/"
-                            );
+                            apkStorage.getAbsolutePath()+"/"
+                    );
                     unzipUtil.unzip();
                     outputFile.delete();
 
@@ -86,28 +86,6 @@ public class DownloadTask {
         @Override
         protected Void doInBackground(Void... arg0) {
             try {
-                //Get File if SD card is present
-                if ( Utils.isSDCardPresent()) {
-                    apkStorage = new File(
-                            Environment.getExternalStorageDirectory() + "/"
-                                    + Utils.downloadDirectory);
-                } else {
-                    Log.e(TAG, "Oops!! There is no SD Card.");
-                    return null;
-                }
-
-                //If File is not present create directory
-                if (!apkStorage.exists()) {
-                    try {
-                        apkStorage.mkdir();
-                    } catch (Exception e){
-                        e.printStackTrace();
-                        Log.e(TAG, "Oops!! Cannot create directory.");
-                        return null;
-                    }
-                    Log.i(TAG, "Directory Created.");
-                }
-
                 URL url = new URL(downloadUrl);//Create Download URl
                 HttpURLConnection c = (HttpURLConnection) url.openConnection();
                 c.setRequestMethod("GET");
@@ -119,28 +97,32 @@ public class DownloadTask {
                             + " " + c.getResponseMessage());
                 }
 
-                //Create Output file in Main File
-                outputFile = new File(apkStorage, Utils.downloadFileName);
+                apkStorage = new File(Environment.getDataDirectory()
+                        + "/data/com.pillsgt.pgt/databases/");
 
-                //Create New File if not present
-                if ( outputFile == null || !outputFile.exists()) {
-                    outputFile = new File(apkStorage.getAbsolutePath(), Utils.downloadFileName);
-                    Log.i(TAG, "File Created");
-                } else {
+
+                InputStream is = c.getInputStream();
+                BufferedInputStream inStream = new BufferedInputStream(is, 1024 * 5);
+
+                outputFile = new File(apkStorage + "/" + Utils.downloadFileName); //it works better
+                if (outputFile.exists())
+                {
                     outputFile.delete();
                 }
                 outputFile.createNewFile();
 
-                FileOutputStream fos = new FileOutputStream(outputFile);
-                InputStream is = c.getInputStream();
+                FileOutputStream outStream = new FileOutputStream(outputFile);
+                byte[] buff = new byte[5 * 1024];
 
-                byte[] buffer = new byte[1024];//Set buffer type
-                int len1 = 0;//init length
-                while ((len1 = is.read(buffer)) != -1) {
-                    fos.write(buffer, 0, len1);//Write new file
+                int len;
+                while ((len = inStream.read(buff)) != -1)
+                {
+                    outStream.write(buff, 0, len);
                 }
-                fos.close();
-                is.close();
+
+                outStream.flush();
+                outStream.close();
+                inStream.close();
             } catch (Exception e) {
                 e.printStackTrace();
                 outputFile = null;

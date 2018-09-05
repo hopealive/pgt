@@ -3,12 +3,22 @@ package com.pillsgt.pgt;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.arch.persistence.room.Room;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -22,28 +32,142 @@ import com.pillsgt.pgt.utils.Utils;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     public static LocalDatabase localDatabase;
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_dashboard:
+                    startActivity(new Intent(MainActivity.this,MainActivity.class));
+                    return true;
+                case R.id.navigation_add:
+                    startActivity(new Intent(MainActivity.this,PillsActivity.class));
+                    return true;
+                case R.id.navigation_medicals:
+                    //todo: make another activity class
+Log.i("BOTTOM", "open medicals");//todo: remove
+//                    startActivity(new Intent(MainActivity.this,NavActivity.class));
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        initMyDatabase();
-        renderPillsList();
+//bottom menu
+//        BottomNavigationView navigation = findViewById(R.id.navigation);//todo: uncomment and fix
+//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);//todo: uncomment and fix
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabAdd = findViewById(R.id.floatingAddButton);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,PillsActivity.class));
-                Snackbar.make(view, "Loading...", Snackbar.LENGTH_LONG)
-                        .setAction("addPills", null).show();
             }
         });
+
+
+        //left menu
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.bringToFront();//so interesting hook for menu
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        initMyDatabase();
+        renderPillsList();
     }
+
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    /**
+     * Right menu
+    */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.nav, menu);
+        return true;
+    }
+
+    /**
+     * Right menu
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.r_menu_settings) {
+            return true;
+        } else if (id == R.id.r_menu_logout){
+            return true;
+        } else {
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        item.setChecked(true);
+
+        if (id == R.id.l_nav_dashboard) {
+            startActivity(new Intent(MainActivity.this,MainActivity.class));
+        } else if (id == R.id.l_nav_add) {
+            startActivity(new Intent(MainActivity.this,PillsActivity.class));
+        } else if (id == R.id.l_nav_medicals) {
+Log.d("lMENU", "MEDICALS");//todo: remove
+        } else if (id == R.id.l_nav_profile) {
+Log.d("lMENU", "PROFILE");//todo: remove
+        } else if (id == R.id.l_nav_settings) {
+Log.d("lMENU", "SETTINGS");//todo: remove
+        } else if (id == R.id.l_nav_terms) {
+            startActivity(new Intent(MainActivity.this,TermsActivity.class));
+        } else if (id == R.id.l_nav_rules) {
+            startActivity(new Intent(MainActivity.this,TermsActivity.class));//todo: create rules activity
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
 
     @Override
     public void onRestart() {
@@ -149,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
         TextView mainPillCounter = findViewById(R.id.mainPillCounter);
         mainPillCounter.setText( Integer.toString( pillRules.size() ) );
     }
+
 
     private void refresh() {
         Intent intent = getIntent();

@@ -8,6 +8,10 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.pillsgt.pgt.AlertActivity;
+import com.pillsgt.pgt.MainActivity;
+import com.pillsgt.pgt.R;
+
 public class RemindService  extends IntentService {
 
     final String TAG = "REMIND";

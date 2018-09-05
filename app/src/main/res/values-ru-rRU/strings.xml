@@ -36,4 +36,8 @@
     <string name="every_5_hours">Каждые 5 часа</string>
     <string name="every_6_hours">Каждые 6 часа</string>
 
+    <string name="title_dashboard">Главная</string>
+    <string name="title_add">Добавить</string>
+    <string name="title_medicals">Лекарства</string>
+
 </resources>

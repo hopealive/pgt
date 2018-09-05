@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "keywords")
 public class Keyword {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int id;
 
     private String keyword;

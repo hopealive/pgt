@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/l_nav_dashboard"
+            android:icon="@drawable/ic_dashboard_black_24dp"
+            android:title="@string/title_dashboard" />
+
+        <item
+            android:id="@+id/l_nav_add"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/title_add" />
+
+        <item
+            android:id="@+id/l_nav_medicals"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/title_medicals" />
+    </group>
+
+    <item android:title="Settings">
+        <menu>
+            <item
+                android:id="@+id/l_nav_settings"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Settings" />
+            <item
+                android:id="@+id/l_nav_profile"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="Profile" />
+            <item
+                android:id="@+id/l_nav_terms"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Terms" />
+            <item
+                android:id="@+id/l_nav_rules"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Rules" />
+        </menu>
+    </item>
+
+
+</menu>

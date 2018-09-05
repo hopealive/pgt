@@ -72,10 +72,7 @@ public class PillsActivity extends AppCompatActivity {
 
     //Autocomplete field
     protected void initPillName() {
-
-        //todo:must be from AJAX
         List<String> pillsList = new ArrayList<String>();
-
         List<Keyword> keywords = remoteDatabase.remoteDAO().getKeywords();
         for (final Keyword keyword : keywords ) {
             pillsList.add(keyword.getKeyword());
@@ -199,7 +196,7 @@ public class PillsActivity extends AppCompatActivity {
         TextView endDateInput = findViewById(R.id.endDate);
         endDateInput.setText( pillRule.getEnd_date() );
 
-
+//todo: make converter from date to day
 //        Calendar calendar = Calendar.getInstance();
 //        SimpleDateFormat format = new SimpleDateFormat(Utils.dateTimePatternView );
 //        String curDateFormatted = format.format(calendar.getTime());
