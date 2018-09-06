@@ -9,8 +9,13 @@
     <string name="empty_index_list">Препараты для приема отсутствуют</string>
     <string name="title_activity_settings">Настройки</string>
 
+    <!--Buttons-->
+    <string name="button_add">Добавить</string>
+    <string name="button_edit">Редактировать</string>
+
     <!--Messages    -->
     <string name="message_success_row_deleted">Запись удалена</string>
+    <string name="message_data_saved">Данные сохранены</string>
 
     <!--Crons -->
     <string name="label_when">Когда принимать</string>
@@ -21,6 +26,7 @@
     <string name="while_eating">Во время еды</string>
     <string name="ignore">Не учитывать</string>
     <string name="others">Другое</string>
+
 
     <string name="once_a_day">1 раз в день</string>
     <string name="twice_a_day">2 раза в день</string>

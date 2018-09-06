@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -37,6 +36,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static LocalDatabase localDatabase;
+    private final String TAG = "MainActivityTAG";
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -52,8 +52,7 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 case R.id.navigation_medicals:
                     //todo: make another activity class
-Log.i("BOTTOM", "open medicals");//todo: remove
-//                    startActivity(new Intent(MainActivity.this,NavActivity.class));
+Log.i(TAG, "open medicals");//todo: remove
                     return true;
             }
             return false;
@@ -67,7 +66,7 @@ Log.i("BOTTOM", "open medicals");//todo: remove
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//bottom menu
+//todo:bottom menu
 //        BottomNavigationView navigation = findViewById(R.id.navigation);//todo: uncomment and fix
 //        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);//todo: uncomment and fix
 
@@ -95,7 +94,6 @@ Log.i("BOTTOM", "open medicals");//todo: remove
         initMyDatabase();
         renderPillsList();
     }
-
 
     @Override
     public void onBackPressed() {
@@ -151,11 +149,11 @@ Log.i("BOTTOM", "open medicals");//todo: remove
         } else if (id == R.id.l_nav_add) {
             startActivity(new Intent(MainActivity.this,PillsActivity.class));
         } else if (id == R.id.l_nav_medicals) {
-Log.d("lMENU", "MEDICALS");//todo: remove
+Log.d(TAG+":lMENU", "MEDICALS");//todo: remove
         } else if (id == R.id.l_nav_profile) {
-Log.d("lMENU", "PROFILE");//todo: remove
+Log.d(TAG+":lMENU", "PROFILE");//todo: remove
         } else if (id == R.id.l_nav_settings) {
-Log.d("lMENU", "SETTINGS");//todo: remove
+Log.d(TAG+":lMENU", "SETTINGS");//todo: remove
         } else if (id == R.id.l_nav_terms) {
             startActivity(new Intent(MainActivity.this,TermsActivity.class));
         } else if (id == R.id.l_nav_rules) {
@@ -166,7 +164,6 @@ Log.d("lMENU", "SETTINGS");//todo: remove
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 
     @Override
@@ -273,7 +270,6 @@ Log.d("lMENU", "SETTINGS");//todo: remove
         TextView mainPillCounter = findViewById(R.id.mainPillCounter);
         mainPillCounter.setText( Integer.toString( pillRules.size() ) );
     }
-
 
     private void refresh() {
         Intent intent = getIntent();

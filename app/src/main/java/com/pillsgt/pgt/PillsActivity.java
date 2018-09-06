@@ -20,8 +20,10 @@ import android.widget.Toast;
 
 import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.databases.RemoteDatabase;
+import com.pillsgt.pgt.managers.PillTaskManager;
 import com.pillsgt.pgt.models.PillRule;
 import com.pillsgt.pgt.models.remote.Keyword;
+import com.pillsgt.pgt.utils.Converters;
 import com.pillsgt.pgt.utils.Utils;
 
 import java.text.ParseException;
@@ -65,7 +67,7 @@ public class PillsActivity extends AppCompatActivity {
                 .allowMainThreadQueries()
                 .build();
 
-        remoteDatabase = Room.databaseBuilder(getApplicationContext(),RemoteDatabase.class, Utils.downloadDbName)
+        remoteDatabase = Room.databaseBuilder(getApplicationContext(),RemoteDatabase.class, Utils.remoteDbName)
                 .allowMainThreadQueries()
                 .build();
     }
@@ -167,10 +169,10 @@ public class PillsActivity extends AppCompatActivity {
         Button submitButton = (Button) findViewById(R.id.manage_pills);
 
         if(pillRuleId == null || pillRuleId.isEmpty()){
-            submitButton.setText("Добавить");
+            submitButton.setText( R.string.button_add );
             return;
         }
-        submitButton.setText("Редактировать");
+        submitButton.setText( R.string.button_edit );
 
         cID = Integer.valueOf(pillRuleId);
 
@@ -183,7 +185,6 @@ public class PillsActivity extends AppCompatActivity {
         pillName.setText( pillRule.getName() );
         pillName.setThreshold(3);//return 3 chars for starting autocomplete
 
-
         Spinner cronTypeInput = findViewById(R.id.cron_type);
         cronTypeInput.setSelection(pillRule.getCron_type());
 
@@ -191,35 +192,14 @@ public class PillsActivity extends AppCompatActivity {
         cronIntervalInput.setSelection(pillRule.getCron_interval());
 
         TextView startDateInput = findViewById(R.id.startDate);
-        startDateInput.setText( pillRule.getStart_date() );
+        String startDateFormatted =
+                Converters.dbDateToViewDate(pillRule.getStart_date());
+        startDateInput.setText( startDateFormatted );
 
         TextView endDateInput = findViewById(R.id.endDate);
-        endDateInput.setText( pillRule.getEnd_date() );
-
-//todo: make converter from date to day
-//        Calendar calendar = Calendar.getInstance();
-//        SimpleDateFormat format = new SimpleDateFormat(Utils.dateTimePatternView );
-//        String curDateFormatted = format.format(calendar.getTime());
-
-//        if ( pillRule.getStart_date().length() > 0 ){
-//            startDateInput.setText( pillRule.getStart_date() );
-
-//            String startDateFormatted;
-//            if ( startDateInput.getText().length() > 0){
-//                Date startDateParsed = null;
-//                try {
-//                    startDateParsed = new SimpleDateFormat(Utils.dateTimePatternView)
-//                            .parse( (String) startDateInput.getText() );
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
-//                startDateFormatted = format.format(startDateParsed.getTime());
-//            } else {
-//                startDateFormatted = curDateFormatted;
-//            }
-//            startDateInput.setText( startDateFormatted );
-//        }
-
+        String endDateFormatted =
+                Converters.dbDateToViewDate(pillRule.getEnd_date());
+        endDateInput.setText( endDateFormatted );
     }
 
 
@@ -241,7 +221,7 @@ public class PillsActivity extends AppCompatActivity {
             }
         }
 
-        pillRule.setName( pillName.getText().toString() );
+        pillRule.setName( pillName.getText().toString() );//todo: must be name but not keyword
         pillRule.setCron_type(cronTypeInput.getSelectedItemPosition());//todo: NOT POSITION, MUST BE ID
         pillRule.setCron_interval(cronIntervalInput.getSelectedItemPosition());
 
@@ -274,12 +254,16 @@ public class PillsActivity extends AppCompatActivity {
             localDatabase.localDAO().updateRule(pillRule);
         } else {
             pillRule.setCreated_at( curDateFormatted );
-            localDatabase.localDAO().addRule(pillRule);
+            long insertId = localDatabase.localDAO().addRule(pillRule);
+            pillRule.setId((int) insertId);
         }
+
+        new PillTaskManager( pillRule.getId(), getApplicationContext());
+
 
         //success saved, redirect to index page with list
         startActivity(new Intent(PillsActivity.this,MainActivity.class));
-        Toast.makeText(getApplicationContext(), "Данные сохранены!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), R.string.message_data_saved, Toast.LENGTH_SHORT).show();
     }
 
 }

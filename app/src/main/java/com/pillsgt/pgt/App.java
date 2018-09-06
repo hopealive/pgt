@@ -78,8 +78,6 @@ public class App extends Application {
     /**
      * Void activity block
      */
-
-
     public void apiStartRequest(){
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest myReq = new JsonObjectRequest(Request.Method.GET,
@@ -113,20 +111,16 @@ public class App extends Application {
     }
 
     public void setServiceAlarm(Context context){
-        Integer period = 60;//todo: must be 60sec (|| from settings)
-
         Intent intent = new Intent(context, RemindService.class);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), period*1000, pendingIntent);
-Log.i("AlertTest", "Started AlarmManager with period: "+period*1000+" millisec");//todo: remove
+        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), Utils.alaramManagerPeriod*1000, pendingIntent);
     }
 
 
     /**
      * Utils block
      */
-
     protected boolean testLocalUserSettingByName(String name){
         if (!userSettings.isEmpty()) {
             for (final UserSetting userSetting : userSettings) {

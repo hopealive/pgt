@@ -3,15 +3,24 @@ package com.pillsgt.pgt.models;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.sql.Date;
-
 @Entity(tableName = "pill_tasks")
 public class PillTask {
+
+    public static final String STATUS_NEW = "new";
+    public static final String STATUS_NOTTIFIED = "taked";
+    public static final String STATUS_TAKED = "taked";
+    public static final String STATUS_FAILED = "failed";
+    public static final String STATUS_CANCELED = "canceled";
+
 
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    private int rule_id;
+
     private String title;
+
+    private String short_title;
 
     private String description;
 
@@ -31,12 +40,28 @@ public class PillTask {
         this.id = id;
     }
 
+    public int getRule_id() {
+        return rule_id;
+    }
+
+    public void setRule_id(int rule_id) {
+        this.rule_id = rule_id;
+    }
+
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getShort_title() {
+        return short_title;
+    }
+
+    public void setShort_title(String short_title) {
+        this.short_title = short_title;
     }
 
     public String getDescription() {

@@ -24,10 +24,10 @@ import java.util.Map;
 public class Utils {
 
     //String Values to be Used in App
+    public static final int alaramManagerPeriod = 60;
     public static final String mainUrl = "http://pillsgt.com/api/index";
-    public static final String downloadDirectory = ".PillsGT";
-    public static final String downloadFileName = "pillsgt-list.db.zip";
-    public static final String downloadDbName = "pillsgt-list.db";
+    public static final String downloadFileArchiveName = "pillsgt-list.db.zip";
+    public static final String remoteDbName = "pillsgt-list.db";
     public static final String localDbName = "pilldb";
 
     public static final String dateTimePatternDb = "yyyy-MM-dd HH:mm:ss z";

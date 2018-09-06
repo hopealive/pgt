@@ -9,8 +9,13 @@
     <string name="empty_index_list">No medicals</string>
     <string name="title_activity_settings">Settings</string>
 
+    <!--Buttons-->
+    <string name="button_add">Add</string>
+    <string name="button_edit">Edit</string>
+
     <!--Messages    -->
     <string name="message_success_row_deleted">Record deleted successfully</string>
+    <string name="message_data_saved">Data saved</string>
 
     <!--Crons -->
     <string name="label_when">When get</string>
@@ -36,15 +41,9 @@
     <string name="every_5_hours">Every 5 hours</string>
     <string name="every_6_hours">Every 6 hours</string>
 
-
-    <string name="title_activity_controls">ControlsActivity</string>
-
     <string name="title_dashboard">Dashboard</string>
     <string name="title_add">Add</string>
     <string name="title_medicals">Medicals</string>
-
-
-    <string name="title_activity_test_with_button_bottom">TEST ACITIVITY TODO: remove</string>
 
     <string name="title_activity_terms">TermsActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

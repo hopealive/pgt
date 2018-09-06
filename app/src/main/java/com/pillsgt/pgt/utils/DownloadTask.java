@@ -104,7 +104,7 @@ public class DownloadTask {
                 InputStream is = c.getInputStream();
                 BufferedInputStream inStream = new BufferedInputStream(is, 1024 * 5);
 
-                outputFile = new File(apkStorage + "/" + Utils.downloadFileName); //it works better
+                outputFile = new File(apkStorage + "/" + Utils.downloadFileArchiveName);
                 if (outputFile.exists())
                 {
                     outputFile.delete();
