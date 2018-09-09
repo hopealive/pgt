@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/r_menu_settings"
+        android:id="@+id/right_nav_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
-        android:id="@+id/r_menu_logout"
+        android:id="@+id/right_nav_logout"
         android:orderInCategory="100"
         android:title="@string/r_menu_logout"
         app:showAsAction="never" />

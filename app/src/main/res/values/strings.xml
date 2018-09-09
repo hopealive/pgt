@@ -58,4 +58,5 @@
     <string name="r_menu_sign_up">Sign Un</string>
     <string name="r_menu_sign_in">Sign In</string>
     <string name="r_menu_logout">Logout</string>
+    <string name="title_activity_rules">RulesActivity</string>
 </resources>

@@ -7,10 +7,10 @@ import android.arch.persistence.room.PrimaryKey;
 public class PillTask {
 
     public static final String STATUS_NEW = "new";
-    public static final String STATUS_NOTTIFIED = "taked";
-    public static final String STATUS_TAKED = "taked";
-    public static final String STATUS_FAILED = "failed";
-    public static final String STATUS_CANCELED = "canceled";
+    public static final String STATUS_NOTTIFIED = "notyfied";
+    public static final String STATUS_TAKED = "taked"; //todo: check if use
+    public static final String STATUS_FAILED = "failed"; //todo: check if use
+    public static final String STATUS_CANCELED = "canceled"; //todo: check if use
 
 
     @PrimaryKey(autoGenerate = true)

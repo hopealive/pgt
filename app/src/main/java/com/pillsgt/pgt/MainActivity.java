@@ -43,19 +43,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_dashboard:
-                    startActivity(new Intent(MainActivity.this,MainActivity.class));
-                    return true;
-                case R.id.navigation_add:
-                    startActivity(new Intent(MainActivity.this,PillsActivity.class));
-                    return true;
-                case R.id.navigation_medicals:
-                    //todo: make another activity class
-Log.i(TAG, "open medicals");//todo: remove
-                    return true;
-            }
-            return false;
+            return Utils.bottomOnNavigationItemSelected(item, MainActivity.this);
         }
     };
 
@@ -66,18 +54,8 @@ Log.i(TAG, "open medicals");//todo: remove
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//todo:bottom menu
-//        BottomNavigationView navigation = findViewById(R.id.navigation);//todo: uncomment and fix
-//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);//todo: uncomment and fix
-
-        FloatingActionButton fabAdd = findViewById(R.id.floatingAddButton);
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,PillsActivity.class));
-            }
-        });
-
+        BottomNavigationView navigation = findViewById(R.id.bottom_nav);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         //left menu
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -111,7 +89,7 @@ Log.i(TAG, "open medicals");//todo: remove
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav, menu);
+        getMenuInflater().inflate(R.menu.left_nav, menu);
         return true;
     }
 
@@ -120,48 +98,14 @@ Log.i(TAG, "open medicals");//todo: remove
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.r_menu_settings) {
-            return true;
-        } else if (id == R.id.r_menu_logout){
-            return true;
-        } else {
-
-        }
-
+        Utils.rightOnNavigationItemSelected(item, MainActivity.this);
         return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        item.setChecked(true);
-
-        if (id == R.id.l_nav_dashboard) {
-            startActivity(new Intent(MainActivity.this,MainActivity.class));
-        } else if (id == R.id.l_nav_add) {
-            startActivity(new Intent(MainActivity.this,PillsActivity.class));
-        } else if (id == R.id.l_nav_medicals) {
-Log.d(TAG+":lMENU", "MEDICALS");//todo: remove
-        } else if (id == R.id.l_nav_profile) {
-Log.d(TAG+":lMENU", "PROFILE");//todo: remove
-        } else if (id == R.id.l_nav_settings) {
-Log.d(TAG+":lMENU", "SETTINGS");//todo: remove
-        } else if (id == R.id.l_nav_terms) {
-            startActivity(new Intent(MainActivity.this,TermsActivity.class));
-        } else if (id == R.id.l_nav_rules) {
-            startActivity(new Intent(MainActivity.this,TermsActivity.class));//todo: create rules activity
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        Utils.leftOnNavigationItemSelected(item, MainActivity.this);
         return true;
     }
 
@@ -184,7 +128,6 @@ Log.d(TAG+":lMENU", "SETTINGS");//todo: remove
 
         View ruleBlock =  findViewById(R.id.index_pill_rules_list);
         ruleBlock.setPadding(10, 0,10,10);
-
 
         String[] cron_type_list = getResources().getStringArray(R.array.cron_type);
         String[] cron_interval_list = getResources().getStringArray(R.array.cron_interval);
