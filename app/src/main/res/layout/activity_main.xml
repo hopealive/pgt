@@ -20,7 +20,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_nav"
-        app:menu="@menu/activity_nav_drawer" />
+        app:menu="@menu/left_nav" />
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
