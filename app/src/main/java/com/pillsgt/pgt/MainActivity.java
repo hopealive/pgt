@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static LocalDatabase localDatabase;
-    private final String TAG = "MainActivityTAG";
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -115,6 +114,17 @@ public class MainActivity extends AppCompatActivity
         super.onRestart();
         refresh();
     }
+
+    private void refresh() {
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+    }
+
+
 
     protected void initMyDatabase() {
         localDatabase = Room.databaseBuilder(getApplicationContext(), LocalDatabase.class, Utils.localDbName)
@@ -212,15 +222,6 @@ public class MainActivity extends AppCompatActivity
 
         TextView mainPillCounter = findViewById(R.id.mainPillCounter);
         mainPillCounter.setText( Integer.toString( pillRules.size() ) );
-    }
-
-    private void refresh() {
-        Intent intent = getIntent();
-        overridePendingTransition(0, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
-        overridePendingTransition(0, 0);
-        startActivity(intent);
     }
 
 }

@@ -184,13 +184,13 @@ public class Utils {
 
     public static boolean bottomOnNavigationItemSelected(MenuItem item, Activity activity){
             switch (item.getItemId()) {
-                case R.id.navigation_dashboard:
+                case R.id.bottom_nav_dashboard:
                     activity.startActivity(new Intent(activity,MainActivity.class));
                     return true;
-                case R.id.navigation_add:
+                case R.id.bottom_nav_add:
                     activity.startActivity(new Intent(activity,PillsActivity.class));
                     return true;
-                case R.id.navigation_medicals:
+                case R.id.bottom_nav_medicals:
                     //todo: make another activity class
 Log.i("BOTTOM_MENU", "open medicals");//todo: remove
                     return true;
