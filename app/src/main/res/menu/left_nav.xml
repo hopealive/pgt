@@ -28,15 +28,15 @@
                 android:title="Settings" />
             <item
                 android:id="@+id/left_nav_profile"
-                android:icon="@drawable/ic_menu_camera"
+                android:icon="@drawable/material_account_box"
                 android:title="Profile" />
             <item
                 android:id="@+id/left_nav_terms"
-                android:icon="@drawable/ic_menu_gallery"
+                android:icon="@drawable/material_assignment_ind"
                 android:title="Terms" />
             <item
                 android:id="@+id/left_nav_rules"
-                android:icon="@drawable/ic_menu_gallery"
+                android:icon="@drawable/material_assignment"
                 android:title="Rules" />
         </menu>
     </item>
