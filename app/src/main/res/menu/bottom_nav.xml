@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/bottom_nav_add"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_red"
         android:title="@string/title_add" />
 
     <item
