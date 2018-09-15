@@ -2,8 +2,8 @@
 <resources>
     <string-array name="cron_type">
         <item>@string/before_eat</item>
-        <item>@string/after_eat</item>
         <item>@string/while_eating</item>
+        <item>@string/after_eat</item>
         <item>@string/others</item>
     </string-array>
 

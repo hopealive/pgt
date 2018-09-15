@@ -76,57 +76,6 @@ public class Utils {
     );
 
 
-//    public static final List<String> cronIntervals = Arrays.asList(
-//    );
-
-    public class CronIntervalGroup {
-        public void main(String args[]){
-            Map<String,String> myHashMap = new HashMap<String, String>();
-            myHashMap.put("0", "before_eat");
-            myHashMap.put("1", "after_eat");
-            myHashMap.put("2", "while_eating");
-            myHashMap.put("100", "others");
-
-        }
-    }
-
-    public class CronTypeGroup {
-
-        public void main(String args[]){
-            Map<String,String> myHashMap = new HashMap<String, String>();
-            myHashMap.put("0", "before_eat");
-            myHashMap.put("1", "after_eat");
-            myHashMap.put("2", "while_eating");
-            myHashMap.put("100", "others");
-
-//            "once_a_day",
-//            "twice_a_day",
-//            "three_times_a_day",
-//            "four_times_a_day",
-//            "five_times_a_day",
-//            "six_times_a_day",
-//            "every_30_minutes",
-//            "every_1_hour",
-//            "every_2_hours",
-//            "every_3_hours",
-//            "every_4_hours",
-//            "every_5_hours",
-//            "every_6_hours",
-//            "others"
-
-
-//Examples to use
-//            for (Map<String, String> map : myMap) {
-//                System.out.println(map.get("URL"));
-//            }
-
-            //System.out.println(myMap);
-
-        }
-
-
-    }
-
     public static boolean isSDCardPresent() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             return true;

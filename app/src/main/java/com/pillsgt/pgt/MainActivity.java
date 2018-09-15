@@ -25,11 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pillsgt.pgt.databases.LocalDatabase;
+import com.pillsgt.pgt.managers.CronManager;
 import com.pillsgt.pgt.models.PillRule;
 import com.pillsgt.pgt.utils.Utils;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity
@@ -139,13 +141,17 @@ public class MainActivity extends AppCompatActivity
         View ruleBlock =  findViewById(R.id.index_pill_rules_list);
         ruleBlock.setPadding(10, 0,10,10);
 
+        CronManager cronManager = new CronManager();
         String[] cron_type_list = getResources().getStringArray(R.array.cron_type);
         String[] cron_interval_list = getResources().getStringArray(R.array.cron_interval);
 
         Point screenSize = Utils.getScreenSize(getWindowManager().getDefaultDisplay() );
 
+
         int i = 0;
         String ruleDescriptionText;
+        int cronTypePosition;
+        int cronIntervalPosition;
         for (final PillRule rule : pillRules ){
             LinearLayout ruleRow = new LinearLayout(this);
             ruleRow.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
@@ -164,18 +170,21 @@ public class MainActivity extends AppCompatActivity
 
             TextView ruleDescription = new TextView(this);
             ruleDescriptionText = "";
-            if ( rule.getCron_type() == 3 || rule.getCron_type() == 4 ){ //todo: not position, must be ID
+
+            cronTypePosition = cronManager.getTypePosition( rule.getCron_type() );
+            if ( rule.getCron_type() == 100 ){
                 ruleDescriptionText += getResources().getString(R.string.label_when) + ": "
-                        + cron_type_list[rule.getCron_type()] + "\n";
-            } else {
-                ruleDescriptionText += cron_type_list[rule.getCron_type()] + " ";
+                    + cron_type_list[cronTypePosition] + "\n";
+            } else if (cronTypePosition > 0) {
+                ruleDescriptionText += cron_type_list[cronTypePosition] + " ";
             }
 
-            if ( rule.getCron_interval() == 11){ //todo: not position, must be ID
+            cronIntervalPosition = cronManager.getIntervalPosition( rule.getCron_interval() );
+            if ( rule.getCron_interval() == 100){
                 ruleDescriptionText += getResources().getString(R.string.label_how) + ": "
-                        + cron_interval_list[rule.getCron_interval()] + ". ";
-            } else {
-                ruleDescriptionText += cron_interval_list[rule.getCron_interval()] + ". ";
+                    + cron_interval_list[cronIntervalPosition] + ". ";
+            } else if ( cronIntervalPosition > 0 ) {
+                ruleDescriptionText += cron_interval_list[cronIntervalPosition] + ". ";
             }
             ruleDescription.setText( ruleDescriptionText );
             textBlockLayout.addView(ruleDescription);

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.databases.RemoteDatabase;
+import com.pillsgt.pgt.managers.CronManager;
 import com.pillsgt.pgt.managers.PillTaskManager;
 import com.pillsgt.pgt.models.PillRule;
 import com.pillsgt.pgt.models.remote.Keyword;
@@ -35,6 +36,7 @@ import java.util.List;
 
 public class PillsActivity extends AppCompatActivity {
 
+    private static final String TAG = "PaTAG";
     public static LocalDatabase localDatabase;
     public static RemoteDatabase remoteDatabase;
 
@@ -48,7 +50,7 @@ public class PillsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pills);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +87,7 @@ public class PillsActivity extends AppCompatActivity {
         acTextView.setThreshold(3);
         acTextView.setAdapter(adapter);
     }
+
     protected void initCronType(){
         Spinner spinner = findViewById(R.id.cron_type);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -166,7 +169,7 @@ public class PillsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String pillRuleId = intent.getStringExtra("pillRuleId");
 
-        Button submitButton = (Button) findViewById(R.id.manage_pills);
+        Button submitButton = findViewById(R.id.manage_pills);
 
         if(pillRuleId == null || pillRuleId.isEmpty()){
             submitButton.setText( R.string.button_add );
@@ -185,11 +188,14 @@ public class PillsActivity extends AppCompatActivity {
         pillName.setText( pillRule.getName() );
         pillName.setThreshold(3);//return 3 chars for starting autocomplete
 
+        CronManager cronManager = new CronManager();
         Spinner cronTypeInput = findViewById(R.id.cron_type);
-        cronTypeInput.setSelection(pillRule.getCron_type());
+        int cronTypePosition = cronManager.getTypePosition( pillRule.getCron_type() );
+        cronTypeInput.setSelection(cronTypePosition);
 
         Spinner cronIntervalInput = findViewById(R.id.cron_interval);
-        cronIntervalInput.setSelection(pillRule.getCron_interval());
+        int cronIntervalPosition = cronManager.getIntervalPosition( pillRule.getCron_interval() );
+        cronIntervalInput.setSelection(cronIntervalPosition);
 
         TextView startDateInput = findViewById(R.id.startDate);
         String startDateFormatted =
@@ -220,10 +226,14 @@ public class PillsActivity extends AppCompatActivity {
                 updateRow = true;
             }
         }
-
         pillRule.setName( pillName.getText().toString() );//todo: must be name but not keyword
-        pillRule.setCron_type(cronTypeInput.getSelectedItemPosition());//todo: NOT POSITION, MUST BE ID
-        pillRule.setCron_interval(cronIntervalInput.getSelectedItemPosition());
+
+        CronManager cronManager = new CronManager();
+        Integer cronType = cronManager.getTypeByPosition(cronTypeInput.getSelectedItemPosition() );
+        pillRule.setCron_type(cronType);
+
+        Integer cronInterval = cronManager.getIntervalByPosition(cronIntervalInput.getSelectedItemPosition() );
+        pillRule.setCron_interval(cronInterval);
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat(Utils.dateTimePatternDb );

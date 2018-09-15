@@ -27,6 +27,7 @@ import com.pillsgt.pgt.utils.Utils;
 import android.os.SystemClock;
 
 import java.text.DateFormatSymbols;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -177,8 +178,8 @@ public class App extends Application {
 
     /**
      * If cDbVersion from server > current update download fresh DB from dDbLink
-     * @string cDbVersion
-     * @string dDbLink
+     * @String cDbVersion
+     * @String dDbLink
      */
     public void compareDatabases(final String cDbVersion, String dDbLink){
         boolean localDbVerionExists = false;
@@ -214,7 +215,7 @@ public class App extends Application {
 
     /**
      * Start thread for download
-     * @string dbUrl
+     * @String dbUrl
      * @return boolean
      */
     private boolean downloadDb(String dbUrl) {
