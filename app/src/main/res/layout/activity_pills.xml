@@ -114,7 +114,8 @@
 
             <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/duration_group">
 
                 <RadioButton
                     android:id="@+id/dContinuous"
@@ -134,11 +135,12 @@
                 android:id="@+id/labelFrequency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Duration" />
+                android:text="Frequency" />
 
             <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/frequency_group">
 
             <RadioButton
                 android:id="@+id/fEveryDay"

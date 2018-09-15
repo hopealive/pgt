@@ -21,11 +21,9 @@ public class PillRule {
 
     private int is_continues;
 
-    private int number_days;
+    private int frequency_type;
 
-    private int duration_type;
-
-    private String duration_value;
+    private String frequency_value;
 
     private String updated_at;
 
@@ -87,28 +85,20 @@ public class PillRule {
         this.is_continues = is_continues;
     }
 
-    public int getNumber_days() {
-        return number_days;
+    public int getFrequency_type() {
+        return frequency_type;
     }
 
-    public void setNumber_days(int number_days) {
-        this.number_days = number_days;
+    public void setFrequency_type(int frequency_type) {
+        this.frequency_type = frequency_type;
     }
 
-    public int getDuration_type() {
-        return duration_type;
+    public String getFrequency_value() {
+        return frequency_value;
     }
 
-    public void setDuration_type(int duration_type) {
-        this.duration_type = duration_type;
-    }
-
-    public String getDuration_value() {
-        return duration_value;
-    }
-
-    public void setDuration_value(String duration_value) {
-        this.duration_value = duration_value;
+    public void setFrequency_value(String frequency_value) {
+        this.frequency_value = frequency_value;
     }
 
     public String getUpdated_at() {

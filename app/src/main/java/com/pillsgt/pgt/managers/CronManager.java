@@ -81,4 +81,16 @@ public class CronManager {
         return result;
     }
 
+    public static Integer getFrequencyTypeByLabel(String label) {
+        switch ( label ){
+            case "Every day":
+                return 1;
+            case "Days of week":
+                return 2;
+            case "Days interval":
+                return 3;
+        }
+        return 0;
+    }
+
 }

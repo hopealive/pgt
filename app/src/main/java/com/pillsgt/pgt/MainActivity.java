@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity
             if ( rule.getCron_type() == 100 ){
                 ruleDescriptionText += getResources().getString(R.string.label_when) + ": "
                     + cron_type_list[cronTypePosition] + "\n";
-            } else if (cronTypePosition > 0) {
+            } else if (cronTypePosition >= 0) {
                 ruleDescriptionText += cron_type_list[cronTypePosition] + " ";
             }
 
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity
             if ( rule.getCron_interval() == 100){
                 ruleDescriptionText += getResources().getString(R.string.label_how) + ": "
                     + cron_interval_list[cronIntervalPosition] + ". ";
-            } else if ( cronIntervalPosition > 0 ) {
+            } else if ( cronIntervalPosition >= 0 ) {
                 ruleDescriptionText += cron_interval_list[cronIntervalPosition] + ". ";
             }
             ruleDescription.setText( ruleDescriptionText );

@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -154,13 +156,21 @@ public class PillsActivity extends AppCompatActivity {
         }
     };
 
-    //Spinner with cron types
-    //todo: items must be from config
+    private void setInitialSchedule(){
+        RadioButton continuous = findViewById(R.id.dContinuous);
+        continuous.setChecked(true);
+
+        RadioButton frequency = findViewById(R.id.fEveryDay);
+        frequency.setChecked(true);
+    }
+
+
     protected void initControls(){
         initPillName();
         initCronType();
         initCronInterval();
         setInitialDate();
+        setInitialSchedule();
 
         initEdit();
     }
@@ -206,6 +216,13 @@ public class PillsActivity extends AppCompatActivity {
         String endDateFormatted =
                 Converters.dbDateToViewDate(pillRule.getEnd_date());
         endDateInput.setText( endDateFormatted );
+
+//todo: make it
+//        RadioButton dContinuous = findViewById(R.id.dContinuous);
+//        dContinuous.setSelected(true);
+//
+//        RadioButton fEveryDay = findViewById(R.id.fEveryDay);
+//        fEveryDay.setSelected(true);
     }
 
 
@@ -215,6 +232,9 @@ public class PillsActivity extends AppCompatActivity {
         Spinner cronIntervalInput = findViewById(R.id.cron_interval);
         TextView startDateInput = findViewById(R.id.startDate);
         TextView endDateInput = findViewById(R.id.endDate);
+
+        RadioGroup durationGroup = findViewById(R.id.duration_group);
+        RadioGroup frequencyGroup = findViewById(R.id.frequency_group);
 
         //add to db
         PillRule pillRule = new PillRule();
@@ -259,6 +279,21 @@ public class PillsActivity extends AppCompatActivity {
         }
         pillRule.setEnd_date( endDateFormatted );
 
+        int durationGroupSelected = durationGroup.getCheckedRadioButtonId();
+        RadioButton durationButton = findViewById(durationGroupSelected);
+
+        int isContinuous = 0;
+        if ( durationButton.getText().equals("Continuous")){
+            isContinuous = 1;
+        }
+        pillRule.setIs_continues(isContinuous);
+
+        int frequencyGroupSelected = frequencyGroup.getCheckedRadioButtonId();
+        RadioButton frequencyButton = findViewById(frequencyGroupSelected);
+        int frequencyType = cronManager.getFrequencyTypeByLabel((String) frequencyButton.getText());
+        pillRule.setFrequency_type(frequencyType);
+
+        //todo: make frequency values
 
         if ( updateRow == true){
             localDatabase.localDAO().updateRule(pillRule);
