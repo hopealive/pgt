@@ -27,7 +27,6 @@ import com.pillsgt.pgt.utils.Utils;
 import android.os.SystemClock;
 
 import java.text.DateFormatSymbols;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;

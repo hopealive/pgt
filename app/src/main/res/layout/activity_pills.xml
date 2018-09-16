@@ -129,6 +129,11 @@
                     android:layout_height="wrap_content"
                     android:text="Number of days" />
 
+                <RadioButton
+                    android:id="@+id/dOthers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/others" />
             </RadioGroup>
 
             <TextView

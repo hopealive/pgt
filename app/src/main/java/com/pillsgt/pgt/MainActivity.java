@@ -29,9 +29,7 @@ import com.pillsgt.pgt.managers.CronManager;
 import com.pillsgt.pgt.models.PillRule;
 import com.pillsgt.pgt.utils.Utils;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity

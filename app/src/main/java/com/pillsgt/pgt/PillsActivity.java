@@ -46,9 +46,12 @@ public class PillsActivity extends AppCompatActivity {
 
     Calendar startDate =Calendar.getInstance();
     Calendar endDate =Calendar.getInstance();
+    RadioGroup durationGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+Log.d(TAG,"onCreate"); //todo: remove
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pills);
 
@@ -157,13 +160,30 @@ public class PillsActivity extends AppCompatActivity {
     };
 
     private void setInitialSchedule(){
-        RadioButton continuous = findViewById(R.id.dContinuous);
-        continuous.setChecked(true);
+        RadioButton dOthers = findViewById(R.id.dOthers);
+        dOthers.setChecked(true);
+
+        durationGroup = findViewById(R.id.duration_group);
+Log.d(TAG, "durationGroup INIT" );//todo: remove
+
+        durationGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+Log.d(TAG, "setOnCheckedChangeListener INIT" );//todo: remove
+                RadioButton checkedRadioButton = group.findViewById(checkedId);
+                boolean isChecked = checkedRadioButton.isChecked();
+                if (isChecked)
+                {
+Log.d(TAG, "checkedRadioButton.getText: "+checkedRadioButton.getText().toString() );//todo: remove
+                }
+            }
+        });
+
 
         RadioButton frequency = findViewById(R.id.fEveryDay);
         frequency.setChecked(true);
     }
-
 
     protected void initControls(){
         initPillName();
@@ -208,21 +228,29 @@ public class PillsActivity extends AppCompatActivity {
         cronIntervalInput.setSelection(cronIntervalPosition);
 
         TextView startDateInput = findViewById(R.id.startDate);
-        String startDateFormatted =
-                Converters.dbDateToViewDate(pillRule.getStart_date());
+        String startDateFormatted = Converters.dbDateToViewDate(pillRule.getStart_date());
         startDateInput.setText( startDateFormatted );
 
         TextView endDateInput = findViewById(R.id.endDate);
-        String endDateFormatted =
-                Converters.dbDateToViewDate(pillRule.getEnd_date());
+        String endDateFormatted = Converters.dbDateToViewDate(pillRule.getEnd_date());
         endDateInput.setText( endDateFormatted );
 
-//todo: make it
-//        RadioButton dContinuous = findViewById(R.id.dContinuous);
-//        dContinuous.setSelected(true);
-//
-//        RadioButton fEveryDay = findViewById(R.id.fEveryDay);
-//        fEveryDay.setSelected(true);
+        if ( pillRule.getIs_continues() == 1){
+            RadioButton dContinuous = findViewById(R.id.dContinuous);
+            dContinuous.setSelected(true);
+        }
+
+        switch ( pillRule.getFrequency_type() ) {
+            case 1:
+                findViewById(R.id.fEveryDay).setSelected(true);
+                break;
+            case 2:
+                findViewById(R.id.fDaysOfWeek).setSelected(true);
+                break;
+            case 3:
+                findViewById(R.id.fDaysInterval).setSelected(true);
+                break;
+        }
     }
 
 
