@@ -1,6 +1,8 @@
 package com.pillsgt.pgt;
 
 import android.app.DatePickerDialog;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
@@ -50,8 +52,6 @@ public class PillsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-Log.d(TAG,"onCreate"); //todo: remove
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pills);
 
@@ -109,24 +109,6 @@ Log.d(TAG,"onCreate"); //todo: remove
         spinner.setAdapter(adapter);
     }
 
-    //start and end dates block
-    private void setInitialDate() {
-        TextView startDateInput = findViewById(R.id.startDate);
-        TextView endDateInput = findViewById(R.id.endDate);
-
-        startDateInput.setText(DateUtils.formatDateTime(this,
-                startDate.getTimeInMillis(),
-                        DateUtils.FORMAT_SHOW_DATE
-                        | DateUtils.FORMAT_ABBREV_MONTH
-                        | DateUtils.FORMAT_SHOW_YEAR ));
-
-        endDateInput.setText(DateUtils.formatDateTime(this,
-                endDate.getTimeInMillis(),
-                DateUtils.FORMAT_SHOW_DATE
-                        | DateUtils.FORMAT_ABBREV_MONTH
-                        | DateUtils.FORMAT_SHOW_YEAR));
-    }
-
     public void setStartDate(View v) {
         new DatePickerDialog(PillsActivity.this, ds,
                 startDate.get(Calendar.YEAR),
@@ -142,6 +124,19 @@ Log.d(TAG,"onCreate"); //todo: remove
                 .show();
     }
 
+    //start and end dates block
+    private void setInitialDate() {
+        SimpleDateFormat format = new SimpleDateFormat(Utils.dateTimePatternView );
+
+        TextView startDateInput = findViewById(R.id.startDate);
+        String startDateFormatted = format.format(startDate.getTime());
+        startDateInput.setText(startDateFormatted);
+
+        TextView endDateInput = findViewById(R.id.endDate);
+        String endDateFormatted = format.format(endDate.getTime());
+        endDateInput.setText(endDateFormatted);
+    }
+
     DatePickerDialog.OnDateSetListener ds=new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             startDate.set(Calendar.YEAR, year);
@@ -150,6 +145,7 @@ Log.d(TAG,"onCreate"); //todo: remove
             setInitialDate();
         }
     };
+
     DatePickerDialog.OnDateSetListener de=new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             endDate.set(Calendar.YEAR, year);
@@ -160,30 +156,38 @@ Log.d(TAG,"onCreate"); //todo: remove
     };
 
     private void setInitialSchedule(){
-        RadioButton dOthers = findViewById(R.id.dOthers);
-        dOthers.setChecked(true);
+        RadioButton dCheckedPeriod = findViewById(R.id.dCheckedPeriod);
+        dCheckedPeriod.setChecked(true);
 
         durationGroup = findViewById(R.id.duration_group);
-Log.d(TAG, "durationGroup INIT" );//todo: remove
-
-        durationGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
-            public void onCheckedChanged(RadioGroup group, int checkedId)
-            {
-Log.d(TAG, "setOnCheckedChangeListener INIT" );//todo: remove
-                RadioButton checkedRadioButton = group.findViewById(checkedId);
-                boolean isChecked = checkedRadioButton.isChecked();
-                if (isChecked)
-                {
-Log.d(TAG, "checkedRadioButton.getText: "+checkedRadioButton.getText().toString() );//todo: remove
-                }
-            }
-        });
-
+        durationGroup.setOnCheckedChangeListener(initDurationGroupListener);
 
         RadioButton frequency = findViewById(R.id.fEveryDay);
         frequency.setChecked(true);
     }
+
+    private RadioGroup.OnCheckedChangeListener initDurationGroupListener = new RadioGroup.OnCheckedChangeListener(){
+
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton checkedRadioButton = group.findViewById(checkedId);
+                boolean isChecked = checkedRadioButton.isChecked();
+                if (isChecked) {
+                    String checkedRadioButtonName = checkedRadioButton.getResources().getResourceEntryName(checkedRadioButton.getId());
+                    switch ( checkedRadioButtonName ){
+                        case "dContinuous":
+                            break;
+                        case "dNumberOfDays":
+                            DialogFragment dialogNOD = new NumOfDaysFragment();
+                            dialogNOD.show(getSupportFragmentManager(), "NumOfDaysFragment");
+                            break;
+                        case "dOthers":
+                            break;
+                    }
+                }
+        }
+    };
+
 
     protected void initControls(){
         initPillName();
@@ -237,20 +241,22 @@ Log.d(TAG, "checkedRadioButton.getText: "+checkedRadioButton.getText().toString(
 
         if ( pillRule.getIs_continues() == 1){
             RadioButton dContinuous = findViewById(R.id.dContinuous);
-            dContinuous.setSelected(true);
+            dContinuous.setChecked(true);
         }
 
+        RadioButton frequencyButton = findViewById(R.id.fEveryDay);//default value
         switch ( pillRule.getFrequency_type() ) {
             case 1:
-                findViewById(R.id.fEveryDay).setSelected(true);
+                frequencyButton = findViewById(R.id.fEveryDay);
                 break;
             case 2:
-                findViewById(R.id.fDaysOfWeek).setSelected(true);
+                frequencyButton = findViewById(R.id.fDaysOfWeek);
                 break;
             case 3:
-                findViewById(R.id.fDaysInterval).setSelected(true);
+                frequencyButton = findViewById(R.id.fDaysInterval);
                 break;
         }
+        frequencyButton.setChecked(true);
     }
 
 
@@ -308,17 +314,19 @@ Log.d(TAG, "checkedRadioButton.getText: "+checkedRadioButton.getText().toString(
         pillRule.setEnd_date( endDateFormatted );
 
         int durationGroupSelected = durationGroup.getCheckedRadioButtonId();
-        RadioButton durationButton = findViewById(durationGroupSelected);
+        RadioButton durationSelected = findViewById(durationGroupSelected);
+        String durationSelectedName = durationSelected.getResources().getResourceEntryName(durationSelected.getId());
 
         int isContinuous = 0;
-        if ( durationButton.getText().equals("Continuous")){
+        if ( durationSelectedName.equals("dContinuous")){
             isContinuous = 1;
         }
         pillRule.setIs_continues(isContinuous);
 
         int frequencyGroupSelected = frequencyGroup.getCheckedRadioButtonId();
         RadioButton frequencyButton = findViewById(frequencyGroupSelected);
-        int frequencyType = cronManager.getFrequencyTypeByLabel((String) frequencyButton.getText());
+        String frequencyButtonName = frequencyButton.getResources().getResourceEntryName(frequencyButton.getId());
+        int frequencyType = cronManager.getFrequencyTypeByLabel( frequencyButtonName );
         pillRule.setFrequency_type(frequencyType);
 
         //todo: make frequency values
@@ -332,7 +340,6 @@ Log.d(TAG, "checkedRadioButton.getText: "+checkedRadioButton.getText().toString(
         }
 
         new PillTaskManager( pillRule.getId(), getApplicationContext());
-
 
         //success saved, redirect to index page with list
         startActivity(new Intent(PillsActivity.this,MainActivity.class));

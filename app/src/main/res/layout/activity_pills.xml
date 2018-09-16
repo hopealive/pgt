@@ -118,22 +118,22 @@
                 android:id="@+id/duration_group">
 
                 <RadioButton
+                    android:id="@+id/dCheckedPeriod"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/duration_input_selected_period" />
+
+                <RadioButton
                     android:id="@+id/dContinuous"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Continuous" />
+                    android:text="@string/duration_input_continuous" />
 
                 <RadioButton
                     android:id="@+id/dNumberOfDays"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Number of days" />
-
-                <RadioButton
-                    android:id="@+id/dOthers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/others" />
+                    android:text="@string/duration_input_number_of_days" />
             </RadioGroup>
 
             <TextView
