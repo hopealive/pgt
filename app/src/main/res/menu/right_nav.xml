@@ -6,9 +6,12 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/right_nav_logout"
-        android:orderInCategory="100"
-        android:title="@string/r_menu_logout"
-        app:showAsAction="never" />
+
+    <!--todo: make Help-->
+    <!--todo: make Profile-->
+    <!--<item-->
+        <!--android:id="@+id/right_nav_logout"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/r_menu_logout"-->
+        <!--app:showAsAction="never" />-->
 </menu>

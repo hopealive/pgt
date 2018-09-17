@@ -25,14 +25,14 @@
                 app:layout_constraintEnd_toStartOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Enter medicine name" />
+                tools:text="@string/autocomplete_placeholder" />
 
             <TextView
                 android:id="@+id/labelReminders"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
-                android:text="Reminders" />
+                android:text="@string/label_reminders" />
 
             <Spinner
                 android:id="@+id/cron_type"
@@ -54,14 +54,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
-                android:text="Schedule" />
+                android:text="@string/label_schedulers" />
 
 
             <TextView
                 android:id="@+id/labelDuration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Duration" />
+                android:text="@string/label_duration" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:onClick="setStartDate"
-                    android:text="Start" />
+                    android:text="@string/duration_start" />
 
                 <TextView android:id="@+id/startDate"
                     android:layout_width="100dp"
@@ -99,7 +99,7 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:onClick="setEndDate"
-                    android:text="End" />
+                    android:text="@string/duration_end" />
 
                 <TextView android:id="@+id/endDate"
                     android:layout_width="100dp"
@@ -140,7 +140,7 @@
                 android:id="@+id/labelFrequency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Frequency" />
+                android:text="@string/label_frequency" />
 
             <RadioGroup
                 android:layout_width="match_parent"
@@ -151,19 +151,19 @@
                 android:id="@+id/fEveryDay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Every day" />
+                android:text="@string/every_day" />
 
             <RadioButton
                 android:id="@+id/fDaysOfWeek"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Days of week" />
+                android:text="@string/days_of_week" />
 
             <RadioButton
                 android:id="@+id/fDaysInterval"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Days interval" />
+                android:text="@string/days_interval" />
 
         </RadioGroup>
 
@@ -172,7 +172,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="managePills"
-            android:text="Add" />
+            android:text="Ok" />
 
         </LinearLayout>
     </ScrollView>

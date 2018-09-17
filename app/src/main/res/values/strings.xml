@@ -23,9 +23,37 @@
     <string name="alert_dialog_ok">Ok</string>
     <string name="alert_dialog_cancel">Cancel</string>
 
+
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_add">Add</string>
+    <string name="title_medicals">Medicals</string>
+
+    <string name="title_activity_terms">TermsActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Pills GT</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="title_activity_bottom">BottomActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="r_menu_sign_up">Sign Un</string>
+    <string name="r_menu_sign_in">Sign In</string>
+    <string name="r_menu_logout">Logout</string>
+    <string name="title_activity_rules">RulesActivity</string>
+
     <!--Crons -->
     <string name="label_when">When get</string>
     <string name="label_how">How often</string>
+
+    <string name="autocomplete_placeholder">Enter medicine name</string>
+
+    <string name="label_reminders">Reminders</string>
+    <string name="label_schedulers">Schedule</string>
+    <string name="label_duration">Duration</string>
+    <string name="duration_start">Start</string>
+    <string name="duration_end">End</string>
 
     <string name="before_eat">Before eat</string>
     <string name="after_eat">After eat</string>
@@ -47,30 +75,15 @@
     <string name="every_5_hours">Every 5 hours</string>
     <string name="every_6_hours">Every 6 hours</string>
 
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_add">Add</string>
-    <string name="title_medicals">Medicals</string>
-
-    <string name="title_activity_terms">TermsActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Pills GT</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="title_activity_bottom">BottomActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_notifications">Notifications</string>
-
-    <string name="r_menu_sign_up">Sign Un</string>
-    <string name="r_menu_sign_in">Sign In</string>
-    <string name="r_menu_logout">Logout</string>
-    <string name="title_activity_rules">RulesActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="label_frequency">Frequency</string>
+    <string name="every_day">Every day</string>
+    <string name="days_of_week">Days of week</string>
+    <string name="days_interval">Days interval</string>
 
     <string name="duration_input_selected_period">Selected period</string>
     <string name="duration_input_continuous">Continuous</string>
     <string name="duration_input_number_of_days">Number of days</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
