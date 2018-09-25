@@ -38,7 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class PillsActivity extends AppCompatActivity {
+public class PillsActivity extends AppCompatActivity implements NumOfDaysFragment.NodInterface {
 
     private static final String TAG = "PaTAG";
     public static LocalDatabase localDatabase;
@@ -188,6 +188,35 @@ public class PillsActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    public void onNumOfDaysChoose(int numDays) {
+        if ( numDays > 0){
+            TextView startDateInput = findViewById(R.id.startDate);
+            TextView endDateInput = findViewById(R.id.endDate);
+
+            SimpleDateFormat format = new SimpleDateFormat(Utils.dateTimePatternView );
+
+            if ( startDateInput.getText().length() > 0){
+                Date startDateParsed;
+                try {
+                    startDateParsed = new SimpleDateFormat(Utils.dateTimePatternView)
+                            .parse((String) startDateInput.getText());
+                    Calendar cEndDate = Calendar.getInstance();
+                    cEndDate.setTime(startDateParsed);
+                    cEndDate.add(Calendar.DAY_OF_MONTH, numDays);
+
+                    String endDateFormatted = format.format(cEndDate.getTime());
+                    Log.d(TAG, "endDateFormatted: "+ endDateFormatted );//todo: remove
+                    endDateInput.setText(endDateFormatted);
+                } catch ( ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            RadioButton dCheckedPeriod = findViewById(R.id.dCheckedPeriod);
+            dCheckedPeriod.setChecked(true);
+        }
+    }
 
     protected void initControls(){
         initPillName();
