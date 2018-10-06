@@ -10,8 +10,9 @@ import com.pillsgt.pgt.models.PillRule;
 import com.pillsgt.pgt.models.PillTask;
 import com.pillsgt.pgt.models.UserSetting;
 
-@Database(entities = {UserSetting.class, PillRule.class, PillTask.class, Doc.class}, exportSchema = false, version = 5)
+@Database(entities = {UserSetting.class, PillRule.class, PillTask.class, Doc.class}, exportSchema = false, version = 1)
 public abstract class LocalDatabase extends RoomDatabase {
 
     public abstract LocalDAO localDAO();
+
 }

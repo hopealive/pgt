@@ -1,6 +1,7 @@
-package com.pillsgt.pgt;
+package com.pillsgt.pgt.utils;
 
 import android.util.Log;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

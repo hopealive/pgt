@@ -1,7 +1,6 @@
 package com.pillsgt.pgt.utils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
@@ -187,5 +186,6 @@ Log.i("BOTTOM_MENU", "open medicals");//todo: remove
             return false;
 
     }
+
 
 }

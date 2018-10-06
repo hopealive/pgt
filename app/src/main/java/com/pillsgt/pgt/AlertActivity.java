@@ -1,11 +1,10 @@
 package com.pillsgt.pgt;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-public class AlertActivity extends AppCompatActivity {
+public class AlertActivity extends AppActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

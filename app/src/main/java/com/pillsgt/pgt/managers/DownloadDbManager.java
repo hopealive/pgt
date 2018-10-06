@@ -8,10 +8,11 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
-import com.pillsgt.pgt.UnzipUtil;
+import com.pillsgt.pgt.databases.InitDatabases;
 import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.models.UserSetting;
 import com.pillsgt.pgt.utils.Utils;
+import com.pillsgt.pgt.utils.UnzipUtil;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -158,9 +159,7 @@ public class DownloadDbManager {
 
 
         protected void initMyDatabase() {
-            localDatabase = Room.databaseBuilder(mContext, LocalDatabase.class, Utils.localDbName)
-                    .allowMainThreadQueries()
-                    .build();
+            localDatabase = InitDatabases.buildLocalDatabase(mContext);
         }
 
     }

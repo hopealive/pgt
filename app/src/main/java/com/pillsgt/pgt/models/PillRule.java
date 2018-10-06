@@ -11,6 +11,8 @@ public class PillRule {
 
     private String name;
 
+    private int pill_id;
+
     private int cron_type;
 
     private int cron_interval;
@@ -43,6 +45,14 @@ public class PillRule {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getPill_id() {
+        return pill_id;
+    }
+
+    public void setPill_id(int pill_id) {
+        this.pill_id = pill_id;
     }
 
     public int getCron_type() {

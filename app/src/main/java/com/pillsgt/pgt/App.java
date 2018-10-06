@@ -7,7 +7,6 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -19,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.pillsgt.pgt.databases.InitDatabases;
 import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.managers.DocsManager;
 import com.pillsgt.pgt.models.UserSetting;
@@ -67,9 +67,7 @@ public class App extends Application {
     }
 
     protected void initMyDatabase() {
-        localDatabase = Room.databaseBuilder(getApplicationContext(), LocalDatabase.class, Utils.localDbName)
-                .allowMainThreadQueries()
-                .build();
+        localDatabase = InitDatabases.buildLocalDatabase(getApplicationContext());
     }
 
     protected void initUserSettings() {

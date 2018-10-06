@@ -1,22 +1,17 @@
 package com.pillsgt.pgt;
 
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.models.Doc;
-import com.pillsgt.pgt.utils.Utils;
 
-public class ConfidenceActivity extends AppCompatActivity {
+public class ConfidenceActivity extends AppActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +34,8 @@ public class ConfidenceActivity extends AppCompatActivity {
     }
 
     protected void initDoc() {
-        LocalDatabase localDatabase = Room.databaseBuilder(getApplicationContext(), LocalDatabase.class, Utils.localDbName)
-                .allowMainThreadQueries()
-                .build();
         Doc doc = localDatabase.localDAO().loadDocByAlias("confidence");
         if ( doc != null ){
-Log.d ("TAGConfA", doc.getDocument() );//todo: remove
-Log.d ("TAGConfA", doc.getAlias() );//todo: remove
             TextView document = findViewById(R.id.document);
             document.setText(Html.fromHtml(doc.getDocument()));
         }

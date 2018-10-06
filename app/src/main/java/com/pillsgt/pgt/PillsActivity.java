@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -22,12 +23,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pillsgt.pgt.databases.LocalDatabase;
-import com.pillsgt.pgt.databases.RemoteDatabase;
 import com.pillsgt.pgt.managers.CronManager;
 import com.pillsgt.pgt.managers.PillTaskManager;
 import com.pillsgt.pgt.models.PillRule;
 import com.pillsgt.pgt.models.remote.Keyword;
+import com.pillsgt.pgt.models.remote.KeywordRelation;
 import com.pillsgt.pgt.utils.Converters;
 import com.pillsgt.pgt.utils.Utils;
 
@@ -38,11 +38,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class PillsActivity extends AppCompatActivity implements NumOfDaysFragment.NodInterface {
+public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodInterface {
 
     private static final String TAG = "PaTAG";
-    public static LocalDatabase localDatabase;
-    public static RemoteDatabase remoteDatabase;
 
     protected Integer cID = null;
 
@@ -65,29 +63,20 @@ public class PillsActivity extends AppCompatActivity implements NumOfDaysFragmen
             }
         });
 
-        initDatabases();
         initControls();
-    }
-
-    protected void initDatabases(){
-        localDatabase = Room.databaseBuilder(getApplicationContext(),LocalDatabase.class, Utils.localDbName)
-                .allowMainThreadQueries()
-                .build();
-
-        remoteDatabase = Room.databaseBuilder(getApplicationContext(),RemoteDatabase.class, Utils.remoteDbName)
-                .allowMainThreadQueries()
-                .build();
     }
 
     //Autocomplete field
     protected void initPillName() {
-        List<String> pillsList = new ArrayList<String>();
+        List<String> keywordsList = new ArrayList<String>();
+//        keywordsList.add("Search...");
+
         List<Keyword> keywords = remoteDatabase.remoteDAO().getKeywords();
         for (final Keyword keyword : keywords ) {
-            pillsList.add(keyword.getKeyword());
+            keywordsList.add(keyword.getKeyword());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_singlechoice, pillsList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_singlechoice, keywordsList);
         AutoCompleteTextView acTextView = findViewById(R.id.pills);
         acTextView.setThreshold(3);
         acTextView.setAdapter(adapter);
@@ -309,7 +298,9 @@ public class PillsActivity extends AppCompatActivity implements NumOfDaysFragmen
                 updateRow = true;
             }
         }
+
         pillRule.setName( pillName.getText().toString() );//todo: must be name but not keyword
+        pillRule.setPill_id(0);//todo: remove
 
         CronManager cronManager = new CronManager();
         Integer cronType = cronManager.getTypeByPosition(cronTypeInput.getSelectedItemPosition() );

@@ -2,7 +2,6 @@ package com.pillsgt.pgt;
 
 import android.graphics.Point;
 import android.os.Bundle;
-import android.arch.persistence.room.Room;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -10,12 +9,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +21,6 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.managers.CronManager;
 import com.pillsgt.pgt.models.PillRule;
 import com.pillsgt.pgt.utils.Utils;
@@ -32,10 +28,8 @@ import com.pillsgt.pgt.utils.Utils;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    public static LocalDatabase localDatabase;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -67,8 +61,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.bringToFront();//so interesting hook for menu
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        initMyDatabase();
         renderPillsList();
     }
 
@@ -122,14 +114,6 @@ public class MainActivity extends AppCompatActivity
         finish();
         overridePendingTransition(0, 0);
         startActivity(intent);
-    }
-
-
-
-    protected void initMyDatabase() {
-        localDatabase = Room.databaseBuilder(getApplicationContext(), LocalDatabase.class, Utils.localDbName)
-                .allowMainThreadQueries()
-                .build();
     }
 
     protected void renderPillsList() {

@@ -4,10 +4,10 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.util.Log;
 
+import com.pillsgt.pgt.databases.InitDatabases;
 import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.databases.RemoteDatabase;
 import com.pillsgt.pgt.models.PillRule;
@@ -51,13 +51,8 @@ public class RemindService  extends IntentService {
     }
 
     protected void initDatabases(){
-        localDatabase = Room.databaseBuilder(getApplicationContext(),LocalDatabase.class, Utils.localDbName)
-                .allowMainThreadQueries()
-                .build();
-
-        remoteDatabase = Room.databaseBuilder(getApplicationContext(),RemoteDatabase.class, Utils.remoteDbName)
-                .allowMainThreadQueries()
-                .build();
+        localDatabase = InitDatabases.buildLocalDatabase(getApplicationContext());
+        remoteDatabase = InitDatabases.buildRemoteDatabase(getApplicationContext());
     }
     //custom methods don't remove
     public void process() {

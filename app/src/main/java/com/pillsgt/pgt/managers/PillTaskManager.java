@@ -1,10 +1,10 @@
 package com.pillsgt.pgt.managers;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.pillsgt.pgt.databases.InitDatabases;
 import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.databases.RemoteDatabase;
 import com.pillsgt.pgt.models.PillRule;
@@ -89,13 +89,8 @@ String alertDateFormatted = sdFormat.format(nextMinDate.getTime());//todo: remov
         }
 
         protected void initDatabases(){
-            localDatabase = Room.databaseBuilder(mContext,LocalDatabase.class, Utils.localDbName)
-                    .allowMainThreadQueries()
-                    .build();
-
-            remoteDatabase = Room.databaseBuilder(mContext,RemoteDatabase.class, Utils.remoteDbName)
-                    .allowMainThreadQueries()
-                    .build();
+            localDatabase = InitDatabases.buildLocalDatabase(mContext);
+            remoteDatabase = InitDatabases.buildRemoteDatabase(mContext);
         }
 
 

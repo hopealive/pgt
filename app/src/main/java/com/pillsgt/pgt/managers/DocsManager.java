@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.pillsgt.pgt.databases.InitDatabases;
 import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.models.Doc;
 import com.pillsgt.pgt.utils.Utils;
@@ -59,9 +60,7 @@ public class DocsManager {
     }
 
     protected void initDatabases(){
-        localDatabase = Room.databaseBuilder(mContext,LocalDatabase.class, Utils.localDbName)
-                .allowMainThreadQueries()
-                .build();
+        localDatabase = InitDatabases.buildLocalDatabase(mContext);
 
     }
 
