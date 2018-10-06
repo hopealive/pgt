@@ -20,24 +20,35 @@
             android:title="@string/title_medicals" />
     </group>
 
-    <item android:title="Settings">
+    <item android:title="@string/l_menu_settings">
         <menu>
             <item
                 android:id="@+id/left_nav_settings"
                 android:icon="@drawable/ic_menu_manage"
-                android:title="Settings" />
+                android:title="@string/l_menu_settings" />
             <item
                 android:id="@+id/left_nav_profile"
                 android:icon="@drawable/material_account_box"
-                android:title="Profile" />
+                android:title="@string/l_menu_profile" />
+        </menu>
+    </item>
+
+    <item android:title="@string/l_menu_docs">
+        <menu>
             <item
                 android:id="@+id/left_nav_terms"
                 android:icon="@drawable/material_assignment_ind"
-                android:title="Terms" />
+                android:title="@string/l_menu_terms">
+            </item>
+
             <item
-                android:id="@+id/left_nav_rules"
+                android:id="@+id/left_nav_confidence"
                 android:icon="@drawable/material_assignment"
-                android:title="Rules" />
+                android:title="@string/l_menu_confidence">
+            </item>
         </menu>
     </item>
+
+
+
 </menu>

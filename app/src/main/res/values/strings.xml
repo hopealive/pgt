@@ -17,7 +17,6 @@
     <string name="message_success_row_deleted">Record deleted successfully</string>
     <string name="message_data_saved">Data saved</string>
 
-    <!--todo: alert_dialog_two_buttons_title-->
     <string name="alert_dialog_choose_value">Choose Value</string>
     <string name="alert_dialog_choose_number">Choose a number:</string>
     <string name="alert_dialog_ok">Ok</string>
@@ -28,7 +27,6 @@
     <string name="title_add">Add</string>
     <string name="title_medicals">Medicals</string>
 
-    <string name="title_activity_terms">TermsActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Pills GT</string>
@@ -38,10 +36,19 @@
     <string name="title_home">Home</string>
     <string name="title_notifications">Notifications</string>
 
-    <string name="r_menu_sign_up">Sign Un</string>
+    <string name="l_menu_settings">Settings</string>
+    <string name="l_menu_profile">Profile</string>
+    <string name="l_menu_terms">Terms</string>
+    <string name="l_menu_confidence">Confidence</string>
+
+    <string name="l_menu_docs">Docs</string>
+
+
+    <string name="r_menu_sign_up">Sign Up</string>
     <string name="r_menu_sign_in">Sign In</string>
     <string name="r_menu_logout">Logout</string>
-    <string name="title_activity_rules">RulesActivity</string>
+
+    <string name="title_activity_terms">Terms and conditions</string>
 
     <!--Crons -->
     <string name="label_when">When get</string>
@@ -84,6 +91,7 @@
     <string name="duration_input_continuous">Continuous</string>
     <string name="duration_input_number_of_days">Number of days</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="novalid_pillrule_name">Empty medicine name.</string>
+
+    <string name="title_activity_confidence">Privacy agreement</string>
 </resources>

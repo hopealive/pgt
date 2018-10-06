@@ -16,14 +16,12 @@ import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.models.Doc;
 import com.pillsgt.pgt.utils.Utils;
 
-public class TermsActivity extends AppCompatActivity {
-
+public class ConfidenceActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_terms);
-
+        setContentView(R.layout.activity_confidence);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -33,7 +31,7 @@ public class TermsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(TermsActivity.this,MainActivity.class));
+                startActivity(new Intent(ConfidenceActivity.this,MainActivity.class));
                 Snackbar.make(view, "Loading...", Snackbar.LENGTH_LONG)
                         .setAction("Back", null).show();
             }
@@ -44,11 +42,10 @@ public class TermsActivity extends AppCompatActivity {
         LocalDatabase localDatabase = Room.databaseBuilder(getApplicationContext(), LocalDatabase.class, Utils.localDbName)
                 .allowMainThreadQueries()
                 .build();
-        Doc doc = localDatabase.localDAO().loadDocByAlias("terms");
+        Doc doc = localDatabase.localDAO().loadDocByAlias("confidence");
         if ( doc != null ){
-Log.d ("TAGTermsA", doc.getDocument() );//todo: remove
-Log.d ("TAGTermsA", doc.getAlias() );//todo: remove
-
+Log.d ("TAGConfA", doc.getDocument() );//todo: remove
+Log.d ("TAGConfA", doc.getAlias() );//todo: remove
             TextView document = findViewById(R.id.document);
             document.setText(Html.fromHtml(doc.getDocument()));
         }

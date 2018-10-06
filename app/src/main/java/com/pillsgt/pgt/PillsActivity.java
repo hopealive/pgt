@@ -46,8 +46,8 @@ public class PillsActivity extends AppCompatActivity implements NumOfDaysFragmen
 
     protected Integer cID = null;
 
-    Calendar startDate =Calendar.getInstance();
-    Calendar endDate =Calendar.getInstance();
+    Calendar startDate = Calendar.getInstance();
+    Calendar endDate = Calendar.getInstance();
     RadioGroup durationGroup;
 
     @Override
@@ -360,19 +360,34 @@ public class PillsActivity extends AppCompatActivity implements NumOfDaysFragmen
 
         //todo: make frequency values
 
-        if ( updateRow == true){
-            localDatabase.localDAO().updateRule(pillRule);
-        } else {
-            pillRule.setCreated_at( curDateFormatted );
-            long insertId = localDatabase.localDAO().addRule(pillRule);
-            pillRule.setId((int) insertId);
+        //validate and save
+        if (validatePillRule( pillRule)){
+            if ( updateRow == true){
+                localDatabase.localDAO().updateRule(pillRule);
+            } else {
+                pillRule.setCreated_at( curDateFormatted );
+                long insertId = localDatabase.localDAO().addRule(pillRule);
+                pillRule.setId((int) insertId);
+            }
+
+            //success saved, redirect to index page with list
+            new PillTaskManager( pillRule.getId(), getApplicationContext());
+            Toast.makeText(getApplicationContext(), R.string.message_data_saved, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(PillsActivity.this,MainActivity.class));
         }
 
-        new PillTaskManager( pillRule.getId(), getApplicationContext());
-
-        //success saved, redirect to index page with list
-        startActivity(new Intent(PillsActivity.this,MainActivity.class));
-        Toast.makeText(getApplicationContext(), R.string.message_data_saved, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Validate pill rule form
+     * @param pillRule
+     * @return boolean
+     */
+    protected boolean validatePillRule(PillRule pillRule){
+        if (pillRule.getName().length() < 1){
+            Toast.makeText(getApplicationContext(), R.string.novalid_pillrule_name, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 }

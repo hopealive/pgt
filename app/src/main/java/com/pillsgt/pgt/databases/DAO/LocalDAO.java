@@ -8,6 +8,7 @@ import android.arch.persistence.room.Update;
 import com.pillsgt.pgt.models.PillRule;
 import com.pillsgt.pgt.models.PillTask;
 import com.pillsgt.pgt.models.UserSetting;
+import com.pillsgt.pgt.models.Doc;
 
 import java.util.List;
 
@@ -69,6 +70,18 @@ public interface LocalDAO {
 
     @Query("delete from pill_tasks where rule_id= :rule_id")
     void deletePillTaskByRuleId(int rule_id);
+
+
+    //docs
+
+    @Query("select * from docs where alias = :alias")
+    Doc loadDocByAlias(String alias);
+
+    @Insert
+    void addDoc(Doc doc);
+
+    @Update(onConflict = REPLACE)
+    void updateDoc(Doc doc);
 
 
 

@@ -146,7 +146,6 @@ public class MainActivity extends AppCompatActivity
         Point screenSize = Utils.getScreenSize(getWindowManager().getDefaultDisplay() );
 
 
-        int i = 0;
         String ruleDescriptionText;
         int cronTypePosition;
         int cronIntervalPosition;
@@ -224,7 +223,6 @@ public class MainActivity extends AppCompatActivity
             ruleRow.addView(buttonLayout);
             ((LinearLayout) ruleBlock).addView(ruleRow);
 
-            ++i;
         }
 
         TextView mainPillCounter = findViewById(R.id.mainPillCounter);

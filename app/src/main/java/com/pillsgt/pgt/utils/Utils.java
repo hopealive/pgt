@@ -13,21 +13,14 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 
+import com.pillsgt.pgt.ConfidenceActivity;
 import com.pillsgt.pgt.MainActivity;
 import com.pillsgt.pgt.PillsActivity;
 import com.pillsgt.pgt.R;
-import com.pillsgt.pgt.RulesActivity;
 import com.pillsgt.pgt.TermsActivity;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -76,6 +69,10 @@ public class Utils {
     );
 
 
+    /**
+     * Before some download from web check for SD Card storage exists
+     * @return boolean
+     */
     public static boolean isSDCardPresent() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             return true;
@@ -83,6 +80,25 @@ public class Utils {
         return false;
     }
 
+
+    /**
+     * Check if internet is present or not
+     * @return boolean
+     */
+    public static boolean isConnectingToInternet( ConnectivityManager connectivityManager ) {
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected())
+            return true;
+        else
+            return false;
+    }
+
+
+    /**
+     *
+     * @param display
+     * @return
+     */
     public static Point getScreenSize(Display display) {
         Point size = new Point();
         try {
@@ -93,6 +109,19 @@ public class Utils {
         return size;
     }
 
+
+
+    /**
+     * ###############
+     * MENU BLOCK
+     * ###############
+     */
+
+    /**
+     * Left menu
+     * @param item
+     * @param activity
+     */
     public static void leftOnNavigationItemSelected(MenuItem item, Activity activity){
         int id = item.getItemId();
         item.setChecked(true);
@@ -109,14 +138,19 @@ public class Utils {
             Log.d("LMENU", "SETTINGS");//todo: remove
         } else if (id == R.id.left_nav_terms) {
             activity.startActivity(new Intent(activity,TermsActivity.class));
-        } else if (id == R.id.left_nav_rules) {
-            activity.startActivity(new Intent(activity,RulesActivity.class));
+        } else if (id == R.id.left_nav_confidence) {
+            activity.startActivity(new Intent(activity,ConfidenceActivity.class));
         }
 
         DrawerLayout drawer = activity.findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
 
+    /**
+     * Right menu
+     * @param item
+     * @param activity
+     */
     public static void rightOnNavigationItemSelected(MenuItem item, Activity activity){
         int id = item.getItemId();
 
@@ -131,6 +165,12 @@ public class Utils {
 
     }
 
+    /**
+     * Bottom menu
+     * @param item
+     * @param activity
+     * @return boolean
+     */
     public static boolean bottomOnNavigationItemSelected(MenuItem item, Activity activity){
             switch (item.getItemId()) {
                 case R.id.bottom_nav_dashboard:

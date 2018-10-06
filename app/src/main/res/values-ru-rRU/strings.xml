@@ -17,16 +17,55 @@
     <string name="message_success_row_deleted">Запись удалена</string>
     <string name="message_data_saved">Данные сохранены</string>
 
+    <string name="alert_dialog_choose_value">Выберите значение</string>
+    <string name="alert_dialog_choose_number">Выберите:</string>
+    <string name="alert_dialog_ok">Ok</string>
+    <string name="alert_dialog_cancel">Отмена</string>
+
+
+    <string name="title_dashboard">Главная</string>
+    <string name="title_add">Добавить</string>
+    <string name="title_medicals">Лекарства</string>
+
+    <string name="navigation_drawer_open">Открыть меню</string>
+    <string name="navigation_drawer_close">Закрить меню</string>
+    <string name="nav_header_title">Pills GT</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc"></string>
+    <string name="title_activity_bottom"></string>
+    <string name="title_home">Домой</string>
+    <string name="title_notifications">Нотификации</string>
+
+    <string name="l_menu_settings">Настройки</string>
+    <string name="l_menu_profile">Профиль</string>
+    <string name="l_menu_terms">Положения и условия</string>
+    <string name="l_menu_confidence">Confidence</string>
+
+    <string name="l_menu_docs">Документы</string>
+
+    <string name="r_menu_sign_up">Зарегестрироваться</string>
+    <string name="r_menu_sign_in">Войти</string>
+    <string name="r_menu_logout">Выйти</string>
+
+    <string name="title_activity_terms">Положения и условия</string>
+
     <!--Crons -->
     <string name="label_when">Когда принимать</string>
     <string name="label_how">Как часто принимать</string>
+
+    <string name="autocomplete_placeholder">Введите название</string>
+
+    <string name="label_reminders">Напоминальники</string>
+    <string name="label_schedulers">Планировщики</string>
+    <string name="label_duration">Продолжительность</string>
+    <string name="duration_start">Старт</string>
+    <string name="duration_end">Конец</string>
 
     <string name="before_eat">До еды</string>
     <string name="after_eat">После еды</string>
     <string name="while_eating">Во время еды</string>
     <string name="ignore">Не учитывать</string>
     <string name="others">Другое</string>
-
 
     <string name="once_a_day">1 раз в день</string>
     <string name="twice_a_day">2 раза в день</string>
@@ -42,8 +81,17 @@
     <string name="every_5_hours">Каждые 5 часа</string>
     <string name="every_6_hours">Каждые 6 часа</string>
 
-    <string name="title_dashboard">Главная</string>
-    <string name="title_add">Добавить</string>
-    <string name="title_medicals">Лекарства</string>
 
+    <string name="label_frequency">Частота</string>
+    <string name="every_day">Каждый день</string>
+    <string name="days_of_week">Дни недели</string>
+    <string name="days_interval">Интервал дней</string>
+
+    <string name="duration_input_selected_period">Выберите период</string>
+    <string name="duration_input_continuous">Продолжать</string>
+    <string name="duration_input_number_of_days">Количество дней</string>
+
+    <string name="novalid_pillrule_name">Ошибка. Вы не ввели название</string>
+
+    <string name="title_activity_confidence">Соглашение о конфиденциальности</string>
 </resources>

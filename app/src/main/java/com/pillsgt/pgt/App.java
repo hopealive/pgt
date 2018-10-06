@@ -20,8 +20,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.pillsgt.pgt.databases.LocalDatabase;
+import com.pillsgt.pgt.managers.DocsManager;
 import com.pillsgt.pgt.models.UserSetting;
-import com.pillsgt.pgt.utils.DownloadTask;
+import com.pillsgt.pgt.managers.DownloadDbManager;
 import com.pillsgt.pgt.utils.Utils;
 
 import android.os.SystemClock;
@@ -49,6 +50,7 @@ public class App extends Application {
         initUserSettings();
         Boolean firstStart = testLocalUserSettingByName("first_start");
         if (!firstStart){
+            this.duration = 0;
             createDefaultUserSettings();
             initUserSettings();
         }
@@ -57,10 +59,10 @@ public class App extends Application {
         setServiceAlarm (getApplicationContext());
 
         long elapsedTime = (System.currentTimeMillis() - sTime)/1000;
-        if ( elapsedTime > duration){
-            duration = elapsedTime+1;
+        if ( elapsedTime > this.duration){
+            this.duration = elapsedTime+1;
         }
-        SystemClock.sleep(TimeUnit.SECONDS.toMillis(duration));
+        SystemClock.sleep(TimeUnit.SECONDS.toMillis(this.duration));
 
     }
 
@@ -92,8 +94,12 @@ public class App extends Application {
                 try {
                     //process response info
                     String cDbVersion = response.getString("current_db_version");
-                    String dDbLink = response.getString("download_db_link");
-                    compareDatabases( cDbVersion, dDbLink );
+                    String syncDbLink = response.getString("sync_db_link");
+                    compareDatabases( cDbVersion, syncDbLink );
+
+                    String cDocsVersion = response.getString("current_docs_version");
+                    String syncDocsLink = response.getString("sync_docs_link");
+                    compareDocs( cDocsVersion, syncDocsLink );
                 } catch (JSONException e) {
                     Log.e(TAG, "Unknown error in reqSuccessListener: "+e.getMessage());
                 }
@@ -177,68 +183,80 @@ public class App extends Application {
 
     /**
      * If cDbVersion from server > current update download fresh DB from dDbLink
-     * @String cDbVersion
-     * @String dDbLink
+     * @String cDbVersion current DB version from web storage
+     * @String dDbLink link for download DB from web storage
      */
-    public void compareDatabases(final String cDbVersion, String dDbLink){
-        boolean localDbVerionExists = false;
-        UserSetting dbVersionUserSetting = new UserSetting();
+    public void compareDatabases(final String cDbVersion, String syncDbLink){
+        String localDbFieldName = "db_version";
+        boolean localVersionExists = false;
+        boolean needSync = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
         if (!userSettings.isEmpty()){
+            //exists version of remote DB in local DB
             for (final UserSetting userSetting : userSettings ) {
-                if ( userSetting.getName().equals("db_version") ) {
-                    localDbVerionExists = true;
+                if ( userSetting.getName().equals(localDbFieldName) ) {
+                    localVersionExists = true;
                     if (Integer.valueOf( userSetting.getValue() )  < Integer.valueOf( cDbVersion ) ) {
                         //download & update DB-file & update setting
-                        if (downloadDb(dDbLink)) {
-                            //update db version
-                            userSetting.setValue(cDbVersion);
-                            localDatabase.localDAO().updateUserSetting(userSetting);
-
-                        }
+                        needSync = true;
                     }
                 }
             }
         }
 
-        if (userSettings.isEmpty() || localDbVerionExists != true){
-            //download & create DB-file & create setting
-            if ( downloadDb(dDbLink) ){
-                dbVersionUserSetting.setName("db_version");
-                dbVersionUserSetting.setValue(cDbVersion);
-                localDatabase.localDAO().addUserSetting(dbVersionUserSetting);
-            } else {
-                Log.e(TAG, "No link for download");
+        if (userSettings.isEmpty() || localVersionExists != true){
+            //no version of remote DB in local DB: maybe first time or error
+            needSync = true;
+
+            //create setting
+            initNullField(localDbFieldName);
+        }
+
+        if ( needSync == true ){
+            //download & create DB-file: Start thread for download
+            new DownloadDbManager( cDbVersion, syncDbLink, getApplicationContext(), connectivityManager );
+        }
+
+    }
+
+    protected void compareDocs( String cDocsVersion, String syncDocsLink ){
+        boolean localVersionExists = false;
+        boolean needSync = false;
+        String localDbFieldName = "docs_version";
+        if (!userSettings.isEmpty()){
+            //exists version of remote DB in local DB
+            for (final UserSetting userSetting : userSettings ) {
+                if ( userSetting.getName().equals(localDbFieldName) ) {
+                    localVersionExists = true;
+                    if (Integer.valueOf( userSetting.getValue() )  < Integer.valueOf( cDocsVersion ) ) {
+                        //download & update DB-file & update setting
+                        needSync = true;
+                    }
+                }
             }
         }
-    }
 
-    /**
-     * Start thread for download
-     * @String dbUrl
-     * @return boolean
-     */
-    private boolean downloadDb(String dbUrl) {
-        if (isConnectingToInternet()) {
-            DownloadTask downloadTask = new DownloadTask( dbUrl, getApplicationContext());
-            return true;
-        } else {
-            Log.e(TAG, "No INTERNET for starting download");
+        if (userSettings.isEmpty() || localVersionExists != true){
+            //no version of remote DB in local DB: maybe first time or error
+            needSync = true;
+
+            //create setting
+            initNullField(localDbFieldName);
         }
-        return false;
+
+        if ( needSync == true ){
+            //download docs
+            new DocsManager().apiStartRequest(this, syncDocsLink);
+        }
+
     }
 
-    /**
-     * Check if internet is present or not
-     * @return boolean
-     */
-    public boolean isConnectingToInternet() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected())
-            return true;
-        else
-            return false;
+    protected void initNullField(String fieldName) {
+        UserSetting versionUserSetting = new UserSetting();
+        versionUserSetting.setName(fieldName);
+        versionUserSetting.setValue("0");
+        localDatabase.localDAO().addUserSetting(versionUserSetting);
+
     }
-
-
 }

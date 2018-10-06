@@ -9,12 +9,56 @@
     <string name="empty_index_list">Препарати для прийому відсутні</string>
     <string name="title_activity_settings">Настройки</string>
 
+    <!--Buttons-->
+    <string name="button_add">Додати</string>
+    <string name="button_edit">Редагувати</string>
+
     <!--Messages    -->
     <string name="message_success_row_deleted">Запис успішно видалено</string>
+    <string name="message_data_saved">Дані збережені</string>
+
+    <string name="alert_dialog_choose_value">Вкажіть значення</string>
+    <string name="alert_dialog_choose_number">Оберіть:</string>
+    <string name="alert_dialog_ok">Ok</string>
+    <string name="alert_dialog_cancel">Скасувати</string>
+
+
+    <string name="title_dashboard">Головна</string>
+    <string name="title_add">Додати</string>
+    <string name="title_medicals">Ліки</string>
+    <string name="navigation_drawer_open">Відкрити меню</string>
+    <string name="navigation_drawer_close">Закрити меню</string>
+    <string name="nav_header_title">Pills GT</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc"></string>
+    <string name="title_activity_bottom"></string>
+    <string name="title_home">Додому</string>
+    <string name="title_notifications">Нотифікації</string>
+
+    <string name="l_menu_settings">Налаштування</string>
+    <string name="l_menu_profile">Профіль</string>
+    <string name="l_menu_terms">Положення та умови</string>
+    <string name="l_menu_confidence">Конфіденційність</string>
+
+    <string name="l_menu_docs">Документи</string>
+
+    <string name="r_menu_sign_up">Зареєструватись</string>
+    <string name="r_menu_sign_in">Ввійти</string>
+    <string name="r_menu_logout">Вийти</string>
+
+    <string name="title_activity_terms">Положення та умови</string>
 
     <!--Crons -->
     <string name="label_when">Коли приймати</string>
     <string name="label_how">Як часто приймати</string>
+
+    <string name="autocomplete_placeholder">Введіть назву</string>
+
+    <string name="label_reminders">Нагадувачі</string>
+    <string name="label_schedulers">Планувальники</string>
+    <string name="label_duration">Тривалість</string>
+    <string name="duration_start">Старт</string>
+    <string name="duration_end">Кінець</string>
 
     <string name="before_eat">До їжі</string>
     <string name="after_eat">Після їжі</string>
@@ -36,8 +80,16 @@
     <string name="every_5_hours">Кожні 5 годин</string>
     <string name="every_6_hours">Кожні 6 годин</string>
 
-    <string name="title_dashboard">Головна</string>
-    <string name="title_add">Додати</string>
-    <string name="title_medicals">Ліки</string>
 
+    <string name="label_frequency">Частота</string>
+    <string name="every_day">Кожен день</string>
+    <string name="days_of_week">Дні тижня</string>
+    <string name="days_interval">Інтервал днів</string>
+
+    <string name="duration_input_selected_period">Оберіть період</string>
+    <string name="duration_input_continuous">Продовжувати</string>
+    <string name="duration_input_number_of_days">Кількість днів</string>
+
+    <string name="novalid_pillrule_name">Помилка. Ви не ввели назву</string>
+    <string name="title_activity_confidence">Конфіденційність та захист персональних данних</string>
 </resources>

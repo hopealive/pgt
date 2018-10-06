@@ -22,7 +22,7 @@
             android:textColor="@color/white"
             android:textSize="24dp"
             android:textStyle="bold"
-            android:text="TITLE" />
+            android:text="{TITLE}" />
 
         <TextView
             android:id="@+id/alertDescription"
@@ -32,7 +32,7 @@
             android:paddingTop="70dp"
             android:textSize="18dp"
             android:textColor="@color/white"
-            android:text="DESCRIPTION" />
+            android:text="{DESCRIPTION}" />
 
 
         <LinearLayout

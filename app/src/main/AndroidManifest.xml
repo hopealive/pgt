@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pillsgt.pgt"
-    android:versionName="0.08-dev">
-
-    <uses-sdk android:minSdkVersion="4" />
+    android:versionName="0.60-dev">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -62,8 +60,9 @@
             android:label="@string/title_activity_terms"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RulesActivity"
-            android:label="@string/title_activity_rules" />
+            android:name=".ConfidenceActivity"
+            android:label="@string/title_activity_confidence"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
