@@ -2,14 +2,10 @@ package com.pillsgt.pgt;
 
 import android.app.DatePickerDialog;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,20 +19,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pillsgt.pgt.managers.keywordautocomplete.PillsAutoCompleteTextChangedListener;
+import com.pillsgt.pgt.managers.keywordautocomplete.PillsAutoCompleteView;
 import com.pillsgt.pgt.managers.CronManager;
 import com.pillsgt.pgt.managers.PillTaskManager;
 import com.pillsgt.pgt.models.PillRule;
-import com.pillsgt.pgt.models.remote.Keyword;
-import com.pillsgt.pgt.models.remote.KeywordRelation;
+import com.pillsgt.pgt.models.remote.PillsUa;
 import com.pillsgt.pgt.utils.Converters;
 import com.pillsgt.pgt.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodInterface {
 
@@ -66,20 +61,21 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
         initControls();
     }
 
-    //Autocomplete field
+
+    public static PillsAutoCompleteView pillsAutoComplete;
+    public TextView pillsDescription;
+    public ArrayAdapter<String> myAdapter;
+    public String[] item = new String[] {"..."};
+
     protected void initPillName() {
-        List<String> keywordsList = new ArrayList<String>();
-//        keywordsList.add("Search...");
+        pillsAutoComplete = (PillsAutoCompleteView) findViewById(R.id.pills);
+        pillsAutoComplete.addTextChangedListener(new PillsAutoCompleteTextChangedListener(this));
 
-        List<Keyword> keywords = remoteDatabase.remoteDAO().getKeywords();
-        for (final Keyword keyword : keywords ) {
-            keywordsList.add(keyword.getKeyword());
-        }
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, item);
+        pillsAutoComplete.setThreshold(3);
+        pillsAutoComplete.setAdapter(myAdapter);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_singlechoice, keywordsList);
-        AutoCompleteTextView acTextView = findViewById(R.id.pills);
-        acTextView.setThreshold(3);
-        acTextView.setAdapter(adapter);
+        pillsDescription = findViewById(R.id.pillsDescription);
     }
 
     protected void initCronType(){
@@ -105,6 +101,7 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
                 startDate.get(Calendar.DAY_OF_MONTH))
                 .show();
     }
+
     public void setEndDate(View v) {
         new DatePickerDialog(PillsActivity.this, de,
                 endDate.get(Calendar.YEAR),
@@ -195,7 +192,6 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
                     cEndDate.add(Calendar.DAY_OF_MONTH, numDays);
 
                     String endDateFormatted = format.format(cEndDate.getTime());
-                    Log.d(TAG, "endDateFormatted: "+ endDateFormatted );//todo: remove
                     endDateInput.setText(endDateFormatted);
                 } catch ( ParseException e) {
                     e.printStackTrace();
@@ -237,7 +233,19 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
         //fill data by id pull rule
         AutoCompleteTextView pillName = findViewById(R.id.pills);
         pillName.setThreshold(Integer.MAX_VALUE);//hook
-        pillName.setText( pillRule.getName() );
+
+        String pillNameValue = pillRule.getName();
+
+        if ( pillRule.getPill_id() > 0 ){
+            PillsUa pillUa = remoteDatabase.remoteDAO().loadPillsUa(pillRule.getPill_id());
+            pillNameValue = pillUa.getOriginal_name();
+
+            TextView pillsDescription = findViewById(R.id.pillsDescription);
+            pillsDescription.setText(pillUa.getDosage_form());
+            pillName.setHint( Integer.toString(pillUa.getId()) );
+        }
+        pillName.setText( pillNameValue );
+
         pillName.setThreshold(3);//return 3 chars for starting autocomplete
 
         CronManager cronManager = new CronManager();
@@ -299,8 +307,11 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
             }
         }
 
-        pillRule.setName( pillName.getText().toString() );//todo: must be name but not keyword
-        pillRule.setPill_id(0);//todo: remove
+        String pillNameValue = pillName.getText().toString();
+        pillRule.setName( pillNameValue );
+
+        String pillIdString = String.valueOf(pillName.getHint());
+        pillRule.setPill_id( Integer.parseInt(pillIdString) );
 
         CronManager cronManager = new CronManager();
         Integer cronType = cronManager.getTypeByPosition(cronTypeInput.getSelectedItemPosition() );

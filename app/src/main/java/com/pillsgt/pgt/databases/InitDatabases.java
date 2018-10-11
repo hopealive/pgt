@@ -11,13 +11,14 @@ public class InitDatabases {
     public static LocalDatabase buildLocalDatabase(Context context ){
         return Room.databaseBuilder(context,LocalDatabase.class, Utils.localDbName)
                 .allowMainThreadQueries()
-                .fallbackToDestructiveMigration()
+                .fallbackToDestructiveMigration() //todo: temporary. remove before release. Migrations for future
                 .build();
     }
 
     public static RemoteDatabase buildRemoteDatabase(Context context ){
         return Room.databaseBuilder(context,RemoteDatabase.class, Utils.remoteDbName)
                 .allowMainThreadQueries()
+                .fallbackToDestructiveMigration() //todo: temporary. remove before release. Migrations for future
                 .build();
     }
 

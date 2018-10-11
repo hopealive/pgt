@@ -12,6 +12,8 @@ public class PillsUa {
 
     private String original_name;
 
+    private String dosage_form;
+
     public int getId() {
         return id;
     }
@@ -27,4 +29,13 @@ public class PillsUa {
     public void setOriginal_name(String original_name) {
         this.original_name = original_name;
     }
+
+    public String getDosage_form() {
+        return dosage_form;
+    }
+
+    public void setDosage_form(String dosage_form) {
+        this.dosage_form = dosage_form;
+    }
+
 }

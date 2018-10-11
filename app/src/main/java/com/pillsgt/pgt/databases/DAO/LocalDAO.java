@@ -21,7 +21,7 @@ public interface LocalDAO {
     //user_settings
 
     @Query("select * from user_settings")
-    public List<UserSetting> getUserSettings();
+    List<UserSetting> getUserSettings();
 
     @Query("select * from user_settings where name = :name")
     UserSetting loadUserSettingByName(String name);
@@ -36,10 +36,10 @@ public interface LocalDAO {
     //pill_rules
 
     @Query("select * from pill_rules where id = :id")
-    public PillRule loadRuleById(int id);
+    PillRule loadRuleById(int id);
 
     @Query("select * from pill_rules")
-    public List<PillRule> getRules();
+    List<PillRule> getRules();
 
     @Insert
     long addRule(PillRule rule);

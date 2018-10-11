@@ -15,16 +15,28 @@ import java.util.List;
 @Dao
 public interface RemoteDAO {
 
+    //keywords
+
     @Query("select * from keywords")
-    public List<Keyword> getKeywords();
+    List<Keyword> getKeywords();
 
     @Query("select * from keywords where keyword like '%' || :keyword || '%'")
-    public List<Keyword> searchKeywords(String keyword);
+    List<Keyword> searchKeywords(String keyword);
 
-    @Query("select * from keyword_relations where keyword_id=:keywordId")
-    public KeywordRelation getKeywordRelationsByKeywordId(int keywordId);
 
-    @Query("select * from pills_ua where id=:id")
-    PillsUa loadPillsUaById(int id);
+    //keyword_relations
+
+    @Query("select * from keyword_relations where keyword_id IN (:ids)")
+    List<KeywordRelation> getKeywordRelationsByKeywordId(List<String> ids);
+
+
+    //pills_ua
+
+    @Query("select * from pills_ua where id = :id")
+    PillsUa loadPillsUa(int id);
+
+
+    @Query("select * from pills_ua where id IN (:ids)")
+    List<PillsUa> loadPillsUaByIds(List<String> ids);
 
 }

@@ -1,13 +1,11 @@
 package com.pillsgt.pgt;
 
-import android.arch.persistence.room.Room;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.pillsgt.pgt.databases.InitDatabases;
 import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.databases.RemoteDatabase;
-import com.pillsgt.pgt.utils.Utils;
 
 public class AppActivity extends AppCompatActivity  {
 
