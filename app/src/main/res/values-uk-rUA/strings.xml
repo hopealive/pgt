@@ -92,4 +92,9 @@
 
     <string name="novalid_pillrule_name">Помилка. Ви не ввели назву</string>
     <string name="title_activity_confidence">Конфіденційність та захист персональних данних</string>
+
+    <string name="alert_activity_taked">Підтвердити</string>
+    <string name="alert_activity_later">Пізніше</string>
+    <string name="alert_activity_canceled">Пропустити</string>
+
 </resources>

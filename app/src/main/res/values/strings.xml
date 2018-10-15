@@ -94,4 +94,9 @@
     <string name="novalid_pillrule_name">Empty medicine name.</string>
 
     <string name="title_activity_confidence">Privacy agreement</string>
+
+    <string name="alert_activity_taked">Taked</string>
+    <string name="alert_activity_later">Later</string>
+    <string name="alert_activity_canceled">Cancel</string>
+
 </resources>

@@ -59,6 +59,10 @@ public interface LocalDAO {
     @Query("select * from pill_tasks where alarm_at >= :date_missed and alarm_at <= :date_future  and status = :status")
     List<PillTask> loadNotifyTasks(String date_missed, String date_future, String status);
 
+    @Query("select * from pill_tasks where alarm_at >= :date_missed and alarm_at <= :date_future  and status = :status limit 1")
+    PillTask loadNotifyTask(String date_missed, String date_future, String status);
+
+
     @Insert
     void addPillTask(PillTask pillTask);
 

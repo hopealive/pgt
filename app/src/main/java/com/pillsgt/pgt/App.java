@@ -56,7 +56,7 @@ public class App extends Application {
         }
 
         apiStartRequest();
-        setServiceAlarm (getApplicationContext());
+        setServiceAlarm();
 
         long elapsedTime = (System.currentTimeMillis() - sTime)/1000;
         if ( elapsedTime > this.duration){
@@ -98,6 +98,13 @@ public class App extends Application {
                     String cDocsVersion = response.getString("current_docs_version");
                     String syncDocsLink = response.getString("sync_docs_link");
                     compareDocs( cDocsVersion, syncDocsLink );
+
+                    if (!testLocalUserSettingByName("first_start")) {
+                        UserSetting firstStart = new UserSetting();
+                        firstStart.setValue("exists");
+                        localDatabase.localDAO().updateUserSetting(firstStart);
+                    }
+
                 } catch (JSONException e) {
                     Log.e(TAG, "Unknown error in reqSuccessListener: "+e.getMessage());
                 }
@@ -114,10 +121,11 @@ public class App extends Application {
         };
     }
 
-    public void setServiceAlarm(Context context){
-        Intent intent = new Intent(context, RemindService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
-        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+    public void setServiceAlarm(){
+        Context sContext = getApplicationContext();
+        Intent intent = new Intent(sContext, RemindService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(sContext, 0, intent, 0);
+        AlarmManager alarmManager = (AlarmManager)sContext.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), Utils.alaramManagerPeriod*1000, pendingIntent);
     }
 

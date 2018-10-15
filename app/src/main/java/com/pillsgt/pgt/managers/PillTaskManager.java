@@ -9,10 +9,13 @@ import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.databases.RemoteDatabase;
 import com.pillsgt.pgt.models.PillRule;
 import com.pillsgt.pgt.models.PillTask;
+import com.pillsgt.pgt.models.remote.PillsUa;
 import com.pillsgt.pgt.utils.Utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 public class PillTaskManager {
@@ -53,6 +56,11 @@ Log.d(TAG, "GoPillTaskManager doInBackground start rule id:" + ruleId);//todo: r
             PillRule pillRule = localDatabase.localDAO().loadRuleById(ruleId);
             if (pillRule == null ) return null;
 
+            PillsUa pillsUa = new PillsUa();
+            if (pillRule.getPill_id() > 0){
+                pillsUa = remoteDatabase.remoteDAO().loadPillsUa(pillRule.getPill_id());
+            }
+
             //remove active task for this ruleId
             try {
                 localDatabase.localDAO().deletePillTaskByRuleId(ruleId);
@@ -70,10 +78,13 @@ Log.d(TAG, "GoPillTaskManager doInBackground start rule id:" + ruleId);//todo: r
             //save tasks
             PillTask pillTask = new PillTask();
             pillTask.setRule_id(ruleId);
-            pillTask.setTitle( pillRule.getName() ); //todo:fill
-            pillTask.setShort_title( pillRule.getName() ); //todo:fill right
-            pillTask.setDescription(""); //todo:fill
+            pillTask.setTitle( pillRule.getName() );
+            pillTask.setShort_title( pillsUa.getOriginal_name() );
+            pillTask.setDescription( pillsUa.getDosage_form() );
             pillTask.setStatus( PillTask.STATUS_NEW );
+
+//pillRule.getCron_interval()
+//pillRule.getCron_type()
 
 //temporary data
 Calendar nextMinDate = Calendar.getInstance();//todo: remove
@@ -85,7 +96,26 @@ String alertDateFormatted = sdFormat.format(nextMinDate.getTime());//todo: remov
             pillTask.setCreated_at(curDateFormatted);
             localDatabase.localDAO().addPillTask(pillTask);
 
+
+            localDatabase.close();
+            remoteDatabase.close();
             return null;
+        }
+
+        protected List<String> getTimeList(PillRule pillRule){
+            List<String>tList = Arrays.asList();
+            return tList;
+        }
+
+        protected List<String> getDateList(PillRule pillRule){
+//pillRule.getFrequency_type()
+//pillRule.getFrequency_value() //todo: make for this
+//pillRule.getIs_continues()
+//            pillRule.getStart_date()
+//            pillRule.getEnd_date()
+
+            List<String>dList = Arrays.asList();
+            return dList;
         }
 
         protected void initDatabases(){

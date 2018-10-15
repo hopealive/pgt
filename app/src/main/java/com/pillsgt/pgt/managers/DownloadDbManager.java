@@ -23,7 +23,7 @@ import java.net.URL;
 
 public class DownloadDbManager {
 
-    private static final String TAG = "Download Task";
+    private static final String TAG = "DownloadTask";
     private String syncDbLink;
     private String cDbVersion;
     private Context mContext;
@@ -63,12 +63,13 @@ public class DownloadDbManager {
             if ( download() ){
                 unzipFile();
             }
-
             return null;
         }
 
         protected boolean download() {
             try {
+                Log.d(TAG, "Start download DB by url: \n"+syncDbLink);
+
                 URL url = new URL(syncDbLink);//Create Download URl
                 HttpURLConnection c = (HttpURLConnection) url.openConnection();
                 c.setRequestMethod("GET");

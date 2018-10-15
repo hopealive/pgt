@@ -4,70 +4,104 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorRed"
+    android:background="@color/colorPrimaryDark"
     tools:context=".AlertActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/titleAlertActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            android:text="@string/app_shrot_name" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/alertMainBlock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:paddingTop="50dp"
+        android:layout_gravity="center"
+        android:background="@color/colorTransparentPurple"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/alertTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
             android:gravity="center"
-            android:paddingTop="50dp"
             android:textColor="@color/white"
             android:textSize="24dp"
             android:textStyle="bold"
-            android:text="{TITLE}" />
+            android:text="" />
 
         <TextView
             android:id="@+id/alertDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="70dp"
-            android:textSize="18dp"
+            android:textSize="16dp"
             android:textColor="@color/white"
-            android:text="{DESCRIPTION}" />
+            android:text="" />
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="100dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
             android:layout_gravity="center"
             android:orientation="horizontal">
 
-            <android.support.design.widget.FloatingActionButton
+            <Button
                 android:id="@+id/takeAlertButton"
-                android:gravity="center"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_alignParentLeft="true"
+                android:textSize="16dp"
                 android:clickable="true"
                 android:onClick="saveAlert"
-                app:srcCompat="@android:drawable/checkbox_on_background" />
+                android:drawable="@drawable/alert_activity_button"
+                android:text="@string/alert_activity_taked" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/snoozeAlertButton"
-                android:gravity="center"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/laterAlertButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_alignParentLeft="true"
+                android:textSize="16dp"
                 android:clickable="true"
                 android:onClick="saveAlert"
-                app:srcCompat="@android:drawable/ic_lock_silent_mode" />
+                android:drawable="@drawable/alert_activity_button"
+                android:text="@string/alert_activity_later" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/rescheduleAlertButton"
-                android:gravity="center"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/cancelAlertButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_alignParentLeft="true"
+                android:textSize="16dp"
                 android:clickable="true"
                 android:onClick="saveAlert"
-                app:srcCompat="@android:drawable/ic_lock_silent_mode" />
+                android:drawable="@drawable/alert_activity_button"
+                android:text="@string/alert_activity_canceled" />
 
         </LinearLayout>
 

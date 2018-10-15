@@ -28,7 +28,7 @@ public class RemindService  extends IntentService {
     private static RemoteDatabase remoteDatabase;
 
 
-    public static final int DEFAULT_NOTIFICATION_ID = 11;
+    public static final int DEFAULT_NOTIFICATION_ID = 10;
 
     public RemindService(){
         super("RemindService");
@@ -71,30 +71,46 @@ public class RemindService  extends IntentService {
         checkDate.add(Calendar.MINUTE, -10);
         String missedDateF = sdFormat.format(checkDate.getTime());
 
-        //get task to notify
-        List<PillTask> pillTasks = localDatabase.localDAO().loadNotifyTasks(missedDateF, futureDateF, PillTask.STATUS_NEW);
-        for (final PillTask pillTask : pillTasks ) {
-            //activity
-            Intent dialogIntent = new Intent(this, AlertActivity.class);
-            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            dialogIntent.putExtra("ruleId", pillTask.getId());
-            startActivity(dialogIntent);
-
-            //send notify
-            String Ticker = getResources().getString(R.string.app_shrot_name)+". "+pillTask.getShort_title();
-            sendNotification(Ticker, pillTask.getShort_title(), pillTask.getDescription());
-
-            //todo: think about notify status
-            //update status
-            pillTask.setStatus(PillTask.STATUS_NOTTIFIED);
-            localDatabase.localDAO().updatePillTask(pillTask);
+        //Get tasks to notify
+        PillTask retryPillTask = localDatabase.localDAO().loadNotifyTask(missedDateF, futureDateF, PillTask.STATUS_NOTTIFIED);
+        if (retryPillTask == null ){
+            //First notify
+            PillTask pillTask = localDatabase.localDAO().loadNotifyTask(missedDateF, futureDateF, PillTask.STATUS_NEW);
+            if (pillTask != null ){
+                pillTaskProcess(pillTask);
+            }
+        } else {
+            //Retry notify
+            pillTaskProcess(retryPillTask);
         }
+
+    }
+
+    protected void pillTaskProcess( PillTask pillTask ) {
+        //activity
+        Intent dialogIntent = new Intent(this, AlertActivity.class);
+        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        dialogIntent.putExtra("alertPillTaskId", pillTask.getId());
+        startActivity(dialogIntent);
+
+        //send notify
+        String Ticker = getResources().getString(R.string.app_shrot_name)+". "+pillTask.getShort_title();
+        sendPillNotification(Ticker, pillTask);
+
+        //update status
+        pillTask.setStatus(PillTask.STATUS_NOTTIFIED);
+        localDatabase.localDAO().updatePillTask(pillTask);
+        localDatabase.close();
     }
 
     //Send custom notification
-    public void sendNotification(String Ticker, String Title, String Description) {
+    public void sendPillNotification(String Ticker, PillTask pillTask) {
+        String Title = pillTask.getShort_title();
+        String Description = pillTask.getDescription();
+
         //These three lines makes Notification to open main activity after clicking on it
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+        Intent notificationIntent = new Intent(this, AlertActivity.class);
+        notificationIntent.putExtra("alertPillTaskId", pillTask.getId());
         notificationIntent.setAction(Intent.ACTION_MAIN);
         notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -118,7 +134,7 @@ public class RemindService  extends IntentService {
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(DEFAULT_NOTIFICATION_ID, notification);
+        notificationManager.notify(DEFAULT_NOTIFICATION_ID*pillTask.getId(), notification);
     }
 
 }

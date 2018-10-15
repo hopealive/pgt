@@ -184,6 +184,7 @@ public class MainActivity extends AppActivity
                 @Override
                 public void onClick(View v) {
                     localDatabase.localDAO().deleteRuleById( btn_remove.getId() );
+                    localDatabase.localDAO().deletePillTaskByRuleId( btn_remove.getId() );
                     Toast.makeText(getApplicationContext(), R.string.message_success_row_deleted, Toast.LENGTH_SHORT).show();
                     refresh();
                 }

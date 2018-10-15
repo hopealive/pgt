@@ -94,4 +94,9 @@
     <string name="novalid_pillrule_name">Ошибка. Вы не ввели название</string>
 
     <string name="title_activity_confidence">Соглашение о конфиденциальности</string>
+
+    <string name="alert_activity_taked">Подтвердить</string>
+    <string name="alert_activity_later">Позже</string>
+    <string name="alert_activity_canceled">Пропустить</string>
+
 </resources>

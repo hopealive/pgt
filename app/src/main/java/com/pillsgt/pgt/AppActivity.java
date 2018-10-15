@@ -19,7 +19,7 @@ public class AppActivity extends AppCompatActivity  {
         initDatabases();
     }
 
-    protected void initDatabases(){
+    public void initDatabases(){
         localDatabase = InitDatabases.buildLocalDatabase(getApplicationContext());
         remoteDatabase = InitDatabases.buildRemoteDatabase(getApplicationContext());
     }
