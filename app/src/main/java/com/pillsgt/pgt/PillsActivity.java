@@ -310,8 +310,10 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
         String pillNameValue = pillName.getText().toString();
         pillRule.setName( pillNameValue );
 
-        String pillIdString = String.valueOf(pillName.getHint());
-        pillRule.setPill_id( Integer.parseInt(pillIdString) );
+        if ( pillName.getHint() != null){
+            String pillIdString = String.valueOf(pillName.getHint());
+            pillRule.setPill_id( Integer.parseInt(pillIdString) );
+        }
 
         CronManager cronManager = new CronManager();
         Integer cronType = cronManager.getTypeByPosition(cronTypeInput.getSelectedItemPosition() );
