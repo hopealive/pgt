@@ -81,6 +81,8 @@
     <string name="every_5_hours">Каждые 5 часа</string>
     <string name="every_6_hours">Каждые 6 часа</string>
 
+    <string name="enter_more_symbols">Введите больше символов</string>
+    <string name="no_results">Не найдено</string>
 
     <string name="label_frequency">Частота</string>
     <string name="every_day">Каждый день</string>

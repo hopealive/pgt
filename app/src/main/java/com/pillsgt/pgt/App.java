@@ -46,8 +46,9 @@ public class App extends Application {
 
         long sTime = System.currentTimeMillis();
 
-        initMyDatabase();
+        localDatabase = InitDatabases.buildLocalDatabase(getApplicationContext());
         initUserSettings();
+
         Boolean firstStart = testLocalUserSettingByName("first_start");
         if (!firstStart){
             this.duration = 0;
@@ -66,9 +67,6 @@ public class App extends Application {
 
     }
 
-    protected void initMyDatabase() {
-        localDatabase = InitDatabases.buildLocalDatabase(getApplicationContext());
-    }
 
     protected void initUserSettings() {
         userSettings = localDatabase.localDAO().getUserSettings();
@@ -101,8 +99,9 @@ public class App extends Application {
 
                     if (!testLocalUserSettingByName("first_start")) {
                         UserSetting firstStart = new UserSetting();
+                        firstStart.setName("first_start");
                         firstStart.setValue("exists");
-                        localDatabase.localDAO().updateUserSetting(firstStart);
+                        localDatabase.localDAO().addUserSetting(firstStart);
                     }
 
                 } catch (JSONException e) {
@@ -170,9 +169,10 @@ public class App extends Application {
         String eatingField;
         String[] days = new DateFormatSymbols(Locale.getDefault()).getWeekdays();
         for (final String field : Utils.defaultEatingFields ){
+            Integer j = 0;
             for (final String day : days ){
                 if ( day.length() > 0){
-                    eatingField = "task_"+day.toLowerCase()+"_"+field;
+                    eatingField = "task_"+j+"_"+field;
                     if (!testLocalUserSettingByName(eatingField)){
                         fUserSetting.setName(eatingField);
                         fUserSetting.setValue( Utils.defaultEatingTimes.get(i) );
@@ -181,10 +181,10 @@ public class App extends Application {
                         Log.e(TAG, "Eating Field "+eatingField+" already exists in new DB");
                     }
                 }
+                ++j;
             }
             ++i;
         }
-
     }
 
     /**

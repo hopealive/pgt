@@ -65,13 +65,14 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
     public static PillsAutoCompleteView pillsAutoComplete;
     public TextView pillsDescription;
     public ArrayAdapter<String> myAdapter;
-    public String[] item = new String[] {"..."};
+
+    public String[] autoCompleteListItems = new String[] {"..."};
 
     protected void initPillName() {
-        pillsAutoComplete = (PillsAutoCompleteView) findViewById(R.id.pills);
+        pillsAutoComplete = findViewById(R.id.pills);
         pillsAutoComplete.addTextChangedListener(new PillsAutoCompleteTextChangedListener(this));
 
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, item);
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, autoCompleteListItems);
         pillsAutoComplete.setThreshold(3);
         pillsAutoComplete.setAdapter(myAdapter);
 
@@ -366,7 +367,7 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
 
         //validate and save
         if (validatePillRule( pillRule)){
-            if ( updateRow == true){
+            if ( updateRow ){
                 localDatabase.localDAO().updateRule(pillRule);
             } else {
                 pillRule.setCreated_at( curDateFormatted );

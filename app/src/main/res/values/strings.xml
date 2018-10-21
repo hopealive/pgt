@@ -19,7 +19,7 @@
 
     <string name="alert_dialog_choose_value">Choose Value</string>
     <string name="alert_dialog_choose_number">Choose a number:</string>
-    <string name="alert_dialog_ok">Ok</string>
+    <string name="alert_dialog_ok">OK</string>
     <string name="alert_dialog_cancel">Cancel</string>
 
 
@@ -81,6 +81,9 @@
     <string name="every_4_hours">Every 4 hours</string>
     <string name="every_5_hours">Every 5 hours</string>
     <string name="every_6_hours">Every 6 hours</string>
+
+    <string name="enter_more_symbols">Enter more symbols</string>
+    <string name="no_results">No results</string>
 
     <string name="label_frequency">Frequency</string>
     <string name="every_day">Every day</string>

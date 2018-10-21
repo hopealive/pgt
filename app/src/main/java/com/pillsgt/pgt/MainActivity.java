@@ -138,11 +138,10 @@ public class MainActivity extends AppActivity
             ruleRow.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
             ruleRow.setOrientation(LinearLayout.HORIZONTAL);
             ruleRow.setPadding(0, 5,0,5);
-            ruleRow.setMinimumHeight(100);
 
             //block with texts
             LinearLayout textBlockLayout = new LinearLayout(this);
-            textBlockLayout.setLayoutParams(new LinearLayout.LayoutParams((int) (screenSize.x * 2 / 3), LayoutParams.MATCH_PARENT, 2f));
+            textBlockLayout.setLayoutParams(new LinearLayout.LayoutParams( (screenSize.x * 3/4), LayoutParams.MATCH_PARENT, 2f));
             textBlockLayout.setOrientation(LinearLayout.VERTICAL);
 
             TextView ruleTitle = new TextView(this);
@@ -168,7 +167,7 @@ public class MainActivity extends AppActivity
             } else if ( cronIntervalPosition >= 0 ) {
                 ruleDescriptionText += cron_interval_list[cronIntervalPosition] + ". ";
             }
-            ruleDescription.setText( ruleDescriptionText );
+            ruleDescription.setText( ruleDescriptionText + "\n" );
             textBlockLayout.addView(ruleDescription);
 
             ruleRow.addView(textBlockLayout);
@@ -204,8 +203,8 @@ public class MainActivity extends AppActivity
                     startActivity(i);
                 }
             });
-            btn_edit.setSize(android.support.design.widget.FloatingActionButton.SIZE_MINI);
             btn_edit.setImageResource(R.drawable.ic_baseline_create_24px);
+            btn_edit.setSize(android.support.design.widget.FloatingActionButton.SIZE_MINI);
             ((LinearLayout) buttonLayout).addView(btn_edit);
 
 

@@ -80,6 +80,8 @@
     <string name="every_5_hours">Кожні 5 годин</string>
     <string name="every_6_hours">Кожні 6 годин</string>
 
+    <string name="enter_more_symbols">Введіть більше символів</string>
+    <string name="no_results">Не знайдено</string>
 
     <string name="label_frequency">Частота</string>
     <string name="every_day">Кожен день</string>

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.pillsgt.pgt.PillsActivity;
+import com.pillsgt.pgt.R;
 import com.pillsgt.pgt.databases.InitDatabases;
 import com.pillsgt.pgt.databases.RemoteDatabase;
 import com.pillsgt.pgt.models.remote.Keyword;
@@ -19,7 +20,7 @@ import java.util.List;
 public class PillsAutoCompleteTextChangedListener implements TextWatcher{
 
     public static final String TAG = "PillsAutoListener";
-    Context context;
+    private Context context;
 
     public PillsAutoCompleteTextChangedListener(Context context){
         this.context = context;
@@ -34,9 +35,8 @@ public class PillsAutoCompleteTextChangedListener implements TextWatcher{
         if ( pillNameValue.contains(" | ") ) {
             String[] pillNameValues = pillNameValue.split(" \\| ");
 
-            String pillOriginalId = "";
             if ( pillNameValues[2] != null && pillNameValues[2].contains("#") ) {
-                pillOriginalId = pillNameValues[2].replace("#", "");
+                String pillOriginalId = pillNameValues[2].replace("#", "");
                 pillsAutoComplete.setText(pillNameValues[0]);
                 pillsAutoComplete.setHint(pillOriginalId);
 
@@ -53,8 +53,11 @@ public class PillsAutoCompleteTextChangedListener implements TextWatcher{
 
     @Override
     public void onTextChanged(CharSequence userInput, int start, int before, int count) {
-        List<String> keywordIdsList = new ArrayList<String>();
+        List<String> keywordIdsList = new ArrayList<>();
         RemoteDatabase remoteDatabase = InitDatabases.buildRemoteDatabase( context );
+
+        boolean resultExists = false;
+        PillsActivity mainActivity = ((PillsActivity) context);
 
         if ( userInput.toString().length() >= 3 ){
             List<Keyword> keywords = remoteDatabase.remoteDAO().searchKeywords( userInput.toString() );
@@ -67,38 +70,61 @@ public class PillsAutoCompleteTextChangedListener implements TextWatcher{
             }
         }
 
-        if ( keywordIdsList.size() > 0 && keywordIdsList.size() < 999 ){
-            List<KeywordRelation> keywordRelations = remoteDatabase.remoteDAO().getKeywordRelationsByKeywordId(keywordIdsList);
-            List<String> pillIds = new ArrayList<String>();
-            String originalIdString;
+        if ( keywordIdsList.size() > 0 ){
+            if ( keywordIdsList.size() < 100 ){
+                List<KeywordRelation> keywordRelations = remoteDatabase.remoteDAO().getKeywordRelationsByKeywordId(keywordIdsList);
+                List<String> pillIds = new ArrayList<>();
+                String originalIdString;
 
-            for (final KeywordRelation keywordRelation : keywordRelations ){
-                originalIdString = Integer.toString(keywordRelation.getOriginal_id());
-                if (!pillIds.contains(originalIdString )){
-                    pillIds.add( originalIdString  );
+                for (final KeywordRelation keywordRelation : keywordRelations ){
+                    originalIdString = Integer.toString(keywordRelation.getOriginal_id());
+                    if (!pillIds.contains(originalIdString )){
+                        pillIds.add( originalIdString  );
+                    }
                 }
-            }
 
-            PillsActivity mainActivity = ((PillsActivity) context);
-            if ( pillIds.size() > 0 ){
-                List<PillsUa> pillsUa = remoteDatabase.remoteDAO().loadPillsUaByIds(pillIds);
+                if ( pillIds.size() > 0 ){
+                    List<PillsUa> pillsUa = remoteDatabase.remoteDAO().loadPillsUaByIds(pillIds);
 
-                String[] item = new String[pillsUa.size()];
-                int i = 0;
-                for (final PillsUa pillUa : pillsUa ){
-                    item[i] = pillUa.getOriginal_name()
-                        + " | " + pillUa.getDosage_form()
-                        + " | #" + Integer.toString(pillUa.getId());
-                    ++i;
+                    String[] item = new String[pillsUa.size()];
+                    int i = 0;
+                    for (final PillsUa pillUa : pillsUa ){
+                        item[i] = pillUa.getOriginal_name()
+                            + " | " + pillUa.getDosage_form()
+                            + " | #" + Integer.toString(pillUa.getId());
+                        ++i;
+                    }
+
+                    if ( item.length > 0 ){
+                        resultExists = true;
+                        if (item.length < 100 ){
+                            mainActivity.autoCompleteListItems = item;
+                        } else {
+                            mainActivity.autoCompleteListItems = new String[]{
+                                    context.getResources().getString(R.string.enter_more_symbols)
+                            };
+                        }
+                    }
                 }
-                mainActivity.item = item;
-
-                // update the adapter
-//                mainActivity.myAdapter.notifyDataSetChanged();//todo: think about this
-                mainActivity.myAdapter = new ArrayAdapter<String>(mainActivity, android.R.layout.simple_dropdown_item_1line, mainActivity.item);
-                mainActivity.pillsAutoComplete.setAdapter(mainActivity.myAdapter);
+            } else {
+                mainActivity.autoCompleteListItems = new String[]{
+                        context.getResources().getString(R.string.enter_more_symbols)
+                };
             }
         }
+
+        if ( !resultExists ){
+            mainActivity.autoCompleteListItems = new String[]{
+                    context.getResources().getString(R.string.no_results)
+            };
+        }
+
+
+        // update the adapter
+        mainActivity.myAdapter = new ArrayAdapter<>(mainActivity, android.R.layout.simple_dropdown_item_1line, mainActivity.autoCompleteListItems);
+        mainActivity.myAdapter.notifyDataSetChanged();
+        mainActivity.pillsAutoComplete.setAdapter(mainActivity.myAdapter);
+
     }
 
 }
