@@ -68,8 +68,6 @@ public class DownloadDbManager {
 
         protected boolean download() {
             try {
-                Log.d(TAG, "Start download DB by url: \n"+syncDbLink);
-
                 URL url = new URL(syncDbLink);//Create Download URl
                 HttpURLConnection c = (HttpURLConnection) url.openConnection();
                 c.setRequestMethod("GET");
