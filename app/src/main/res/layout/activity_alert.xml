@@ -20,7 +20,7 @@
             android:id="@+id/titleAlertActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="left"
             android:textColor="@color/white"
             android:textSize="24dp"
             android:textStyle="bold"
@@ -28,83 +28,92 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/alertMainBlock"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:paddingTop="50dp"
-        android:layout_gravity="center"
-        android:background="@color/colorTransparentPurple"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/alertTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="24dp"
-            android:textStyle="bold"
-            android:text="" />
-
-        <TextView
-            android:id="@+id/alertDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="16dp"
-            android:textColor="@color/white"
-            android:text="" />
-
-
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp"
+            android:id="@+id/alertMainBlock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            android:paddingTop="0dp"
             android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:background="@color/colorTransparentPurple"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/takeAlertButton"
+            <TextView
+                android:id="@+id/alertTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                android:text="" />
+
+            <ScrollView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:paddingTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:fillViewport="true">
+
+            <TextView
+                android:id="@+id/alertDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                android:text="" />
+            </ScrollView>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_alignParentLeft="true"
-                android:textSize="16dp"
-                android:clickable="true"
-                android:onClick="saveAlert"
-                android:drawable="@drawable/alert_activity_button"
-                android:text="@string/alert_activity_taked" />
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/laterAlertButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_alignParentLeft="true"
-                android:textSize="16dp"
-                android:clickable="true"
-                android:onClick="saveAlert"
-                android:drawable="@drawable/alert_activity_button"
-                android:text="@string/alert_activity_later" />
+                <Button
+                    android:id="@+id/takeAlertButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="16dp"
+                    android:clickable="true"
+                    android:onClick="saveAlert"
+                    android:drawable="@drawable/alert_activity_button"
+                    android:text="@string/alert_activity_taked" />
 
-            <Button
-                android:id="@+id/cancelAlertButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_alignParentLeft="true"
-                android:textSize="16dp"
-                android:clickable="true"
-                android:onClick="saveAlert"
-                android:drawable="@drawable/alert_activity_button"
-                android:text="@string/alert_activity_canceled" />
+                <Button
+                    android:id="@+id/laterAlertButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="16dp"
+                    android:clickable="true"
+                    android:onClick="saveAlert"
+                    android:drawable="@drawable/alert_activity_button"
+                    android:text="@string/alert_activity_later" />
+
+                <Button
+                    android:id="@+id/cancelAlertButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="16dp"
+                    android:clickable="true"
+                    android:onClick="saveAlert"
+                    android:drawable="@drawable/alert_activity_button"
+                    android:text="@string/alert_activity_canceled" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    <!--</ScrollView>-->
 
 </android.support.constraint.ConstraintLayout>

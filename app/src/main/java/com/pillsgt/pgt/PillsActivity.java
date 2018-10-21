@@ -61,6 +61,11 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
         initControls();
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(PillsActivity.this,MainActivity.class));
+    }
+
 
     public static PillsAutoCompleteView pillsAutoComplete;
     public TextView pillsDescription;

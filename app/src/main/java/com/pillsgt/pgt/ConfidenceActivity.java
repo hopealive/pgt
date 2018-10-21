@@ -33,6 +33,12 @@ public class ConfidenceActivity extends AppActivity {
         });
     }
 
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(ConfidenceActivity.this,MainActivity.class));
+    }
+
     protected void initDoc() {
         Doc doc = localDatabase.localDAO().loadDocByAlias("confidence");
         if ( doc != null ){

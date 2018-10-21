@@ -35,6 +35,12 @@ public class TermsActivity extends AppActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(TermsActivity.this,MainActivity.class));
+    }
+
+
     protected void initDoc() {
         Doc doc = localDatabase.localDAO().loadDocByAlias("terms");
         if ( doc != null ){

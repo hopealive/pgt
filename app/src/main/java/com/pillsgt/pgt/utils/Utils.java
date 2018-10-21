@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import com.pillsgt.pgt.ConfidenceActivity;
 import com.pillsgt.pgt.MainActivity;
+import com.pillsgt.pgt.MedicalsActivity;
 import com.pillsgt.pgt.PillsActivity;
 import com.pillsgt.pgt.R;
 import com.pillsgt.pgt.TermsActivity;
@@ -130,7 +131,7 @@ public class Utils {
         } else if (id == R.id.left_nav_add) {
             activity.startActivity(new Intent(activity,PillsActivity.class));
         } else if (id == R.id.left_nav_medicals) {
-            Log.d("LMENU", "MEDICALS");//todo: remove
+            activity.startActivity(new Intent(activity,MedicalsActivity.class));
         } else if (id == R.id.left_nav_profile) {
             Log.d("LMENU", "PROFILE");//todo: remove
         } else if (id == R.id.left_nav_settings) {
