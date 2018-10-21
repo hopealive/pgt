@@ -121,7 +121,7 @@ public class MainActivity extends AppActivity
         List<PillRule> pillRules = localDatabase.localDAO().getRules();
 
         View ruleBlock =  findViewById(R.id.index_pill_rules_list);
-        ruleBlock.setPadding(10, 0,10,10);
+        ruleBlock.setPadding(10, 0,5,10);
 
         CronManager cronManager = new CronManager();
         String[] cron_type_list = getResources().getStringArray(R.array.cron_type);
@@ -137,7 +137,8 @@ public class MainActivity extends AppActivity
             LinearLayout ruleRow = new LinearLayout(this);
             ruleRow.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
             ruleRow.setOrientation(LinearLayout.HORIZONTAL);
-            ruleRow.setPadding(0, 0,0,10);
+            ruleRow.setPadding(0, 5,0,5);
+            ruleRow.setMinimumHeight(100);
 
             //block with texts
             LinearLayout textBlockLayout = new LinearLayout(this);
@@ -189,7 +190,8 @@ public class MainActivity extends AppActivity
                     refresh();
                 }
             });
-            btn_remove.setImageResource(android.R.drawable.ic_delete);
+            btn_remove.setImageResource(R.drawable.ic_baseline_clear_24px);
+            btn_remove.setSize(android.support.design.widget.FloatingActionButton.SIZE_MINI);
             ((LinearLayout) buttonLayout).addView(btn_remove);
 
             final FloatingActionButton btn_edit = new FloatingActionButton(this);
@@ -202,12 +204,13 @@ public class MainActivity extends AppActivity
                     startActivity(i);
                 }
             });
-            btn_edit.setImageResource(android.R.drawable.ic_input_get);
+            btn_edit.setSize(android.support.design.widget.FloatingActionButton.SIZE_MINI);
+            btn_edit.setImageResource(R.drawable.ic_baseline_create_24px);
             ((LinearLayout) buttonLayout).addView(btn_edit);
+
 
             ruleRow.addView(buttonLayout);
             ((LinearLayout) ruleBlock).addView(ruleRow);
-
         }
 
         TextView mainPillCounter = findViewById(R.id.mainPillCounter);
