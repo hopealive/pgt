@@ -14,6 +14,7 @@
     <string name="button_edit">Edit</string>
 
     <!--Messages    -->
+    <string name="exit_press_back_twice_message">Press back again to exit</string>
     <string name="message_success_row_deleted">Record deleted successfully</string>
     <string name="message_data_saved">Data saved</string>
 

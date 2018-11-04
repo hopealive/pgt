@@ -133,9 +133,9 @@ public class Utils {
         } else if (id == R.id.left_nav_medicals) {
             activity.startActivity(new Intent(activity,MedicalsActivity.class));
         } else if (id == R.id.left_nav_profile) {
-            Log.d("LMENU", "PROFILE");//todo: remove
+Log.d("LMENU", "PROFILE");//todo: remove
         } else if (id == R.id.left_nav_settings) {
-            Log.d("LMENU", "SETTINGS");//todo: remove
+Log.d("LMENU", "SETTINGS");//todo: remove
         } else if (id == R.id.left_nav_terms) {
             activity.startActivity(new Intent(activity,TermsActivity.class));
         } else if (id == R.id.left_nav_confidence) {
@@ -160,9 +160,8 @@ public class Utils {
 //        } else if (id == R.id.right_nav_logout){
 //            Log.d("RIGHT_MENU", "right_nav_logout");//TODO: make activiity
         } else {
-            Log.d("RIGHT_MENU", "NULL");//TODO: make activiity
+            Log.d("RIGHT_MENU", "No menu item");//TODO: make activiity
         }
-
     }
 
     /**
@@ -180,8 +179,7 @@ public class Utils {
                     activity.startActivity(new Intent(activity,PillsActivity.class));
                     return true;
                 case R.id.bottom_nav_medicals:
-                    //todo: make another activity class
-Log.i("BOTTOM_MENU", "open medicals");//todo: remove
+                    activity.startActivity(new Intent(activity,MedicalsActivity.class));
                     return true;
             }
             return false;

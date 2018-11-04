@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,13 +65,25 @@ public class MainActivity extends AppActivity
         renderPillsList();
     }
 
+    private boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.doubleBackToExitPressedOnce = false;
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        } else  {
+            if ( doubleBackToExitPressedOnce ){
+                finishAffinity();
+            }
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, R.string.exit_press_back_twice_message, Toast.LENGTH_SHORT).show();
         }
     }
 

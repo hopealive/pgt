@@ -10,14 +10,11 @@ import android.util.Log;
 import com.pillsgt.pgt.databases.InitDatabases;
 import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.databases.RemoteDatabase;
-import com.pillsgt.pgt.models.PillRule;
 import com.pillsgt.pgt.models.PillTask;
-import com.pillsgt.pgt.models.remote.Keyword;
 import com.pillsgt.pgt.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 import java.util.TimeZone;
 
 public class RemindService  extends IntentService {
@@ -71,7 +68,9 @@ public class RemindService  extends IntentService {
         checkDate.add(Calendar.MINUTE, -10);
         String missedDateF = sdFormat.format(checkDate.getTime());
 
-        //Get tasks to notify
+        //todo: get and make system notifications
+
+        //Get pill tasks to notify
         PillTask retryPillTask = localDatabase.localDAO().loadNotifyTask(missedDateF, futureDateF, PillTask.STATUS_NOTTIFIED);
         if (retryPillTask == null ){
             //First notify
