@@ -7,7 +7,8 @@
     <string name="action_help">Допомога</string>
     <string name="today_drugs">Препаратів для прийому сьогодні</string>
     <string name="empty_index_list">Препарати для прийому відсутні</string>
-    <string name="title_activity_settings">Настройки</string>
+    <string name="label_my_medicals">Мої препарати</string>
+    <string name="title_activity_settings">Налаштування</string>
 
     <!--Buttons-->
     <string name="button_add">Додати</string>

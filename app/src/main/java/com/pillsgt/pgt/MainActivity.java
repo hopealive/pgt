@@ -45,22 +45,7 @@ public class MainActivity extends AppActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        BottomNavigationView navigation = findViewById(R.id.bottom_nav);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        //left menu
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.bringToFront();//so interesting hook for menu
-        navigationView.setNavigationItemSelectedListener(this);
+        initMainMenu(mOnNavigationItemSelectedListener, this);
 
         renderPillsList();
     }
@@ -133,7 +118,7 @@ public class MainActivity extends AppActivity
         //get data
         List<PillRule> pillRules = localDatabase.localDAO().getRules();
 
-        View ruleBlock =  findViewById(R.id.index_pill_rules_list);
+        View ruleBlock =  findViewById(R.id.main_body_list);
         ruleBlock.setPadding(10, 0,5,10);
 
         CronManager cronManager = new CronManager();
@@ -225,8 +210,8 @@ public class MainActivity extends AppActivity
             ((LinearLayout) ruleBlock).addView(ruleRow);
         }
 
-        TextView mainPillCounter = findViewById(R.id.mainPillCounter);
-        mainPillCounter.setText( Integer.toString( pillRules.size() ) );
+        TextView mainCounter = findViewById(R.id.mainCounter);
+        mainCounter.setText( Integer.toString( pillRules.size() ) );
     }
 
 }

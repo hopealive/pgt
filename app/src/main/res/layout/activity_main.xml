@@ -9,7 +9,7 @@ android:fitsSystemWindows="true"
 tools:openDrawer="start">
 
     <include
-        layout="@layout/app_bar_nav"
+        layout="@layout/bar_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -22,24 +22,26 @@ tools:openDrawer="start">
         app:headerLayout="@layout/nav_header_nav"
         app:menu="@menu/left_nav" />
 
+    <!--MAIN WRAPPER-->
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/mainPillCounterLayout"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="50dp"
-            android:paddingTop="25dp"
-            android:layout_gravity="top|center"
-            android:background="@color/colorPrimaryDark"
-            android:orientation="vertical">
+    <!--HEADER-->
+    <LinearLayout
+        android:id="@+id/mainCounterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="50dp"
+        android:paddingTop="25dp"
+        android:layout_gravity="top|center"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/mainPillCounterLabel"
+            android:id="@+id/mainCounterLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -48,7 +50,7 @@ tools:openDrawer="start">
             android:text="@string/today_drugs" />
 
         <TextView
-            android:id="@+id/mainPillCounter"
+            android:id="@+id/mainCounter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -58,14 +60,14 @@ tools:openDrawer="start">
 
     </LinearLayout>
 
-
+    <!--BODY -->
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:paddingTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/index_pill_rules_list"
+            android:id="@+id/main_body_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -77,24 +79,9 @@ tools:openDrawer="start">
 
     </LinearLayout>
 
-
-    <android.support.constraint.ConstraintLayout
+    <include layout="@layout/nav_bottom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_nav"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-        android:layout_marginStart="0dp"
-        android:background="?android:attr/windowBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav" />
-
-    </android.support.constraint.ConstraintLayout>
+        android:layout_height="match_parent" />
 
 </android.support.v4.widget.DrawerLayout>
 

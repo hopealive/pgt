@@ -5,8 +5,9 @@
     <string name="title_activity_add_pills">Add</string>
     <string name="action_about">About project</string>
     <string name="action_help">Help</string>
-    <string name="today_drugs">Drugs for admission today</string>
+    <string name="today_drugs">Medicals for admission today</string>
     <string name="empty_index_list">No medicals</string>
+    <string name="label_my_medicals">My medicals</string>
     <string name="title_activity_settings">Settings</string>
 
     <!--Buttons-->
