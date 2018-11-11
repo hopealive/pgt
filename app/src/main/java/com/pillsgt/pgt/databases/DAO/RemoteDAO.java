@@ -39,4 +39,6 @@ public interface RemoteDAO {
     @Query("select * from pills_ua where id IN (:ids)")
     List<PillsUa> loadPillsUaByIds(List<String> ids);
 
+    @Query("select * from pills_ua where id IN (:ids)")
+    List<PillsUa> loadPillsUaByIntIds(List<Integer> ids);
 }

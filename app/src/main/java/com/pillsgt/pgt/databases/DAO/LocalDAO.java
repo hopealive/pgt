@@ -41,6 +41,9 @@ public interface LocalDAO {
     @Query("select * from pill_rules")
     List<PillRule> getRules();
 
+    @Query("select pill_id from pill_rules")
+    List<Integer> getPillIds();
+
     @Insert
     long addRule(PillRule rule);
 

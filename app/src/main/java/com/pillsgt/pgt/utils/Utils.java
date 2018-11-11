@@ -154,14 +154,13 @@ Log.d("LMENU", "SETTINGS");//todo: remove
     public static void rightOnNavigationItemSelected(MenuItem item, Activity activity){
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.right_nav_settings) {
-            Log.d("RIGHT_MENU", "right_nav_settings");//TODO: make activiity
+//        if (id == R.id.right_nav_settings) {
+//            Log.d("RIGHT_MENU", "right_nav_settings");//TODO: make activiity
 //        } else if (id == R.id.right_nav_logout){
 //            Log.d("RIGHT_MENU", "right_nav_logout");//TODO: make activiity
-        } else {
-            Log.d("RIGHT_MENU", "No menu item");//TODO: make activiity
-        }
+//        } else {
+//            Log.d("RIGHT_MENU", "No menu item");//TODO: make activiity
+//        }
     }
 
     /**
