@@ -4,10 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +17,6 @@ import java.util.TimeZone;
 
 public class AlertActivity extends AppActivity {
 
-    private static final String TAG = "AlertState";
     private PillTask pillTask;
 
     @Override

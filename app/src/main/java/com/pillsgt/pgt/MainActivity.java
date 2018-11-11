@@ -8,12 +8,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,6 +44,7 @@ public class MainActivity extends AppActivity
         setContentView(R.layout.activity_main);
         initMainMenu(mOnNavigationItemSelectedListener, this);
 
+        setTodayTasksCounter();
         renderPillsList();
     }
 
@@ -112,6 +110,11 @@ public class MainActivity extends AppActivity
         finish();
         overridePendingTransition(0, 0);
         startActivity(intent);
+    }
+
+    protected void setTodayTasksCounter() {
+        TextView mainCounter = findViewById(R.id.mainCounter);
+        mainCounter.setText( localDatabase.localDAO().countPillTasks() );
     }
 
     protected void renderPillsList() {
@@ -209,9 +212,6 @@ public class MainActivity extends AppActivity
             ruleRow.addView(buttonLayout);
             ((LinearLayout) ruleBlock).addView(ruleRow);
         }
-
-        TextView mainCounter = findViewById(R.id.mainCounter);
-        mainCounter.setText( Integer.toString( pillRules.size() ) );
     }
 
 }

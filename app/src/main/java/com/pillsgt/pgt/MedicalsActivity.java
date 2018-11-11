@@ -1,9 +1,11 @@
 package com.pillsgt.pgt;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,8 +21,6 @@ import java.util.List;
 
 public class MedicalsActivity extends AppActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private static final String TAG = "MaTAG";
-
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -42,6 +42,7 @@ public class MedicalsActivity extends AppActivity
         MenuItem menuItem = bottomNavigationView.getMenu().findItem(R.id.bottom_nav_medicals);
         menuItem.setChecked(true);
 
+        setMedicalCounter();
         renderMedicalsList();
     }
 
@@ -97,15 +98,18 @@ public class MedicalsActivity extends AppActivity
         View listBlock =  findViewById(R.id.main_body_list);
         listBlock.setPadding(10, 0,5,10);
 
+        Point screenSize = Utils.getScreenSize(getWindowManager().getDefaultDisplay() );
+
         for (final PillsUa pillUa : pillsUa ){
 
             LinearLayout listRow = new LinearLayout(this);
             listRow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
             listRow.setOrientation(LinearLayout.HORIZONTAL);
-            listRow.setPadding(0, 5,0,5);
+            listRow.setPadding(0, 5,10,5);
 
             //block with texts
             LinearLayout textBlockLayout = new LinearLayout(this);
+            textBlockLayout.setLayoutParams(new LinearLayout.LayoutParams( (screenSize.x * 3/4), LinearLayout.LayoutParams.MATCH_PARENT, 2f));
             textBlockLayout.setOrientation(LinearLayout.VERTICAL);
 
             TextView itemTitle = new TextView(this);
@@ -124,6 +128,30 @@ public class MedicalsActivity extends AppActivity
             textBlockLayout.addView(itemDescription);
 
             listRow.addView(textBlockLayout);
+
+
+            //block with buttons
+            View buttonLayout = new LinearLayout(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+            buttonLayout.setLayoutParams(params);
+
+            final FloatingActionButton btn_show = new FloatingActionButton(this);
+            btn_show.setId(pillUa.getId());
+            btn_show.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(MedicalsActivity.this,MedicalActivity.class);
+                    i.putExtra("pillId", Integer.valueOf(btn_show.getId()) );
+                    startActivity(i);
+                }
+            });
+            btn_show.setImageResource(R.drawable.ic_baseline_create_24px);
+            btn_show.setSize(android.support.design.widget.FloatingActionButton.SIZE_MINI);
+            ((LinearLayout) buttonLayout).addView(btn_show);
+
+
+            listRow.addView(buttonLayout);
+
             ((LinearLayout) listBlock).addView(listRow);
 
         }

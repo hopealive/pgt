@@ -1,6 +1,5 @@
 package com.pillsgt.pgt;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -8,10 +7,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.pillsgt.pgt.databases.InitDatabases;
 import com.pillsgt.pgt.databases.LocalDatabase;
 import com.pillsgt.pgt.databases.RemoteDatabase;
+
+import java.util.List;
 
 public class AppActivity extends AppCompatActivity  {
 
@@ -47,6 +49,12 @@ public class AppActivity extends AppCompatActivity  {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.bringToFront();//so interesting hook for menu
         navigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
+    }
+
+    public void setMedicalCounter() {
+        TextView mainCounter = findViewById(R.id.mainCounter);
+        List<Integer> pillIds = localDatabase.localDAO().getPillIds();
+        mainCounter.setText( Integer.toString( pillIds.size() ) );
     }
 
 }

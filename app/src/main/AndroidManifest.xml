@@ -65,7 +65,8 @@
             android:name=".ConfidenceActivity"
             android:label="@string/title_activity_confidence"
             android:theme="@style/AppTheme" />
-        <activity android:name=".MedicalsActivity"></activity>
+        <activity android:name=".MedicalsActivity" />
+        <activity android:name=".MedicalActivity"></activity>
     </application>
 
 </manifest>

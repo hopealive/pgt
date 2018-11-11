@@ -41,6 +41,9 @@ public interface LocalDAO {
     @Query("select * from pill_rules")
     List<PillRule> getRules();
 
+    @Query("select * from pill_rules where pill_id = :id")
+    List<PillRule> getRulesByPillId(int id);
+
     @Query("select pill_id from pill_rules")
     List<Integer> getPillIds();
 
@@ -55,6 +58,8 @@ public interface LocalDAO {
 
 
     //pill_tasks
+    @Query("select count(id) from pill_tasks where strftime('%Y-%m-%d', replace(alarm_at, \"GMT+00:00\", \"\")) = date('now')")
+    String countPillTasks();
 
     @Query("select * from pill_tasks where id = :id")
     PillTask loadPillTaskById(int id);
