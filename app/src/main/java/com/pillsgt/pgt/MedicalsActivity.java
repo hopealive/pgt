@@ -105,12 +105,13 @@ public class MedicalsActivity extends AppActivity
             LinearLayout listRow = new LinearLayout(this);
             listRow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
             listRow.setOrientation(LinearLayout.HORIZONTAL);
-            listRow.setPadding(0, 5,10,5);
+            listRow.setPadding(0, 5,5,5);
 
             //block with texts
             LinearLayout textBlockLayout = new LinearLayout(this);
-            textBlockLayout.setLayoutParams(new LinearLayout.LayoutParams( (screenSize.x * 3/4), LinearLayout.LayoutParams.MATCH_PARENT, 2f));
+            textBlockLayout.setLayoutParams(new LinearLayout.LayoutParams( (screenSize.x * 4/5), LinearLayout.LayoutParams.MATCH_PARENT, 2f));
             textBlockLayout.setOrientation(LinearLayout.VERTICAL);
+            textBlockLayout.setPadding(0, 0,20,0);
 
             TextView itemTitle = new TextView(this);
             itemTitle.setText( pillUa.getOriginal_name() );
@@ -145,7 +146,7 @@ public class MedicalsActivity extends AppActivity
                     startActivity(i);
                 }
             });
-            btn_show.setImageResource(R.drawable.ic_baseline_create_24px);
+            btn_show.setImageResource(R.drawable.ic_baseline_pageview_24px);
             btn_show.setSize(android.support.design.widget.FloatingActionButton.SIZE_MINI);
             ((LinearLayout) buttonLayout).addView(btn_show);
 
