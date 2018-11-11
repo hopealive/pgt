@@ -26,10 +26,11 @@
                 android:id="@+id/left_nav_settings"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="@string/l_menu_settings" />
-            <item
-                android:id="@+id/left_nav_profile"
-                android:icon="@drawable/material_account_box"
-                android:title="@string/l_menu_profile" />
+            <!--think about this in future-->
+            <!--<item-->
+                <!--android:id="@+id/left_nav_profile"-->
+                <!--android:icon="@drawable/material_account_box"-->
+                <!--android:title="@string/l_menu_profile" />-->
         </menu>
     </item>
 

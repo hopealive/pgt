@@ -66,7 +66,10 @@
             android:label="@string/title_activity_confidence"
             android:theme="@style/AppTheme" />
         <activity android:name=".MedicalsActivity" />
-        <activity android:name=".MedicalActivity"></activity>
+        <activity android:name=".MedicalActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

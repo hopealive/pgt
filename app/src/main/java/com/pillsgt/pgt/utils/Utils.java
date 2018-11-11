@@ -17,6 +17,7 @@ import com.pillsgt.pgt.MainActivity;
 import com.pillsgt.pgt.MedicalsActivity;
 import com.pillsgt.pgt.PillsActivity;
 import com.pillsgt.pgt.R;
+import com.pillsgt.pgt.SettingsActivity;
 import com.pillsgt.pgt.TermsActivity;
 
 import java.util.Arrays;
@@ -132,10 +133,10 @@ public class Utils {
             activity.startActivity(new Intent(activity,PillsActivity.class));
         } else if (id == R.id.left_nav_medicals) {
             activity.startActivity(new Intent(activity,MedicalsActivity.class));
-        } else if (id == R.id.left_nav_profile) {
-Log.d("LMENU", "PROFILE");//todo: remove
+//        } else if (id == R.id.left_nav_profile) {
+//Log.d("LMENU", "PROFILE");//todo: remove
         } else if (id == R.id.left_nav_settings) {
-Log.d("LMENU", "SETTINGS");//todo: remove
+            activity.startActivity(new Intent(activity,SettingsActivity.class));
         } else if (id == R.id.left_nav_terms) {
             activity.startActivity(new Intent(activity,TermsActivity.class));
         } else if (id == R.id.left_nav_confidence) {
