@@ -112,10 +112,8 @@
     <string name="pref_title_display_name">Display name</string>
     <string name="pref_default_display_name">Enter name</string>
 
-    <!-- Example settings for Time settings -->
-    <string name="pref_header_time_settings">Time settings</string>
-
-    <!--<string name="pref_header_data_sync">Data sync</string>-->
+    <!-- Settings for Time settings -->
+    <string name="pref_header_schedule_settings">Schedule &amp; time settings</string>
 
     <string name="pref_title_sync_frequency">Sync frequency</string>
     <string-array name="pref_sync_frequency_titles">
@@ -147,11 +145,15 @@
         <item>3</item>
     </string-array>
 
-    <string-array name="multi_select_list_preference_default_value" />
+    <!--Time settings-->
+    <string name="time_breakfast">Breakfast Time</string>
+    <string name="time_lunch">Lunch Time</string>
+    <string name="time_dinner">Dinner Time</string>
+    <string name="time_snack">Snack Time</string>
+    <string name="time_supper">Supper Time</string>
 
-    <string name="pref_title_system_sync_settings">System sync settings</string>
 
-    <!-- Example settings for Notifications -->
+    <!-- Settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
 
     <string name="pref_title_new_message_notifications">New message notifications</string>

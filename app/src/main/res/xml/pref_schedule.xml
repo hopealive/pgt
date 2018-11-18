@@ -1,0 +1,32 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="180"
+        android:entries="@array/pref_sync_frequency_titles"
+        android:entryValues="@array/pref_sync_frequency_values"
+        android:key="sync_frequency"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_sync_frequency" />
+
+    <com.pillsgt.pgt.TimePreference
+        android:key="time_breakfast"
+        android:title="@string/time_breakfast"/>
+
+    <com.pillsgt.pgt.TimePreference
+        android:key="time_lunch"
+        android:title="@string/time_lunch"/>
+
+    <com.pillsgt.pgt.TimePreference
+        android:key="time_dinner"
+        android:title="@string/time_dinner"/>
+
+    <com.pillsgt.pgt.TimePreference
+        android:key="time_snack"
+        android:title="@string/time_snack"/>
+
+    <com.pillsgt.pgt.TimePreference
+        android:key="time_supper"
+        android:title="@string/time_supper"/>
+
+</PreferenceScreen>
