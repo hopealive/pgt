@@ -6,6 +6,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.pillsgt.pgt.models.PillRule;
+import com.pillsgt.pgt.models.PillTimeRule;
 import com.pillsgt.pgt.models.PillTask;
 import com.pillsgt.pgt.models.UserSetting;
 import com.pillsgt.pgt.models.Doc;
@@ -34,7 +35,6 @@ public interface LocalDAO {
 
 
     //pill_rules
-
     @Query("select * from pill_rules where id = :id")
     PillRule loadRuleById(int id);
 
@@ -55,6 +55,11 @@ public interface LocalDAO {
 
     @Query("delete from pill_rules where id= :id")
     void deleteRuleById(int id);
+
+
+    //pill_time_rules
+    @Query("select * from pill_time_rules where rule_id = :rule_id")
+    List<PillTimeRule> loadTimeRuleByRuleId(int rule_id);
 
 
     //pill_tasks
