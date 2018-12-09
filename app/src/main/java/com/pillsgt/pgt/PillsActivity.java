@@ -6,16 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -24,7 +22,6 @@ import android.widget.Toast;
 
 import com.pillsgt.pgt.fragments.NumOfDaysFragment;
 import com.pillsgt.pgt.fragments.PillsTimeInputFragment;
-import com.pillsgt.pgt.fragments.TimePickerFragment;
 import com.pillsgt.pgt.managers.keywordautocomplete.PillsAutoCompleteTextChangedListener;
 import com.pillsgt.pgt.managers.keywordautocomplete.PillsAutoCompleteView;
 import com.pillsgt.pgt.managers.CronManager;
@@ -41,7 +38,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static java.lang.Thread.sleep;
 
 public class PillsActivity extends AppActivity implements
         NumOfDaysFragment.NodInterface {
@@ -102,7 +98,23 @@ public class PillsActivity extends AppActivity implements
                 R.array.cron_type, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(cronTypeListener);
     }
+
+    Spinner.OnItemSelectedListener cronTypeListener = new Spinner.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+            PillRule pillRule = new PillRule();
+            pillRule = getCronValues(pillRule);
+
+            clearTimeInputs();
+            List<String> timeList = PillsDateTimeLists.getTimeList(pillRule);
+            generateTimeInputs(timeList);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) { }
+    };
 
     protected void initCronInterval(){
         Spinner spinner = findViewById(R.id.cron_interval);
@@ -110,7 +122,25 @@ public class PillsActivity extends AppActivity implements
                 R.array.cron_interval, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(cronIntervalListener);
     }
+
+    Spinner.OnItemSelectedListener cronIntervalListener = new Spinner.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+            PillRule pillRule = new PillRule();
+            pillRule = getCronValues(pillRule);
+
+            clearTimeInputs();
+            List<String> timeList = PillsDateTimeLists.getTimeList(pillRule);
+            generateTimeInputs(timeList);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) { }
+    };
+
+
 
 
     /**
@@ -124,6 +154,7 @@ public class PillsActivity extends AppActivity implements
         generateTimeInputs(timeList);
     }
 
+    //todo: must be FIXED. ERROR
     protected void clearTimeInputs(){
         FragmentManager fm = getSupportFragmentManager();
         try {
@@ -370,8 +401,6 @@ public class PillsActivity extends AppActivity implements
 
     public void managePills(View view) throws ParseException {
         AutoCompleteTextView pillName = findViewById(R.id.pills);
-        Spinner cronTypeInput = findViewById(R.id.cron_type);
-        Spinner cronIntervalInput = findViewById(R.id.cron_interval);
         TextView startDateInput = findViewById(R.id.startDate);
         TextView endDateInput = findViewById(R.id.endDate);
 
@@ -397,12 +426,8 @@ public class PillsActivity extends AppActivity implements
             pillRule.setPill_id( Integer.parseInt(pillIdString) );
         }
 
-        CronManager cronManager = new CronManager();
-        Integer cronType = cronManager.getTypeByPosition(cronTypeInput.getSelectedItemPosition() );
-        pillRule.setCron_type(cronType);
-
-        Integer cronInterval = cronManager.getIntervalByPosition(cronIntervalInput.getSelectedItemPosition() );
-        pillRule.setCron_interval(cronInterval);
+        //setting cron values: setCron_type, setCron_interval
+        pillRule = getCronValues(pillRule);
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat(Utils.dateTimePatternDb );
@@ -441,6 +466,8 @@ public class PillsActivity extends AppActivity implements
         int frequencyGroupSelected = frequencyGroup.getCheckedRadioButtonId();
         RadioButton frequencyButton = findViewById(frequencyGroupSelected);
         String frequencyButtonName = frequencyButton.getResources().getResourceEntryName(frequencyButton.getId());
+
+        CronManager cronManager = new CronManager();
         int frequencyType = cronManager.getFrequencyTypeByLabel( frequencyButtonName );
         pillRule.setFrequency_type(frequencyType);
 
@@ -462,6 +489,20 @@ public class PillsActivity extends AppActivity implements
             startActivity(new Intent(PillsActivity.this,MainActivity.class));
         }
 
+    }
+
+    protected PillRule getCronValues(PillRule pillRule){
+        CronManager cronManager = new CronManager();
+
+        Spinner cronTypeInput = findViewById(R.id.cron_type);
+        Integer cronType = cronManager.getTypeByPosition(cronTypeInput.getSelectedItemPosition() );
+        pillRule.setCron_type(cronType);
+
+        Spinner cronIntervalInput = findViewById(R.id.cron_interval);
+        Integer cronInterval = cronManager.getIntervalByPosition(cronIntervalInput.getSelectedItemPosition() );
+        pillRule.setCron_interval(cronInterval);
+
+        return pillRule;
     }
 
     /**
