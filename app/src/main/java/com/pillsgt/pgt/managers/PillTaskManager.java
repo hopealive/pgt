@@ -128,49 +128,6 @@ String alertDateFormatted = sdFormat.format(nextMinDate.getTime());//todo: remov
                 list.add(pillTimeRule.getAlarm_at());
             }
 
-
-//            switch (pillRule.getCron_interval()){
-//                case 1: //once_a_day - morning
-//                    //get breakfast time
-//                    int koef = pillRule.getCron_type()-1;
-//
-//                    switch (pillRule.getCron_type()){
-//                        case 1:
-//                            list.add("08:00");//breakfast time
-//                            break;
-//                        case 2:
-//                            list.add("08:30");//breakfast time +30 min
-//                            break;
-//                        case 3:
-//                            list.add("09:00");//breakfast time +60 min
-//                            break;
-//                    }
-//                    break;
-//            }
-//<string-array name="cron_type">
-//                    1        <item>@string/before_eat</item>
-//                    2        <item>@string/while_eating</item>
-//                    3        <item>@string/after_eat</item>
-//                    4        <item>@string/others</item>
-//    </string-array>
-//
-//    <string-array name="cron_interval">
-//                    1        <item>@string/once_a_day</item>
-//                    2        <item>@string/twice_a_day</item>
-//                    3        <item>@string/three_times_a_day</item>
-//                    4        <item>@string/four_times_a_day</item>
-//                    5        <item>@string/five_times_a_day</item>
-//                    6        <item>@string/six_times_a_day</item>
-//                    7        <item>@string/every_30_minutes</item>
-//                    8        <item>@string/every_1_hour</item>
-//                    9        <item>@string/every_2_hours</item>
-//                    10        <item>@string/every_3_hours</item>
-//                    11        <item>@string/every_4_hours</item>
-//                    12        <item>@string/every_5_hours</item>
-//                    13        <item>@string/every_6_hours</item>
-//                    14        <item>@string/others</item>
-//    </string-array>
-
             return list;
         }
 

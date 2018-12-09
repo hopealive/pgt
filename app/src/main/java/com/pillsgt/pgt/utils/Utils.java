@@ -53,22 +53,12 @@ public class Utils {
             "eat_duration"
     );
 
-    //Breakfeast in 8.00; lunch 11.00; dinner 13.00; snack 15.00; supper 18.00
-    public static final List<String> defaultEatingFields = Arrays.asList(
-            "breakfast",
-            "lunch",
-            "dinner",
-            "snack",
-            "supper"
-    );
-    public static final List<String> defaultEatingTimes = Arrays.asList(
-            "8:00",
-            "11:00",
-            "13:00",
-            "15:00",
-            "18:00"
-    );
 
+    /**
+     * ###############
+     * SYSTEM BLOCK
+     * ###############
+     */
 
     /**
      * Before some download from web check for SD Card storage exists
@@ -183,8 +173,6 @@ public class Utils {
                     return true;
             }
             return false;
-
     }
-
 
 }

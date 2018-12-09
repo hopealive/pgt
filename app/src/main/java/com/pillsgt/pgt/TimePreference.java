@@ -11,7 +11,9 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 import java.util.Date;
 
-
+/**
+ * Диалоговые окна для настроек времени в меню настроек
+ */
 public class TimePreference extends DialogPreference implements Preference.OnPreferenceChangeListener {
     private TimePicker picker = null;
     public final static long DEFAULT_VALUE = 0;

@@ -168,11 +168,11 @@ public class App extends Application {
 //todo: think about this
 //        Integer i = 0;
 //        String eatingField;
-//        for (final String field : Utils.defaultEatingFields ){
+//        for (final String field : PillsDateTimeLists.defaultEatingFields ){
 //            eatingField = "time_"+field;
 //            if (!testLocalUserSettingByName(eatingField)){
 //                fUserSetting.setName(eatingField);
-//                fUserSetting.setValue( Utils.defaultEatingTimes.get(i) );
+//                fUserSetting.setValue( PillsDateTimeLists.defaultEatingTimes.get(i) );
 //                localDatabase.localDAO().addUserSetting(fUserSetting);
 //            } else {
 //                Log.e(TAG, "Eating Field "+eatingField+" already exists in new DB");

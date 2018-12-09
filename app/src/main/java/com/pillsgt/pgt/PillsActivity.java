@@ -6,17 +6,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pillsgt.pgt.fragments.NumOfDaysFragment;
+import com.pillsgt.pgt.fragments.PillsTimeInputFragment;
+import com.pillsgt.pgt.fragments.TimePickerFragment;
 import com.pillsgt.pgt.managers.keywordautocomplete.PillsAutoCompleteTextChangedListener;
 import com.pillsgt.pgt.managers.keywordautocomplete.PillsAutoCompleteView;
 import com.pillsgt.pgt.managers.CronManager;
@@ -24,14 +32,19 @@ import com.pillsgt.pgt.managers.PillTaskManager;
 import com.pillsgt.pgt.models.PillRule;
 import com.pillsgt.pgt.models.remote.PillsUa;
 import com.pillsgt.pgt.utils.Converters;
+import com.pillsgt.pgt.utils.PillsDateTimeLists;
 import com.pillsgt.pgt.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodInterface {
+import static java.lang.Thread.sleep;
+
+public class PillsActivity extends AppActivity implements
+        NumOfDaysFragment.NodInterface {
 
     protected Integer cID = null;
 
@@ -69,6 +82,9 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
 
     public String[] autoCompleteListItems = new String[] {"..."};
 
+    /**
+     * Create input for pill name
+     */
     protected void initPillName() {
         pillsAutoComplete = findViewById(R.id.pills);
         pillsAutoComplete.addTextChangedListener(new PillsAutoCompleteTextChangedListener(this));
@@ -96,6 +112,60 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
         spinner.setAdapter(adapter);
     }
 
+
+    /**
+     * Set fragment
+     */
+    protected void initTimeInputs() {
+        PillRule pillRule = new PillRule();
+        pillRule.setCron_interval(1);
+        pillRule.setCron_type(1);
+        List<String> timeList = PillsDateTimeLists.getTimeList(pillRule);
+        generateTimeInputs(timeList);
+    }
+
+    protected void clearTimeInputs(){
+        FragmentManager fm = getSupportFragmentManager();
+        try {
+            if(fm.getFragments()!=null){
+                for (int i = 0; i < fm.getBackStackEntryCount(); i++)
+                    fm.popBackStack();
+
+                fm.beginTransaction().remove(getSupportFragmentManager()
+                        .findFragmentById(R.id.time_input_fragment))
+                        .commit();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * List is array, which ite, is time string like "12:00"
+     * Insert fragmetns with timepickers
+     * @param list
+     */
+    protected void generateTimeInputs(List<String> list) {
+        FragmentManager fm = getSupportFragmentManager();
+        int i =1;
+        for (String item : list){
+            ++i;
+            fm.beginTransaction()
+                    .add(R.id.time_input_fragment, PillsTimeInputFragment.newInstance(i, item), "fragmentTimeInputs")
+                    .commit();
+            fm.executePendingTransactions();
+        }
+    }
+
+    /**
+     * BLOCK FOR WORKING WITH DATE START AND FINISH
+     */
+
+    /**
+     * Set default start date (today) to dialog
+     * @param v
+     */
     public void setStartDate(View v) {
         new DatePickerDialog(PillsActivity.this, ds,
                 startDate.get(Calendar.YEAR),
@@ -104,6 +174,10 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
                 .show();
     }
 
+    /**
+     * Set default end date (today) to dialog
+     * @param v
+     */
     public void setEndDate(View v) {
         new DatePickerDialog(PillsActivity.this, de,
                 endDate.get(Calendar.YEAR),
@@ -169,8 +243,6 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
                             DialogFragment dialogNOD = new NumOfDaysFragment();
                             dialogNOD.show(getSupportFragmentManager(), "NumOfDaysFragment");
                             break;
-                        case "dOthers":
-                            break;
                     }
                 }
         }
@@ -209,6 +281,8 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
         initPillName();
         initCronType();
         initCronInterval();
+        initTimeInputs();
+
         setInitialDate();
         setInitialSchedule();
 
@@ -258,6 +332,12 @@ public class PillsActivity extends AppActivity implements NumOfDaysFragment.NodI
         Spinner cronIntervalInput = findViewById(R.id.cron_interval);
         int cronIntervalPosition = cronManager.getIntervalPosition( pillRule.getCron_interval() );
         cronIntervalInput.setSelection(cronIntervalPosition);
+
+        //init inputs for time
+
+        List<String> timeList = PillsDateTimeLists.getTimeList(pillRule);
+        clearTimeInputs();
+        generateTimeInputs(timeList);
 
         TextView startDateInput = findViewById(R.id.startDate);
         String startDateFormatted = Converters.dbDateToViewDate(pillRule.getStart_date());

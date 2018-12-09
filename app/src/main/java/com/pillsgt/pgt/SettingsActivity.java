@@ -19,7 +19,7 @@ import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
-import com.pillsgt.pgt.utils.Utils;
+import com.pillsgt.pgt.utils.PillsDateTimeLists;
 
 import java.util.List;
 
@@ -241,11 +241,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("sync_frequency"));
 
-            String eatingField;
-            for (final String field : Utils.defaultEatingFields ){
-                eatingField = "time_"+field;
-                bindPreferenceSummaryToValue(findPreference(eatingField));
-            }
+//todo: think about this
+//            String eatingField;
+//            for (final String field : PillsDateTimeLists.defaultEatingFields ){
+//                eatingField = "time_"+field;
+////                bindPreferenceSummaryToValue(findPreference(eatingField));//todo: think
+//            }
 
         }
 
