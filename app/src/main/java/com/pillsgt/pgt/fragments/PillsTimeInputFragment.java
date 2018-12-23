@@ -3,6 +3,7 @@ package com.pillsgt.pgt.fragments;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,12 @@ public class PillsTimeInputFragment extends Fragment {
     }
 
     protected int inputId = 0;
-    protected String timeValue = "12:00";
+    protected String timeValue = "12:00";//default value
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        inputId = getArguments().getInt("inputId", 0);
+        inputId = getArguments().getInt("inputId", inputId);
         timeValue = getArguments().getString("timeValue", timeValue);
     }
 
@@ -43,8 +44,8 @@ public class PillsTimeInputFragment extends Fragment {
     public void onStart() {
         super.onStart();
         TextView ptiTime = getActivity().findViewById(R.id.pti_time);
-        ptiTime.setId(ptiTime.getId()+inputId);
-        ptiTime.setText(timeValue);
+        ptiTime.setId(1000+inputId);
+        ptiTime.setText(timeValue+" id:"+ptiTime.getId());//todo: change text
 
         ptiTime.setOnClickListener(new View.OnClickListener() {
             @Override

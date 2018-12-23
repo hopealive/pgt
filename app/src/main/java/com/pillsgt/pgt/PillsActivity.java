@@ -6,14 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -92,6 +95,9 @@ public class PillsActivity extends AppActivity implements
         pillsDescription = findViewById(R.id.pillsDescription);
     }
 
+    /**
+     * BLOCK FOR WORKING WITH TIME PARAMS: cron type and cron interval
+     */
     protected void initCronType(){
         Spinner spinner = findViewById(R.id.cron_type);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -107,7 +113,6 @@ public class PillsActivity extends AppActivity implements
             PillRule pillRule = new PillRule();
             pillRule = getCronValues(pillRule);
 
-            clearTimeInputs();
             List<String> timeList = PillsDateTimeLists.getTimeList(pillRule);
             generateTimeInputs(timeList);
         }
@@ -131,7 +136,6 @@ public class PillsActivity extends AppActivity implements
             PillRule pillRule = new PillRule();
             pillRule = getCronValues(pillRule);
 
-            clearTimeInputs();
             List<String> timeList = PillsDateTimeLists.getTimeList(pillRule);
             generateTimeInputs(timeList);
         }
@@ -141,10 +145,8 @@ public class PillsActivity extends AppActivity implements
     };
 
 
-
-
     /**
-     * Set fragment
+     * Set fragment with inputs for empty PillRule
      */
     protected void initTimeInputs() {
         PillRule pillRule = new PillRule();
@@ -152,24 +154,26 @@ public class PillsActivity extends AppActivity implements
         pillRule.setCron_type(1);
         List<String> timeList = PillsDateTimeLists.getTimeList(pillRule);
         generateTimeInputs(timeList);
+
+        getTimeInputsValues();//todo: move to save times
     }
 
-    //todo: must be FIXED. ERROR
-    protected void clearTimeInputs(){
+
+    //todo: get values
+    protected void getTimeInputsValues(){
         FragmentManager fm = getSupportFragmentManager();
-        try {
-            if(fm.getFragments()!=null){
-                for (int i = 0; i < fm.getBackStackEntryCount(); i++)
-                    fm.popBackStack();
+        Fragment myFragment = fm.findFragmentById(R.id.time_input_fragment);
+        View view = myFragment.getView();
 
-                fm.beginTransaction().remove(getSupportFragmentManager()
-                        .findFragmentById(R.id.time_input_fragment))
-                        .commit();
-            }
-        } catch (Exception e){
-            e.printStackTrace();
+
+int inputId = 1;//todo: change id
+        if (view !=null) {
+Log.e("TIME_ADD", "VIEW EXISTS");//todo: remove
+            TextView v = view.findViewById(1000+inputId);
+Log.e("TIME_ADD", String.valueOf(v.getText()));//todo: remove
+        } else {
+            Log.e("TIME_ADD", "view NOT exists");//todo: remove
         }
-
     }
 
     /**
@@ -178,14 +182,32 @@ public class PillsActivity extends AppActivity implements
      * @param list
      */
     protected void generateTimeInputs(List<String> list) {
-        FragmentManager fm = getSupportFragmentManager();
-        int i =1;
-        for (String item : list){
-            ++i;
-            fm.beginTransaction()
-                    .add(R.id.time_input_fragment, PillsTimeInputFragment.newInstance(i, item), "fragmentTimeInputs")
-                    .commit();
-            fm.executePendingTransactions();
+        try {
+            //remove old inputs
+            List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+            if (fragmentList != null) {
+                for (Fragment frag : fragmentList )
+                {
+                    if (frag.getTag().equals("fragmentTimeInputs")) {
+                        getSupportFragmentManager().beginTransaction().remove(frag).commit();
+                        continue;
+                    }
+                }
+            }
+
+            //add new items
+            int i = 1;
+            for (String item : list){
+                FragmentManager fm = getSupportFragmentManager();
+                fm.beginTransaction()
+                        .add(R.id.time_input_fragment, PillsTimeInputFragment.newInstance(i, item), "fragmentTimeInputs")
+                        .commit();
+                fm.executePendingTransactions();
+                ++i;
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -367,7 +389,6 @@ public class PillsActivity extends AppActivity implements
         //init inputs for time
 
         List<String> timeList = PillsDateTimeLists.getTimeList(pillRule);
-        clearTimeInputs();
         generateTimeInputs(timeList);
 
         TextView startDateInput = findViewById(R.id.startDate);
