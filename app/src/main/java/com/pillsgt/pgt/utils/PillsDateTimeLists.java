@@ -10,7 +10,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+
+
 public class PillsDateTimeLists {
+
     /**
      * ###############
      * TIME BLOCK
@@ -42,20 +45,30 @@ public class PillsDateTimeLists {
         return 60;
     }
 
-    public static List<String> getTimeList(PillRule pillRule){
+    public static List<String> getTimeList(PillRule pillRule, List<PillTimeRule> pillTimeRules){
         List<String> list = new ArrayList<>();
 
 //        list = PillsDateTimeLists.defaultEatingTimes; //todo: use in future
 
-        //check if pill time rules exists
+        /**
+         * ###############
+         * check if pill time rules  for current rule exists - set from DB
+         * ###############
+         */
 
-//        List<PillTimeRule> pillTimeRules = localDatabase.localDAO().loadTimeRuleByRuleId(pillRule.getPill_id());
-//        for ( PillTimeRule pillTimeRule : pillTimeRules){
-//            list.add(pillTimeRule.getAlarm_at());
-//        }
+        if (pillTimeRules != null){
+            for (PillTimeRule pillTimeRule : pillTimeRules ){
+                list.add(pillTimeRule.getAlarm_at());
+            }
+            return list;
+        }
 
-        //if pill time rules doesn't exists set defaults
 
+        /**
+         * ###############
+         * if pill time rules doesn't exists set defaults
+         * ###############
+         */
 
         //set current date with start time startTime:00
         int startTime = 8;//todo: get from db
@@ -66,9 +79,7 @@ public class PillsDateTimeLists {
         cal.set(Calendar.MINUTE, 0);
 
         int cronTypeKoef = 0;
-        if (pillRule.getCron_type() == 4 ){
-            cronTypeKoef = 0;
-        } else {
+        if (pillRule.getCron_type() != 4 ){
             cronTypeKoef = pillRule.getCron_type() -1;
         }
         int koef = (eatDuration()/2)*cronTypeKoef;//in minutes. While eating = duration / 2

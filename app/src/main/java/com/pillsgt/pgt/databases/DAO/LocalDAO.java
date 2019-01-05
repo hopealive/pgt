@@ -59,7 +59,13 @@ public interface LocalDAO {
 
     //pill_time_rules
     @Query("select * from pill_time_rules where rule_id = :rule_id")
-    List<PillTimeRule> loadTimeRuleByRuleId(int rule_id);
+    List<PillTimeRule> loadTimeRulesByRuleId(int rule_id);
+
+    @Query("delete from pill_time_rules where rule_id= :rule_id")
+    void deletePillTimeRuleByRuleId(int rule_id);
+
+    @Insert
+    void addPillTimeRule(PillTimeRule pillTimeRule);
 
 
     //pill_tasks

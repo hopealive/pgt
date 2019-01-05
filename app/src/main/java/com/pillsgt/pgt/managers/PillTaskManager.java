@@ -67,6 +67,9 @@ public class PillTaskManager {
                 pillsUa = remoteDatabase.remoteDAO().loadPillsUa(pillRule.getPill_id());
             }
 
+            String pillName = pillsUa.getOriginal_name();
+            String pillDescription = pillsUa.getDosage_form();
+
             //remove active task for this ruleId
             try {
                 localDatabase.localDAO().deletePillTaskByRuleId(ruleId);
@@ -80,50 +83,72 @@ public class PillTaskManager {
                 return null;
             }
 
-            Calendar calendar = Calendar.getInstance();
-            SimpleDateFormat sdFormat = new SimpleDateFormat(Utils.dateTimePatternDb );
-            sdFormat.setTimeZone( TimeZone.getTimeZone("GMT") );
-            String curDateFormatted = sdFormat.format(calendar.getTime());
-
             List<String> pillTaskDates = getDateList(pillRule);
             List<String> pillTaskTimes = getTimeList(pillRule);
+
+            Calendar alertDateCalendar = Calendar.getInstance();
+            SimpleDateFormat sdFormat = new SimpleDateFormat(Utils.dateTimePatternDb );
+
+            String[] dateParsed;
+            String[] timeParsed;
             for ( String pillTaskDate : pillTaskDates ){
+                dateParsed = pillTaskDate.split("-");
+                alertDateCalendar.set(Calendar.YEAR, Integer.parseInt(dateParsed[0]));
+                alertDateCalendar.set(Calendar.MONTH, Integer.parseInt(dateParsed[1]));
+                alertDateCalendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateParsed[2]));
+
                 for ( String pillTaskTime : pillTaskTimes ){
-Log.e("GoPillTaskManager", pillTaskDate + "| "+pillTaskDate + " " +pillTaskTime);//todo: remove
+                    timeParsed = pillTaskTime.split(":");
+                    alertDateCalendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeParsed[0]));
+                    alertDateCalendar.set(Calendar.MINUTE, Integer.parseInt(timeParsed[1]));
+                    alertDateCalendar.set(Calendar.SECOND, 0);
+
+                    if (alertDateCalendar.getTimeInMillis() < Calendar.getInstance().getTimeInMillis() ){
+                        continue;
+                    }
+                    sdFormat.setTimeZone( TimeZone.getTimeZone("GMT") );
+                    String alertTime = sdFormat.format(alertDateCalendar.getTime());
+                    savePillTask(pillRule, alertTime, pillName, pillDescription);
                 }
             }
-
-
-            //save tasks
-            PillTask pillTask = new PillTask();
-            pillTask.setRule_id(ruleId);
-            pillTask.setTitle( pillRule.getName() );
-            pillTask.setShort_title( pillsUa.getOriginal_name() );
-            pillTask.setDescription( pillsUa.getDosage_form() );
-            pillTask.setStatus( PillTask.STATUS_NEW );
-
-
-//temporary data
-Calendar nextMinDate = Calendar.getInstance();//todo: remove
-nextMinDate.add(Calendar.MINUTE, 1);//todo: remove
-String alertDateFormatted = sdFormat.format(nextMinDate.getTime());//todo: remove
-
-
-            pillTask.setAlarm_at(alertDateFormatted);//todo: date must be normal
-            pillTask.setUpdated_at(curDateFormatted);
-            pillTask.setCreated_at(curDateFormatted);
-            localDatabase.localDAO().addPillTask(pillTask);
-
 
             localDatabase.close();
             remoteDatabase.close();
             return null;
         }
 
+        //save tasks
+        protected void savePillTask(PillRule pillRule, String alertTime, String pillName, String pillDescription){
+
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat sdFormat = new SimpleDateFormat(Utils.dateTimePatternDb );
+            sdFormat.setTimeZone( TimeZone.getTimeZone("GMT") );
+            String curDateFormatted = sdFormat.format(calendar.getTime());
+
+            PillTask pillTask = new PillTask();
+            pillTask.setRule_id(pillRule.getId());
+            pillTask.setTitle( pillRule.getName() );
+            pillTask.setShort_title( pillName );
+            pillTask.setDescription( pillDescription );
+            pillTask.setStatus( PillTask.STATUS_NEW );
+
+
+//debug data. +1 minute. //todo: dev mode
+//            Calendar nextMinDate = Calendar.getInstance();
+//            nextMinDate.add(Calendar.MINUTE, 1);
+//            String alertDateFormatted = sdFormat.format(nextMinDate.getTime())
+//            pillTask.setAlarm_at(alertDateFormatted);
+
+            pillTask.setAlarm_at(alertTime);
+            pillTask.setUpdated_at(curDateFormatted);
+            pillTask.setCreated_at(curDateFormatted);
+            localDatabase.localDAO().addPillTask(pillTask);
+        }
+
         protected List<String> getTimeList(PillRule pillRule){
             List<String> list = new ArrayList<String>();
 
-            List<PillTimeRule> pillTimeRules = localDatabase.localDAO().loadTimeRuleByRuleId(pillRule.getPill_id());
+            List<PillTimeRule> pillTimeRules = localDatabase.localDAO().loadTimeRulesByRuleId(pillRule.getId());
             for ( PillTimeRule pillTimeRule : pillTimeRules){
                 list.add(pillTimeRule.getAlarm_at());
             }
@@ -132,11 +157,26 @@ String alertDateFormatted = sdFormat.format(nextMinDate.getTime());//todo: remov
         }
 
         protected List<String> getDateList(PillRule pillRule){
+            SimpleDateFormat dbSdf = new SimpleDateFormat(Utils.dateTimePatternDb );
+            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String startDate = pillRule.getStart_date();
             String endDate = pillRule.getEnd_date();
 
+            //if user set option Is_continues
+            //endDate = startDate + 1month
+            if ( pillRule.getIs_continues() == 1 ){
+                try {
+                    Date startDateContinue = sdf.parse(startDate);
+                    Calendar calStartDateContinue = Calendar.getInstance();
+                    calStartDateContinue.setTime(startDateContinue);
+                    calStartDateContinue.add(Calendar.MONTH, 1);
+                    endDate = dbSdf.format(calStartDateContinue.getTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
             ArrayList<String> dates = new ArrayList<String>();
-            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
             Date dateFrom = null;
             Date dateTo = null;

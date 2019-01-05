@@ -30,6 +30,7 @@ import com.pillsgt.pgt.managers.keywordautocomplete.PillsAutoCompleteView;
 import com.pillsgt.pgt.managers.CronManager;
 import com.pillsgt.pgt.managers.PillTaskManager;
 import com.pillsgt.pgt.models.PillRule;
+import com.pillsgt.pgt.models.PillTimeRule;
 import com.pillsgt.pgt.models.remote.PillsUa;
 import com.pillsgt.pgt.utils.Converters;
 import com.pillsgt.pgt.utils.PillsDateTimeLists;
@@ -40,16 +41,28 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 
 public class PillsActivity extends AppActivity implements
         NumOfDaysFragment.NodInterface {
 
-    protected Integer cID = null;
+    //pill rule data
+    protected Integer pillRuleId = null;
+    protected PillRule pillRule;
+    protected PillRule oPillRule;
+    protected List<PillTimeRule> pillTimeRules;
+
+    //inputs
+    public static PillsAutoCompleteView pillsAutoComplete;
+    public TextView pillsDescription;
+    public ArrayAdapter<String> myAdapter;
+    public String[] autoCompleteListItems = new String[] {"..."};
+    RadioGroup durationGroup;
+
 
     Calendar startDate = Calendar.getInstance();
     Calendar endDate = Calendar.getInstance();
-    RadioGroup durationGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +79,18 @@ public class PillsActivity extends AppActivity implements
             }
         });
 
+        String sPillRuleId = getIntent().getStringExtra("pillRuleId");
+
+        pillRuleId = null;
+        pillRule = new PillRule();
+        oPillRule = new PillRule();
+        if ( sPillRuleId != null ){
+            pillRuleId = Integer.valueOf(sPillRuleId);
+            pillRule = localDatabase.localDAO().loadRuleById(pillRuleId);
+            oPillRule = localDatabase.localDAO().loadRuleById(pillRuleId);
+            pillTimeRules = localDatabase.localDAO().loadTimeRulesByRuleId(pillRule.getId());
+        }
+
         initControls();
     }
 
@@ -75,11 +100,16 @@ public class PillsActivity extends AppActivity implements
     }
 
 
-    public static PillsAutoCompleteView pillsAutoComplete;
-    public TextView pillsDescription;
-    public ArrayAdapter<String> myAdapter;
+    protected void initControls(){
+        initPillName();
+        initCronType();
+        initCronInterval();
 
-    public String[] autoCompleteListItems = new String[] {"..."};
+        setInitialDate();
+        setInitialSchedule();
+
+        initEdit();
+    }
 
     /**
      * Create input for pill name
@@ -110,10 +140,13 @@ public class PillsActivity extends AppActivity implements
     Spinner.OnItemSelectedListener cronTypeListener = new Spinner.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-            PillRule pillRule = new PillRule();
-            pillRule = getCronValues(pillRule);
-
-            List<String> timeList = PillsDateTimeLists.getTimeList(pillRule);
+            mapPillRuleCronValues();
+            List<String> timeList;
+            if ( oPillRule.getCron_type() == pillRule.getCron_type()){
+                timeList = PillsDateTimeLists.getTimeList(pillRule, pillTimeRules);
+            } else {
+                timeList = PillsDateTimeLists.getTimeList(pillRule, null);
+            }
             generateTimeInputs(timeList);
         }
 
@@ -133,48 +166,19 @@ public class PillsActivity extends AppActivity implements
     Spinner.OnItemSelectedListener cronIntervalListener = new Spinner.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-            PillRule pillRule = new PillRule();
-            pillRule = getCronValues(pillRule);
-
-            List<String> timeList = PillsDateTimeLists.getTimeList(pillRule);
+            mapPillRuleCronValues();
+            List<String> timeList;
+            if ( oPillRule.getCron_interval() == pillRule.getCron_interval()){
+                timeList = PillsDateTimeLists.getTimeList(pillRule, pillTimeRules);
+            } else {
+                timeList = PillsDateTimeLists.getTimeList(pillRule, null);
+            }
             generateTimeInputs(timeList);
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) { }
     };
-
-
-    /**
-     * Set fragment with inputs for empty PillRule
-     */
-    protected void initTimeInputs() {
-        PillRule pillRule = new PillRule();
-        pillRule.setCron_interval(1);
-        pillRule.setCron_type(1);
-        List<String> timeList = PillsDateTimeLists.getTimeList(pillRule);
-        generateTimeInputs(timeList);
-
-        getTimeInputsValues();//todo: move to save times
-    }
-
-
-    //todo: get values
-    protected void getTimeInputsValues(){
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment myFragment = fm.findFragmentById(R.id.time_input_fragment);
-        View view = myFragment.getView();
-
-
-int inputId = 1;//todo: change id
-        if (view !=null) {
-Log.e("TIME_ADD", "VIEW EXISTS");//todo: remove
-            TextView v = view.findViewById(1000+inputId);
-Log.e("TIME_ADD", String.valueOf(v.getText()));//todo: remove
-        } else {
-            Log.e("TIME_ADD", "view NOT exists");//todo: remove
-        }
-    }
 
     /**
      * List is array, which ite, is time string like "12:00"
@@ -330,53 +334,34 @@ Log.e("TIME_ADD", String.valueOf(v.getText()));//todo: remove
         }
     }
 
-    protected void initControls(){
-        initPillName();
-        initCronType();
-        initCronInterval();
-        initTimeInputs();
-
-        setInitialDate();
-        setInitialSchedule();
-
-        initEdit();
-    }
-
     protected void initEdit(){
-        Intent intent = getIntent();
-        String pillRuleId = intent.getStringExtra("pillRuleId");
-
         Button submitButton = findViewById(R.id.manage_pills);
-
-        if(pillRuleId == null || pillRuleId.isEmpty()){
+        if(pillRuleId == null ){
             submitButton.setText( R.string.button_add );
             return;
         }
         submitButton.setText( R.string.button_edit );
 
-        cID = Integer.valueOf(pillRuleId);
-
-        //get data for fill form
-        PillRule pillRule = localDatabase.localDAO().loadRuleById(cID);
 
         //fill data by id pull rule
-        AutoCompleteTextView pillName = findViewById(R.id.pills);
-        pillName.setThreshold(Integer.MAX_VALUE);//hook
+
+        //fill name
+        AutoCompleteTextView pillNameInput = findViewById(R.id.pills);
+        pillNameInput.setThreshold(Integer.MAX_VALUE);//hook
 
         String pillNameValue = pillRule.getName();
-
         if ( pillRule.getPill_id() > 0 ){
             PillsUa pillUa = remoteDatabase.remoteDAO().loadPillsUa(pillRule.getPill_id());
             pillNameValue = pillUa.getOriginal_name();
 
             TextView pillsDescription = findViewById(R.id.pillsDescription);
             pillsDescription.setText(pillUa.getDosage_form());
-            pillName.setHint( Integer.toString(pillUa.getId()) );
+            pillNameInput.setHint( Integer.toString(pillUa.getId()) );
         }
-        pillName.setText( pillNameValue );
+        pillNameInput.setText( pillNameValue );
+        pillNameInput.setThreshold(3);//return 3 chars for starting autocomplete
 
-        pillName.setThreshold(3);//return 3 chars for starting autocomplete
-
+        //fill cron selectboxes
         CronManager cronManager = new CronManager();
         Spinner cronTypeInput = findViewById(R.id.cron_type);
         int cronTypePosition = cronManager.getTypePosition( pillRule.getCron_type() );
@@ -386,9 +371,8 @@ Log.e("TIME_ADD", String.valueOf(v.getText()));//todo: remove
         int cronIntervalPosition = cronManager.getIntervalPosition( pillRule.getCron_interval() );
         cronIntervalInput.setSelection(cronIntervalPosition);
 
-        //init inputs for time
-
-        List<String> timeList = PillsDateTimeLists.getTimeList(pillRule);
+        //set time input values
+        List<String> timeList = PillsDateTimeLists.getTimeList(pillRule, pillTimeRules);
         generateTimeInputs(timeList);
 
         TextView startDateInput = findViewById(R.id.startDate);
@@ -421,7 +405,7 @@ Log.e("TIME_ADD", String.valueOf(v.getText()));//todo: remove
 
 
     public void managePills(View view) throws ParseException {
-        AutoCompleteTextView pillName = findViewById(R.id.pills);
+        AutoCompleteTextView pillNameInput = findViewById(R.id.pills);
         TextView startDateInput = findViewById(R.id.startDate);
         TextView endDateInput = findViewById(R.id.endDate);
 
@@ -429,26 +413,21 @@ Log.e("TIME_ADD", String.valueOf(v.getText()));//todo: remove
         RadioGroup frequencyGroup = findViewById(R.id.frequency_group);
 
         //add to db
-        PillRule pillRule = new PillRule();
         Boolean updateRow = false;
-        if ( cID != null){
-            PillRule sPillRule = localDatabase.localDAO().loadRuleById(cID);
-            if (sPillRule != null ){
-                pillRule = sPillRule;
-                updateRow = true;
-            }
+        if ( pillRuleId != null){
+            updateRow = true;
         }
 
-        String pillNameValue = pillName.getText().toString();
+        String pillNameValue = pillNameInput.getText().toString();
         pillRule.setName( pillNameValue );
 
-        if ( pillName.getHint() != null){
-            String pillIdString = String.valueOf(pillName.getHint());
+        if ( pillNameInput.getHint() != null){
+            String pillIdString = String.valueOf(pillNameInput.getHint());
             pillRule.setPill_id( Integer.parseInt(pillIdString) );
         }
 
         //setting cron values: setCron_type, setCron_interval
-        pillRule = getCronValues(pillRule);
+        mapPillRuleCronValues();
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat(Utils.dateTimePatternDb );
@@ -496,12 +475,20 @@ Log.e("TIME_ADD", String.valueOf(v.getText()));//todo: remove
 
         //validate and save
         if (validatePillRule( pillRule)){
-            if ( updateRow ){
-                localDatabase.localDAO().updateRule(pillRule);
-            } else {
-                pillRule.setCreated_at( curDateFormatted );
-                long insertId = localDatabase.localDAO().addRule(pillRule);
-                pillRule.setId((int) insertId);
+            try {
+                //save rule
+                if ( updateRow ){
+                    localDatabase.localDAO().updateRule(pillRule);
+                } else {
+                    pillRule.setCreated_at( curDateFormatted );
+                    long insertId = localDatabase.localDAO().addRule(pillRule);
+                    pillRule.setId((int) insertId);
+                }
+
+                //save rule times for new
+                saveTimeInputs(pillRule);
+            } catch (Exception e){
+                e.printStackTrace();
             }
 
             //success saved, redirect to index page with list
@@ -509,10 +496,36 @@ Log.e("TIME_ADD", String.valueOf(v.getText()));//todo: remove
             Toast.makeText(getApplicationContext(), R.string.message_data_saved, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(PillsActivity.this,MainActivity.class));
         }
-
     }
 
-    protected PillRule getCronValues(PillRule pillRule){
+
+    protected void saveTimeInputs(PillRule pillRule){
+        List<String> timeList = PillsDateTimeLists.getTimeList(pillRule, pillTimeRules);
+
+        try {
+            localDatabase.localDAO().deletePillTimeRuleByRuleId(pillRule.getId());
+            for(int i=0; i<timeList.size(); i++){
+                TextView timeInput = findViewById(1001 + i);
+
+                PillTimeRule pillTimeRule = new PillTimeRule();
+                pillTimeRule.setRule_id(pillRule.getId());
+                pillTimeRule.setAlarm_at( String.valueOf(timeInput.getText()) );
+
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat sdFormat = new SimpleDateFormat(Utils.dateTimePatternDb );
+                sdFormat.setTimeZone( TimeZone.getTimeZone("GMT") );
+                String curDateFormatted = sdFormat.format(calendar.getTime());
+                pillTimeRule.setCreated_at(curDateFormatted);
+                pillTimeRule.setUpdated_at(curDateFormatted);
+
+                localDatabase.localDAO().addPillTimeRule(pillTimeRule);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    protected void mapPillRuleCronValues(){
         CronManager cronManager = new CronManager();
 
         Spinner cronTypeInput = findViewById(R.id.cron_type);
@@ -522,8 +535,6 @@ Log.e("TIME_ADD", String.valueOf(v.getText()));//todo: remove
         Spinner cronIntervalInput = findViewById(R.id.cron_interval);
         Integer cronInterval = cronManager.getIntervalByPosition(cronIntervalInput.getSelectedItemPosition() );
         pillRule.setCron_interval(cronInterval);
-
-        return pillRule;
     }
 
     /**
