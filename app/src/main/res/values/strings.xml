@@ -59,6 +59,7 @@
     <string name="autocomplete_placeholder">Enter medicine name</string>
 
     <string name="label_reminders">Reminders</string>
+    <string name="label_reminder_times">Reminder times</string>
     <string name="label_schedulers">Schedule</string>
     <string name="label_duration">Duration</string>
     <string name="duration_start">Start</string>

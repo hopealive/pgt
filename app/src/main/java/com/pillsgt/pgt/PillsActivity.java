@@ -281,8 +281,9 @@ public class PillsActivity extends AppActivity implements
         durationGroup = findViewById(R.id.duration_group);
         durationGroup.setOnCheckedChangeListener(initDurationGroupListener);
 
-        RadioButton frequency = findViewById(R.id.fEveryDay);
-        frequency.setChecked(true);
+//todo: uncomment in future
+//        RadioButton frequency = findViewById(R.id.fEveryDay);
+//        frequency.setChecked(true);
     }
 
     private RadioGroup.OnCheckedChangeListener initDurationGroupListener = new RadioGroup.OnCheckedChangeListener(){
@@ -388,19 +389,20 @@ public class PillsActivity extends AppActivity implements
             dContinuous.setChecked(true);
         }
 
-        RadioButton frequencyButton = findViewById(R.id.fEveryDay);//default value
-        switch ( pillRule.getFrequency_type() ) {
-            case 1:
-                frequencyButton = findViewById(R.id.fEveryDay);
-                break;
-            case 2:
-                frequencyButton = findViewById(R.id.fDaysOfWeek);
-                break;
-            case 3:
-                frequencyButton = findViewById(R.id.fDaysInterval);
-                break;
-        }
-        frequencyButton.setChecked(true);
+//todo: uncomment in future
+//        RadioButton frequencyButton = findViewById(R.id.fEveryDay);//default value
+//        switch ( pillRule.getFrequency_type() ) {
+//            case 1:
+//                frequencyButton = findViewById(R.id.fEveryDay);
+//                break;
+//            case 2:
+//                frequencyButton = findViewById(R.id.fDaysOfWeek);
+//                break;
+//            case 3:
+//                frequencyButton = findViewById(R.id.fDaysInterval);
+//                break;
+//        }
+//        frequencyButton.setChecked(true);
     }
 
 
@@ -410,7 +412,7 @@ public class PillsActivity extends AppActivity implements
         TextView endDateInput = findViewById(R.id.endDate);
 
         RadioGroup durationGroup = findViewById(R.id.duration_group);
-        RadioGroup frequencyGroup = findViewById(R.id.frequency_group);
+//        RadioGroup frequencyGroup = findViewById(R.id.frequency_group);//todo: uncomment in future
 
         //add to db
         Boolean updateRow = false;
@@ -463,13 +465,14 @@ public class PillsActivity extends AppActivity implements
         }
         pillRule.setIs_continues(isContinuous);
 
-        int frequencyGroupSelected = frequencyGroup.getCheckedRadioButtonId();
-        RadioButton frequencyButton = findViewById(frequencyGroupSelected);
-        String frequencyButtonName = frequencyButton.getResources().getResourceEntryName(frequencyButton.getId());
+//todo: uncomment
+//        int frequencyGroupSelected = frequencyGroup.getCheckedRadioButtonId();
+//        RadioButton frequencyButton = findViewById(frequencyGroupSelected);
+//        String frequencyButtonName = frequencyButton.getResources().getResourceEntryName(frequencyButton.getId());
 
-        CronManager cronManager = new CronManager();
-        int frequencyType = cronManager.getFrequencyTypeByLabel( frequencyButtonName );
-        pillRule.setFrequency_type(frequencyType);
+//        CronManager cronManager = new CronManager();
+//        int frequencyType = cronManager.getFrequencyTypeByLabel( frequencyButtonName );
+//        pillRule.setFrequency_type(frequencyType);
 
         //todo: make frequency values
 
@@ -490,6 +493,9 @@ public class PillsActivity extends AppActivity implements
             } catch (Exception e){
                 e.printStackTrace();
             }
+            localDatabase.close();
+            remoteDatabase.close();
+
 
             //success saved, redirect to index page with list
             new PillTaskManager( pillRule.getId(), getApplicationContext());
@@ -525,6 +531,9 @@ public class PillsActivity extends AppActivity implements
         }
     }
 
+    /**
+     * Update PillRule pillRule: cron type and interval
+     */
     protected void mapPillRuleCronValues(){
         CronManager cronManager = new CronManager();
 

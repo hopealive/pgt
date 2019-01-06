@@ -94,7 +94,9 @@ public class PillTaskManager {
             for ( String pillTaskDate : pillTaskDates ){
                 dateParsed = pillTaskDate.split("-");
                 alertDateCalendar.set(Calendar.YEAR, Integer.parseInt(dateParsed[0]));
-                alertDateCalendar.set(Calendar.MONTH, Integer.parseInt(dateParsed[1]));
+
+                int mMonth = Integer.parseInt(dateParsed[1])-1;
+                alertDateCalendar.set(Calendar.MONTH, mMonth);
                 alertDateCalendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateParsed[2]));
 
                 for ( String pillTaskTime : pillTaskTimes ){
