@@ -10,9 +10,10 @@
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/pref_header_notifications" />
 
-    <header
-        android:fragment="com.pillsgt.pgt.SettingsActivity$SchedulePreferenceFragment"
-        android:icon="@drawable/material_assignment"
-        android:title="@string/pref_header_schedule_settings" />
+    <!--todo: in future make this settings-->
+    <!--<header-->
+        <!--android:fragment="com.pillsgt.pgt.SettingsActivity$SchedulePreferenceFragment"-->
+        <!--android:icon="@drawable/material_assignment"-->
+        <!--android:title="@string/pref_header_schedule_settings" />-->
 
 </preference-headers>

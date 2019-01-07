@@ -60,7 +60,10 @@ public class PillTaskManager {
 
             //get rule
             PillRule pillRule = localDatabase.localDAO().loadRuleById(ruleId);
-            if (pillRule == null ) return null;
+            if (pillRule == null ) {
+                Log.e(TAG, "Pill rule "+pillRule.getId()+" doesn't exists");
+                return null;
+            }
 
             PillsUa pillsUa = new PillsUa();
             if (pillRule.getPill_id() > 0){
@@ -80,6 +83,7 @@ public class PillTaskManager {
 
             Validators validators = new Validators();
             if ( validators.validatePillRuleDates(pillRule) ){
+                Log.e(TAG, "Not valid rule: "+pillRule.getId());
                 return null;
             }
 
@@ -105,11 +109,12 @@ public class PillTaskManager {
                     alertDateCalendar.set(Calendar.MINUTE, Integer.parseInt(timeParsed[1]));
                     alertDateCalendar.set(Calendar.SECOND, 0);
 
+                    sdFormat.setTimeZone( TimeZone.getTimeZone("GMT") );
+                    String alertTime = sdFormat.format(alertDateCalendar.getTime());
+
                     if (alertDateCalendar.getTimeInMillis() < Calendar.getInstance().getTimeInMillis() ){
                         continue;
                     }
-                    sdFormat.setTimeZone( TimeZone.getTimeZone("GMT") );
-                    String alertTime = sdFormat.format(alertDateCalendar.getTime());
                     savePillTask(pillRule, alertTime, pillName, pillDescription);
                 }
             }
@@ -121,7 +126,6 @@ public class PillTaskManager {
 
         //save tasks
         protected void savePillTask(PillRule pillRule, String alertTime, String pillName, String pillDescription){
-
             Calendar calendar = Calendar.getInstance();
             SimpleDateFormat sdFormat = new SimpleDateFormat(Utils.dateTimePatternDb );
             sdFormat.setTimeZone( TimeZone.getTimeZone("GMT") );

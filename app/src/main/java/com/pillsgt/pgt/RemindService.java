@@ -2,14 +2,20 @@ package com.pillsgt.pgt;
 
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.util.Log;
+import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.net.Uri;
+import android.os.Build;
+import android.preference.PreferenceManager;
 
 import com.pillsgt.pgt.databases.InitDatabases;
 import com.pillsgt.pgt.databases.LocalDatabase;
-import com.pillsgt.pgt.databases.RemoteDatabase;
 import com.pillsgt.pgt.models.PillTask;
 import com.pillsgt.pgt.utils.Utils;
 
@@ -22,9 +28,10 @@ public class RemindService  extends IntentService {
     final String TAG = "REMIND";
 
     private static LocalDatabase localDatabase;
-    private static RemoteDatabase remoteDatabase;
 
 
+    private boolean notificationHasVibration;
+    private String notificationRingtone;
     public static final int DEFAULT_NOTIFICATION_ID = 10;
 
     public RemindService(){
@@ -49,7 +56,6 @@ public class RemindService  extends IntentService {
 
     protected void initDatabases(){
         localDatabase = InitDatabases.buildLocalDatabase(getApplicationContext());
-        remoteDatabase = InitDatabases.buildRemoteDatabase(getApplicationContext());
     }
     //custom methods don't remove
     public void process() {
@@ -62,13 +68,20 @@ public class RemindService  extends IntentService {
         SimpleDateFormat sdFormat = new SimpleDateFormat(Utils.dateTimePatternDb );
         sdFormat.setTimeZone( TimeZone.getTimeZone("GMT") );
 
+        //todo: get and make system notifications
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean prefNotificationsNewMessage = prefs.getBoolean("notifications_new_message", true);
+        if(!prefNotificationsNewMessage) return;
+
+        notificationHasVibration = prefs.getBoolean("notifications_new_message_vibrate", true);
+        notificationRingtone = prefs.getString("notifications_new_message_ringtone", "");
+
+
         checkDate.add(Calendar.MINUTE, 1);
         String futureDateF = sdFormat.format(checkDate.getTime());
 
-        checkDate.add(Calendar.MINUTE, -10);
+        checkDate.add(Calendar.MINUTE, -30);
         String missedDateF = sdFormat.format(checkDate.getTime());
-
-        //todo: get and make system notifications
 
         //Get pill tasks to notify
         PillTask retryPillTask = localDatabase.localDAO().loadNotifyTask(missedDateF, futureDateF, PillTask.STATUS_NOTTIFIED);
@@ -114,26 +127,55 @@ public class RemindService  extends IntentService {
         notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // Start without a delay
-        // Vibrate for 100 milliseconds
-        // Sleep for 2000 milliseconds
-        long[] VibrateTime = {0, 100, 2000};
 
         Notification.Builder builder = new Notification.Builder(this);
         builder.setContentIntent(contentIntent)
-                .setOngoing(false)   //Can be swiped out
+                .setOngoing(false) //Can be swiped out
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setTicker(Ticker)
-                .setVibrate(VibrateTime)
-                .setDefaults(Notification.DEFAULT_SOUND)
                 .setContentTitle(Title)
                 .setContentText(Description);
 
-        Notification notification = builder.build();
+        if ( notificationRingtone != null ){
+            builder.setSound(Uri.parse(notificationRingtone));
+        }
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(DEFAULT_NOTIFICATION_ID*pillTask.getId(), notification);
+        // Start without a delay
+        // Vibrate for 100 milliseconds
+        // Sleep for 2000 milliseconds
+        long[] VibrateTime = {0, 100, 300, 200, 300, 100, 300, 200, 200};
+        if (notificationHasVibration){
+            builder.setVibrate(VibrateTime);
+        }
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "my_channel_"+pillTask.getId();
+
+            NotificationChannel mChannel = new NotificationChannel(channelId,
+                    getString(R.string.app_name),
+                    NotificationManager.IMPORTANCE_HIGH);
+            mChannel.setDescription(Description);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+
+            if (notificationHasVibration){
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(VibrateTime);
+            }
+
+            AudioAttributes attributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build();
+
+            Uri sound = Uri.parse(notificationRingtone);
+            mChannel.setSound(sound, attributes); // This is IMPORTANT
+
+            notificationManager.createNotificationChannel(mChannel);
+            builder.setChannelId(channelId);
+        }
+        notificationManager.notify(DEFAULT_NOTIFICATION_ID*pillTask.getId(), builder.build());
     }
 
 }
